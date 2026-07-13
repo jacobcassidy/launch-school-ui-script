@@ -1,0 +1,20 @@
+/* --- BASE --- */
+@import "./base/variables.css";
+@import "./base/defaults";
+@import "./base/animations.css";
+
+/* --- LAYOUT --- */
+@import "./layout/header.css";
+@import "./layout/sidebar.css";
+@import "./layout/panels.css";
+
+/* --- COMPONENTS --- */
+@import "./components/buttons";
+@import "./components/tabs.css";
+@import "./components/toasts.css";
+
+/* --- SECTIONS --- */
+@import "./sections/editor.css";
+@import "./sections/lsbot.css";
+@import "./sections/pages.css";
+@import "./sections/wrappers.css";

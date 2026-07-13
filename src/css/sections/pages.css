@@ -1,0 +1,44 @@
+/**
+ * PAGES
+ */
+
+/**
+ * BOOK PAGES
+ */
+
+/* Book cover page */
+
+.books.show-page .large-11 {
+  display: flex;
+  align-items: center;
+}
+
+/* Book page header buttons */
+
+.navigate-back,
+.toc-button-text,
+.toc-chevron {
+  display: none;
+}
+
+/* Normal book page */
+
+.books.read-page {
+  #book-repl-layout {
+    /* Table of Content */
+
+    .toc-dropdown-container {
+      inset-block-start: var(--header-height) !important;
+      inset-inline: auto 356px !important;
+    }
+  }
+}
+
+/**
+ * COURSES PAGE
+ */
+
+.nav-tabs.secondary-nav {
+  margin: calc(var(--header-height) * -1) 0 var(--header-height) 0;
+  padding-block-start: var(--header-height);
+}

@@ -1,0 +1,31 @@
+/**
+ * TOASTS
+ */
+
+.toast-container {
+  pointer-events: none; /* Doesn't block clicks */
+  position: fixed;
+  z-index: 99999;
+  inset-block-start: 12px;
+  inset-inline-end: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toast {
+  transform: translateY(-10px);
+  background: var(--color-grayscale-035);
+  border-radius: var(--border-radius-001);
+  color: #fff;
+  opacity: 0;
+  padding: 16px 20px;
+  transition:
+    opacity 500ms ease,
+    transform 500ms ease;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}

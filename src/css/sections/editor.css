@@ -1,0 +1,80 @@
+/**
+ * EDITOR
+ */
+
+:is(.editor-panel, #tab-code-editor) {
+  .editor-mode-bar {
+    background-color: var(--background-color-001) !important;
+    border-block-end: 1px solid var(--border-color-001) !important;
+    block-size: var(--header-height) !important;
+    inline-size: 100% !important;
+    max-inline-size: 100% !important;
+    margin: 0 !important;
+    padding-inline: var(--padding-inline-w900) !important;
+  }
+
+  .tab-pane .CodeMirror {
+    margin-inline-end: 16px;
+  }
+
+  :is(.code-editor-section, .editor-content-wrapper) {
+    max-inline-size: 100% !important;
+    padding-inline: var(--padding-inline-w900) !important;
+
+    .code-editor-wrapper,
+    .code-editor-wrapper .CodeMirror,
+    .code-editor-wrapper .CodeMirror .CodeMirror-scroll,
+    .CodeMirror-gutters {
+      background-color: var(--background-color-002) !important;
+    }
+
+    .code-editor-wrapper {
+      border: 1px solid var(--border-color-001);
+      border-radius: var(--border-radius-001);
+      margin-block-start: 24px;
+      padding: 12px !important;
+
+      .CodeMirror-activeline-background {
+        background-color: var(--background-color-003) !important;
+
+        .CodeMirror-focused & {
+          background-color: var(--color-blue-095) !important;
+        }
+      }
+
+      .CodeMirror-activeline {
+        .highlight-active & {
+          .CodeMirror-line {
+            animation: highlight-flash 300ms;
+          }
+        }
+      }
+
+      .CodeMirror-lines,
+      .CodeMirror-linenumber {
+        padding: 0 !important;
+      }
+
+      .CodeMirror-gutters {
+        border-color: var(--border-color-001);
+        padding: 0;
+      }
+    }
+
+    #btn-run-code {
+      margin: 16px 0 24px auto !important;
+    }
+  }
+
+  .output-section-fixed {
+    align-self: center;
+    border: none !important;
+    inline-size: calc(100% - (var(--inline-spacing) * 2));
+    max-inline-size: 900px;
+    margin: 0 0 24px !important;
+
+    #code-output-content {
+      background-color: var(--background-color-001) !important;
+    }
+  }
+}

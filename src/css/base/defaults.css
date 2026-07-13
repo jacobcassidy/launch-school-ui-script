@@ -1,0 +1,35 @@
+/**
+ * DEFAULTS
+ */
+
+body,
+table {
+  background: var(--background-color-001);
+}
+
+a,
+button {
+  transition: var(--transition-short);
+}
+
+input:where(:not([type="submit"])),
+select,
+textarea {
+  background-color: var(--color-grayscale-100);
+  border: 1px solid var(--border-color-001) !important;
+  border-radius: var(--border-radius-001) !important;
+  box-shadow: none !important;
+  color: var(--color-grayscale-050) !important;
+  min-block-size: 40px;
+  padding: 12px 16px !important;
+  font-size: 0.9375rem !important;
+
+  &.highlight-active {
+    animation: highlight-flash var(--duration-short);
+  }
+
+  &:focus {
+    border-color: transparent !important;
+    box-shadow: 0 0 0 3px var(--color-blue-092) !important;
+  }
+}

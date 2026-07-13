@@ -1,0 +1,21 @@
+/**
+ * WRAPPERS
+ */
+
+.wrapper {
+  margin: 0 !important;
+  padding: calc(var(--header-height) * 2) 0 0 var(--nav-drawer-width) !important;
+
+  body:has(#navbar-collapsor:checked) &,
+  body:not(:has(.nav-drawer)) & {
+    padding-inline-start: 0 !important;
+  }
+}
+
+body:not(:has(.assignment-repl-layout, .book-repl-layout)) {
+  .wrapper {
+    body:has(.site-header.is-hidden) & {
+      inset-block-start: calc(var(--header-height) * -1) !important;
+    }
+  }
+}

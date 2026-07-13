@@ -1,0 +1,162 @@
+/**
+ * TABS
+ */
+
+/**
+ * TAB NAV
+ */
+
+.tab-nav {
+  align-items: center;
+  gap: 0 !important;
+  overflow: initial !important;
+  background-color: var(--background-color-001) !important;
+  border-color: var(--border-color-001) !important;
+  border-block-end: 1px solid var(--border-color-001) !important;
+  block-size: var(--header-height);
+  margin: 0 !important;
+  padding: 0 var(--padding-inline-w900) !important;
+
+  @media (width < calc(1800px + 24px + 24px + 4px + 24px + 24px)) {
+    padding-inline-start: 0 !important;
+  }
+}
+
+/* Tab Button */
+
+.tab-button {
+  align-items: center !important;
+  gap: 12px;
+  transform: none !important;
+  border: 1px solid transparent !important;
+  border-radius: 0 !important;
+  border-inline-end-color: var(--border-color-001) !important;
+  color: var(--color-grayscale-074) !important;
+  block-size: calc(100% + 1px) !important;
+  margin: 0 0 -1px !important;
+  padding: 2px var(--inline-spacing) 0 !important;
+  font-weight: 700 !important;
+
+  &:first-child {
+    border-inline-start: 1px solid var(--border-color-001) !important;
+
+    body:has(#assignment-repl-layout, #book-repl-layout, #book-exercise-repl-layout, #exercise-repl-layout) & {
+      margin: 0 !important;
+    }
+
+    @media (width < calc(1800px + 24px + 24px + 4px + 24px + 24px)) {
+      border-inline-start: none !important;
+    }
+  }
+
+  i {
+    padding-block-end: 2px;
+    font-weight: 700 !important;
+  }
+
+  svg {
+    path {
+      transition: var(--transition-short);
+    }
+  }
+
+  &:where(:not(.active)) {
+    svg {
+      path {
+        fill: var(--color-grayscale-074) !important;
+      }
+    }
+
+    &:hover {
+      color: var(--color-brand-001) !important;
+
+      svg {
+        path {
+          fill: var(--color-brand-001) !important;
+        }
+      }
+    }
+  }
+
+  &.active {
+    border-block-end-color: var(--background-color-001) !important;
+    color: var(--color-grayscale-050) !important;
+  }
+
+  &:active {
+    color: var(--color-brand-002) !important;
+
+    svg {
+      path {
+        fill: var(--color-brand-002) !important;
+      }
+    }
+  }
+
+  &.highlight-active {
+    animation: highlight-flash 300ms;
+  }
+}
+
+/**
+ * TAB CONTENT
+ */
+
+.tab-content {
+  margin: 0 !important;
+  padding: 0 !important;
+
+  .tab-header {
+    align-items: center;
+    background-color: var(--background-color-001) !important;
+    border-block-end: 1px solid var(--border-color-001) !important;
+    block-size: var(--header-height);
+    margin: 0 !important;
+    padding-inline: var(--padding-inline-w900) !important;
+
+    .tab-header-actions {
+      gap: 8px !important;
+
+      .lsbot-tab-button {
+        padding: 0 !important;
+      }
+    }
+
+    /* Overrides */
+
+    body:has(#assignment-repl-layout) & {
+      padding-inline-end: var(--padding-inline-w900) !important;
+    }
+  }
+
+  /* Override */
+
+  body:has(#book-repl-layout) & {
+    margin-inline-end: 0 !important;
+  }
+
+  /* Tab content without a header */
+
+  .tab-pane:not(:has(.tab-header), :has(.editor-mode-bar)) {
+    padding: 24px var(--padding-inline-w900) !important;
+  }
+
+  /* Instructions Tab Action Buttons */
+
+  #actions.gray-links {
+    button,
+    a {
+      border: 1px solid var(--border-color-001);
+    }
+  }
+
+  /* Community Tab */
+
+  .community-solutions-section {
+    background-color: var(--background-color-001) !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}

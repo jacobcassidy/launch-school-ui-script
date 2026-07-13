@@ -1,0 +1,37 @@
+/**
+ * VARIABLES
+ */
+
+:root {
+  --background-color-001: var(--color-grayscale-098);
+  --background-color-002: var(--color-grayscale-097);
+  --background-color-003: var(--color-grayscale-095);
+  --background-highlight-001: var(--color-brand-001-alpha);
+  --border-color-001: var(--color-grayscale-095);
+  --color-brand-001-alpha: #f2585833;
+  --color-brand-001: #f25858;
+  --color-brand-002: #d41010;
+  --color-grayscale-035: oklch(35% 0 0deg);
+  --color-grayscale-050: oklch(50% 0 0deg);
+  --color-grayscale-071: oklch(71% 0 0deg);
+  --color-grayscale-074: oklch(74% 0 0deg);
+  --color-grayscale-095: oklch(95% 0 0deg);
+  --color-grayscale-097: oklch(97% 0 0deg);
+  --color-grayscale-098: oklch(98% 0 0deg);
+  --color-grayscale-100: oklch(100% 0 0deg);
+  --color-blue-092: oklch(92% 0.01 230deg);
+  --color-blue-095: oklch(95% 0.01 230deg);
+  --header-height: 2.5rem;
+  --nav-drawer-width: 12.1875rem;
+  --duration-long: 500ms;
+  --duration-short: 200ms;
+  --transition-long: all var(--duration-long) ease;
+  --transition-short: all var(--duration-short) ease;
+  --border-radius-001: 6px;
+  --padding-inline-w900: calc(50% - 450px); /* Gives it a max-width of 900px) */
+  --inline-spacing: 24px;
+
+  @media (width < calc(1800px + 24px + 24px + 4px + 24px + 24px)) {
+    --padding-inline-w900: var(--inline-spacing);
+  }
+}

@@ -1,0 +1,54 @@
+/**
+ * BUTTONS
+ */
+
+.site-header__button {
+  cursor: pointer;
+  position: static !important;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-color-003) !important;
+  border-radius: var(--border-radius-001) !important;
+  color: var(--color-grayscale-050);
+  block-size: 32px !important;
+  inline-size: 32px !important;
+  margin: 0;
+  padding: 6px;
+
+  &:hover {
+    background-color: var(--color-brand-001) !important;
+    color: var(--color-grayscale-100);
+  }
+
+  &.active {
+    background-color: var(--color-brand-001-alpha) !important;
+    color: var(--color-brand-002);
+  }
+
+  &.btn--show-sidebar {
+    flex-direction: column;
+    gap: 3px;
+
+    .hamburger-line {
+      background-color: var(--color-grayscale-050);
+      block-size: 2px;
+      inline-size: 16px;
+      transition: var(--transition-short);
+    }
+
+    &:hover {
+      .hamburger-line {
+        background-color: var(--color-grayscale-100);
+      }
+    }
+  }
+
+  &.toc-toggle-button {
+    &.open {
+      background-color: var(--color-brand-001-alpha) !important;
+      color: var(--color-brand-002) !important;
+    }
+  }
+}

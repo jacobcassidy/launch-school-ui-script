@@ -1,0 +1,16 @@
+/**
+ * ANIMATIONS
+ */
+
+/**
+ * KEYFRAMES
+ */
+@keyframes highlight-flash {
+  from {
+    background-color: var(--background-highlight-001);
+  }
+
+  to {
+    background-color: transparent;
+  }
+}

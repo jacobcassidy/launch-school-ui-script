@@ -1,0 +1,11 @@
+/**
+ * SIDEBAR
+ */
+
+#navbar-collapsor:checked ~ .nav-drawer {
+  inline-size: 0 !important;
+}
+
+#navbar-expand {
+  display: none;
+}
