@@ -9,34 +9,34 @@
 // @grant        none
 // ==/UserScript==
 
-// Elements
-let siteHeader = null;
-let scrollEl = null;
-let tabsPanelToggleButton = null;
-
-// Data
-let lastUrl = null;
-let previousBody = null;
-
-// Panels
-let contentPanel = null;
-let instructionsPanel = null;
-let tabsPanel = null;
-
-// States
-let isHeaderHidden = sessionStorage.getItem("isHeaderHidden") === "true";
-let isHeaderPinned = false;
-let isHeaderTop = false;
-let isHeaderUnpinned = false;
-let isReloadScheduled = false;
-
-// Timers
-let observerTimeoutId;
+import { initScript } from "./modules/init.js";
 
 // Initial script load
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", loadUI, { once: true });
+  document.addEventListener("DOMContentLoaded", initScript, { once: true });
 } else {
-  loadUI();
-  initNavDetection();
+  initScript();
 }
+
+// // Elements
+// let scrollEl = null;
+// let tabsPanelToggleButton = null;
+
+// // Data
+// let lastUrl = null;
+// let previousBody = null;
+
+// // Panels
+// let contentPanel = null;
+// let instructionsPanel = null;
+// let tabsPanel = null;
+
+// // States
+// let isHeaderHidden = sessionStorage.getItem("isHeaderHidden") === "true";
+// let isHeaderPinned = false;
+// let isHeaderTop = false;
+// let isHeaderUnpinned = false;
+// let isReloadScheduled = false;
+
+// // Timers
+// let observerTimeoutId;

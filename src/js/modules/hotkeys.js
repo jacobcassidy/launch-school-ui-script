@@ -1,7 +1,24 @@
+import { colorLog } from "./helpers/utility";
+import {
+  elements,
+  // setIsHeaderPinned,
+  // setIsHeaderUnpinned,
+  // getIsHeaderPinned,
+  // getIsHeaderUnpinned,
+  // getIsHeaderTop,
+  // setIsHeaderTop,
+} from "./helpers/state";
+import { handleFocus } from "./focus";
+import { showTabsPanel, showHeader, showToast } from "./helpers/show";
+// import { hideHeader } from "./helpers/hide";
+import { toggleSidebar } from "./helpers/toggle.js";
+
+const { header, instructionsPanel, tabsPanel } = elements;
+
 /**
  * ADD HOTKEYS
  */
-function addHotkeys() {
+export function addHotkeys() {
   console.log("Running addHotkeys()");
 
   if (document.documentElement.dataset.hotkeysBound === "true") {
@@ -54,28 +71,29 @@ function addHotkeys() {
 
     // Hotkey: Toggle Site Header
     if (event.code == "Digit1") {
-      if (isHeaderTop) {
-        if (isHeaderHidden) {
-          showHeader();
-        } else {
-          hideHeader();
-        }
-        return;
-      }
+      // TODO - Refactor this section
+      // if (isHeaderTop) {
+      //   if (isHeaderHidden) {
+      //     showHeader();
+      //   } else {
+      //     hideHeader();
+      //   }
+      //   return;
+      // }
 
-      // Toggle Pinned State
-      isHeaderPinned = !isHeaderPinned;
-      isHeaderUnpinned = !isHeaderPinned;
+      // // Toggle Pinned State
+      // isHeaderPinned = !isHeaderPinned;
+      // isHeaderUnpinned = !isHeaderPinned;
 
-      if (isHeaderPinned) {
-        siteHeader.classList.add("is-pinned");
-        siteHeader.classList.remove("is-unpinned");
-        showHeader();
-      } else {
-        siteHeader.classList.remove("is-pinned");
-        siteHeader.classList.add("is-unpinned");
-        hideHeader();
-      }
+      // if (isHeaderPinned) {
+      //   siteHeader.classList.add("is-pinned");
+      //   siteHeader.classList.remove("is-unpinned");
+      //   showHeader();
+      // } else {
+      //   siteHeader.classList.remove("is-pinned");
+      //   siteHeader.classList.add("is-unpinned");
+      //   hideHeader();
+      // }
 
       return;
     }

@@ -1,9 +1,16 @@
+import { colorLog } from "./helpers/utility.js";
+import { flashActiveElement } from "./helpers/flash.js";
+import { setActiveTabTextareaElement, elements } from "./helpers/state.js";
+import { hideTabsPanel } from "./helpers/hide.js";
+
+const { tabsPanel } = elements;
+
 /**
  * HANDLE ELEMENT FOCUS
  *
  * @param {HTMLElement} focusEl The element that will be focused or contains the element to focus
  */
-function handleFocus(focusEl) {
+export function handleFocus(focusEl) {
   console.log("Running handleFocus()");
 
   const isTextarea = focusEl instanceof HTMLTextAreaElement;
@@ -13,7 +20,7 @@ function handleFocus(focusEl) {
     const isCodeMirrorFocused = codeMirror?.classList.contains("CodeMirror-focused");
 
     if (isCodeMirrorFocused) {
-      highlightActiveElement(codeMirror);
+      flashActiveElement(codeMirror);
       return;
     }
 
@@ -26,10 +33,10 @@ function handleFocus(focusEl) {
   if (isTabButton) {
     const activeTab = document.querySelector(".tab-button.active, .tab-button[aria-selected='true']");
     const isTabActive = activeTab?.dataset?.tab === focusEl.dataset?.tab;
-    const tabTextarea = getTabBtnTextarea(focusEl);
+    const tabTextarea = setActiveTabTextareaElement(focusEl);
 
     if (!tabTextarea) {
-      if (isTabActive) highlightActiveElement(focusEl);
+      if (isTabActive) flashActiveElement(focusEl);
       return;
     }
 
@@ -39,7 +46,7 @@ function handleFocus(focusEl) {
       if (tabsPanel) {
         hideTabsPanel();
       } else {
-        highlightActiveElement(focusEl, tabTextarea);
+        flashActiveElement(focusEl, tabTextarea);
       }
       return;
     } else {
@@ -54,8 +61,8 @@ function handleFocus(focusEl) {
 /**
  * FOCUS TAB CONTAINER'S TEXTAREA ON TAB BUTTON CLICK
  */
-function focusOnTabClick() {
-  console.log("Running focusOnTabClick()");
+export function focusOnTabClick() {
+  colorLog.run("Running focusOnTabClick()");
 
   const tabButtons = document.querySelectorAll(".tab-button");
   if (tabButtons.length < 1) return;
@@ -68,8 +75,8 @@ function focusOnTabClick() {
 /**
  * REFOCUS LSBOT PROMPT AFTER PROMPT SUBMISSION
  */
-function refocusPromptAfterSubmission() {
-  console.log("Running refocusPromptAfterSubmission()");
+export function refocusPromptAfterSubmission() {
+  colorLog.run("Running refocusPromptAfterSubmission()");
 
   const lsbotPromptInputs = document.querySelectorAll(".lsbot-question-input");
   if (lsbotPromptInputs.length < 1) return;

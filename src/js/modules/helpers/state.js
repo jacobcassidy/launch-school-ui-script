@@ -7,7 +7,7 @@ export const elements = {
   activeTabTextarea: null,
   contentPanel: null,
   header: null,
-  instructionPanel: null,
+  instructionsPanel: null,
   scrollContainer: null,
   sidebar: null,
   tabsPanel: null,
@@ -105,15 +105,33 @@ export function setIsDefaultTabsPanelHidden(value) {
 }
 
 export function setIsHeaderPinned(value) {
+  if (value === true) {
+    elements.header.classList.add("is-pinned");
+  } else {
+    elements.header.classList.remove("is-pinned");
+  }
+
   states.isHeaderPinned = value;
   sessionStorage.setItem("isHeaderPinned", value);
 }
 
 export function setIsHeaderTop(value) {
+  if (value === true) {
+    elements.header.classList.add("is-top");
+  } else {
+    elements.header.classList.remove("is-top");
+  }
+
   states.isHeaderTop = value;
 }
 
 export function setIsHeaderUnpinned(value) {
+  if (value === true) {
+    elements.header.classList.add("is-unpinned");
+  } else {
+    elements.header.classList.remove("is-unpinned");
+  }
+
   states.isHeaderUnpinned = value;
   sessionStorage.setItem("isHeaderUnpinned", value);
 }

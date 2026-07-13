@@ -1,8 +1,14 @@
+import { colorLog } from "./helpers/utility";
+import { setIsHeaderTop } from "./helpers/state";
+import { updateHeaderVisibility } from "./header.js";
+
 /**
  * WATCH PAGE SCROLL ELEMENT
  */
-function watchScrollEl() {
+export function watchScrollEl() {
   console.log("Running watchScrollEl");
+
+  let scrollEl;
 
   const assignmentWrapper = document.querySelector(".assignment-content-wrapper");
   const bookWrapper = document.querySelector(".book-content-wrapper");
@@ -22,8 +28,7 @@ function watchScrollEl() {
   }
 
   if (scrollEl.scrollTop <= 2) {
-    siteHeader.classList.add("is-top");
-    isHeaderTop = true;
+    setIsHeaderTop(true);
   }
 
   scrollEl.addEventListener("scroll", updateHeaderVisibility);
