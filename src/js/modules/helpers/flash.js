@@ -1,32 +1,35 @@
+import { colorLog } from "./utilities.js";
+import { setActiveTabTextareaElement } from "./state.js";
+
 /**
- * HIGHLIGHT ACTIVE ELEMENT
- * @param {HTMLElement} activeEl The already active element to highlight
- * @param {HTMLElement} secondaryActiveEl The optional already active secondary element to highlight
+ * FLASH ACTIVE ELEMENT
+ * @param {HTMLElement} activeEl The already active element to flash
+ * @param {HTMLElement} secondaryActiveEl The optional already active secondary element to flash
  */
-function highlightActiveElement(activeEl, secondaryActiveEl) {
-  console.log("Running highlightActiveElement()");
+export function flashActiveElement(activeEl, secondaryActiveEl) {
+  console.log("Running flashActiveElement()");
   /**
-   * Flashes the active element with a quick add and removal of the .highlight-active class
+   * Flashes the active element with a quick add and removal of the .flash-active class
    */
   const flashWithClass = (flashEl, secondaryFlashEl) => {
     colorLog.run("Running flashWithClass();");
 
-    clearTimeout(flashEl.highlightTimeout);
-    flashEl.classList.remove("highlight-active");
+    clearTimeout(flashEl.flashTimeout);
+    flashEl.classList.remove("flash-active");
     requestAnimationFrame(() => {
-      flashEl.classList.add("highlight-active");
-      flashEl.highlightTimeout = setTimeout(() => {
-        flashEl.classList.remove("highlight-active");
+      flashEl.classList.add("flash-active");
+      flashEl.flashTimeout = setTimeout(() => {
+        flashEl.classList.remove("flash-active");
       }, 300);
     });
 
     if (secondaryFlashEl) {
-      clearTimeout(secondaryFlashEl.highlightTimeout);
-      secondaryFlashEl.classList.remove("highlight-active");
+      clearTimeout(secondaryFlashEl.flashTimeout);
+      secondaryFlashEl.classList.remove("flash-active");
       requestAnimationFrame(() => {
-        secondaryFlashEl.classList.add("highlight-active");
-        secondaryFlashEl.highlightTimeout = setTimeout(() => {
-          secondaryFlashEl.classList.remove("highlight-active");
+        secondaryFlashEl.classList.add("flash-active");
+        secondaryFlashEl.flashTimeout = setTimeout(() => {
+          secondaryFlashEl.classList.remove("flash-active");
         }, 300);
       });
     }
@@ -35,7 +38,7 @@ function highlightActiveElement(activeEl, secondaryActiveEl) {
   const isTabButton = activeEl.classList.contains("tab-button");
 
   if (isTabButton) {
-    const tabTextarea = getTabBtnTextarea(activeEl);
+    const tabTextarea = setActiveTabTextareaElement(activeEl);
     const isActiveTextarea = document.activeElement === tabTextarea;
 
     colorLog.notice("tabTextarea:", tabTextarea);

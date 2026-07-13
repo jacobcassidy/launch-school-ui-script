@@ -1,30 +1,34 @@
+import { colorLog } from "./utility.js";
+import { elements, setIsHeaderPinned, setIsHeaderUnpinned } from "./state.js";
+
+const { header, tabsPanel, contentPanel, tabsPanelToggleButton } = elements;
+
+/**
+ * HIDE HEADER
+ */
+export function hideHeader() {
+  colorLog.run("Running hideHeader()");
+  header.classList.remove("is-pinned");
+  header.classList.add("is-unpinned");
+  setIsHeaderUnpinned(true);
+  setIsHeaderPinned(false);
+}
+
 /**
  * HIDE SIDEBAR
  */
-function hideSidebar() {
-  console.log("Running hideSidebar();");
+export function hideSidebar() {
+  colorLog.run("Running hideSidebar();");
   const hideSidebarBtn = document.querySelector("#navbar-collapsor");
   const isSidebarOpen = hideSidebarBtn && !hideSidebarBtn.checked;
   if (isSidebarOpen) hideSidebarBtn.click();
 }
 
 /**
- * HIDE SITE-HEADER
- */
-function hideHeader() {
-  console.log("Running hideHeader()");
-
-  siteHeader.classList.add("is-hidden");
-  isHeaderHidden = true;
-  sessionStorage.setItem("isHeaderHidden", isHeaderHidden);
-}
-
-/**
  * HIDE TABS PANEL
  */
-function hideTabsPanel() {
-  console.log("Running hideTabsPanel()");
-
+export function hideTabsPanel() {
+  colorLog.run("Running hideTabsPanel()");
   tabsPanel.classList.add("hidden", "panel-collapsed");
   contentPanel.classList.remove("halfWidth");
   tabsPanel.classList.remove("halfWidth");

@@ -1,9 +1,13 @@
+import { colorLog } from "./utility.js";
+import { handleFocus } from "../focus.js";
+import { elements, setIsHeaderPinned, setIsHeaderUnpinned } from "./state.js";
+
+const { header, tabsPanel, contentPanel, tabsPanelToggleButton } = elements;
 /**
  * SHOW SIDEBAR
  */
-function showSidebar() {
-  console.log("Running showSidebar()");
-
+export function showSidebar() {
+  colorLog.run("Running showSidebar()");
   const showSidebarBtn = document.querySelector("#navbar-expand");
   const isSidebarClosed = document.querySelector("#navbar-collapsor").checked;
   if (isSidebarClosed) showSidebarBtn.click();
@@ -12,20 +16,19 @@ function showSidebar() {
 /**
  * SHOW SITE-HEADER
  */
-function showHeader() {
-  console.log("Running showHeader()");
-
-  siteHeader.classList.remove("is-hidden");
-  isHeaderHidden = false;
-  sessionStorage.setItem("isHeaderHidden", isHeaderHidden);
+export function showHeader() {
+  colorLog.run("Running showHeader()");
+  header.classList.remove("is-unpinned");
+  header.classList.add("is-pinned");
+  setIsHeaderPinned(true);
+  setIsHeaderUnpinned(false);
 }
 
 /**
  * SHOW TABS PANEL
  */
-function showTabsPanel() {
-  console.log("Running showTabsPanel()");
-
+export function showTabsPanel() {
+  colorLog.run("Running showTabsPanel()");
   tabsPanel.classList.remove("hidden", "panel-collapsed");
   contentPanel.classList.add("halfWidth");
   tabsPanel.classList.add("halfWidth");
@@ -35,8 +38,8 @@ function showTabsPanel() {
 /**
  * SHOW LSBOT PANEL WHEN SUBMITTING ANSWERS IN THE LSBOT QUESTION BOX
  */
-function showLSBotPanelOnQbSubmission() {
-  console.log("Running showLSBotPanelOnQbSubmission()");
+export function showLSBotPanelOnQbSubmission() {
+  colorLog.run("Running showLSBotPanelOnQbSubmission()");
 
   const qbTextareas = document.querySelectorAll(".lsbot-question-box-answer-input");
   const qbSubmitBtns = document.querySelectorAll(".lsbot-question-box-send-answer-button");
@@ -55,7 +58,7 @@ function showLSBotPanelOnQbSubmission() {
   // Show LSBot Tabs Panel on hotkey submission `CMD + Enter`
   qbTextareas.forEach((qbTextarea) => {
     const handleHotkeySubmission = () => {
-      console.log("Running handleHotkeySubmission()");
+      colorLog.run("Running handleHotkeySubmission()");
 
       const isCmdEnter = event.metaKey && !event.ctrlKey && !event.altKey && !event.shiftKey && event.key === "Enter";
       if (!isCmdEnter) return;
