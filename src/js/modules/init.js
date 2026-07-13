@@ -4,7 +4,7 @@
  * This function is only loaded on the first initialization of the script.
  */
 
-import { colorLog } from "./helpers/utilities.js";
+import { colorLog } from "./helpers/utility.js";
 import { loadUI } from "./load.js";
 import { detectNavChange } from "./helpers/detection.js";
 

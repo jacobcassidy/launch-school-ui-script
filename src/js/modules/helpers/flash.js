@@ -1,4 +1,4 @@
-import { colorLog } from "./utilities.js";
+import { colorLog } from "./utility.js";
 import { setActiveTabTextareaElement } from "./state.js";
 
 /**

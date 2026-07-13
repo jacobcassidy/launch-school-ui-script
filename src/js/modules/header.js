@@ -1,7 +1,7 @@
 /**
  * SITE HEADER FUNCTIONS
  */
-import { colorLog } from "./helpers/utilities.js";
+import { colorLog } from "./helpers/utility.js";
 import {
   elements,
   states,
