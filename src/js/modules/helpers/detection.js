@@ -1,8 +1,6 @@
 /**
  * DETECTION HELPER
  */
-
-// Helper Imports
 import { colorLog } from "./utility.js";
 import { getLastUrl, getIsReloadScheduled, getObserverTimeoutId, setObserverTimeoutId } from "./state.js";
 import { scheduleReload } from "../load.js";
