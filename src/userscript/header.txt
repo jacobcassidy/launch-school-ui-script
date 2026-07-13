@@ -1,0 +1,10 @@
+// ==UserScript==
+// @name         LaunchSchool UI Modifications
+// @namespace    https://tampermonkey.net/
+// @version      2026-07-14
+// @description  Update the Launch School UI for better usability (minimizing distractions, improving layout, etc.)
+// @author       Jacob Cassidy
+// @match        https://launchschool.com/**
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=launchschool.com
+// @grant        none
+// ==/UserScript==
