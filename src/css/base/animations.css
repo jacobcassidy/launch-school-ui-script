@@ -5,9 +5,9 @@
 /**
  * KEYFRAMES
  */
-@keyframes highlight-flash {
+@keyframes bg-flash {
   from {
-    background-color: var(--background-highlight-001);
+    background-color: var(--background-flash-001);
   }
 
   to {

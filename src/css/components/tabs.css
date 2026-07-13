@@ -93,8 +93,8 @@
     }
   }
 
-  &.highlight-active {
-    animation: highlight-flash 300ms;
+  &.flash-active {
+    animation: bg-flash 300ms;
   }
 }
 

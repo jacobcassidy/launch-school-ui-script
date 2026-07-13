@@ -43,9 +43,9 @@
       }
 
       .CodeMirror-activeline {
-        .highlight-active & {
+        .flash-active & {
           .CodeMirror-line {
-            animation: highlight-flash 300ms;
+            animation: bg-flash 300ms;
           }
         }
       }
