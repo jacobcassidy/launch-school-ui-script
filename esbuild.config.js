@@ -1,9 +1,11 @@
+import { readFile } from "node:fs/promises";
 import * as esbuild from "esbuild";
 import fs from "node:fs";
-import { env } from "node:process";
+import process from "node:process";
 
-const watchMode = env.WATCH_MODE === "true";
 const distDir = "./dist/";
+const headerFile = "./src/userscript/header.txt";
+const isWatchMode = process.argv.includes("--watch");
 
 const cssTextPlugin = {
   name: "css-text",
@@ -19,6 +21,7 @@ const cssTextPlugin = {
         bundle: true,
         write: false,
         minify: true,
+        metafile: true,
         loader: {
           ".css": "css",
         },
@@ -29,29 +32,51 @@ const cssTextPlugin = {
       return {
         contents: `export default ${JSON.stringify(css)};`,
         loader: "js",
-        watchFiles: ["src/css/styles.css"],
+        watchFiles: Object.keys(result.metafile.inputs),
       };
     });
   },
 };
 
-const buildOptions = {
-  entryPoints: ["src/js/index.js"],
-  bundle: true,
-  outfile: `${distDir}/js/index.min.js`,
-  minify: true,
-  logLevel: "info",
-  plugins: [cssTextPlugin],
-};
+async function createContext() {
+  const userscriptHeader = await readFile(headerFile, "utf8");
+
+  return esbuild.context({
+    entryPoints: ["src/js/index.js"],
+    bundle: true,
+    outfile: `${distDir}/js/index.min.js`,
+    minify: true,
+    logLevel: "info",
+    plugins: [cssTextPlugin],
+    banner: {
+      js: userscriptHeader,
+    },
+  });
+}
 
 if (fs.existsSync(distDir)) {
   fs.rmSync(distDir, { recursive: true, force: true });
 }
 
-if (watchMode) {
-  let ctx = await esbuild.context(buildOptions);
+let ctx = await createContext();
+
+if (isWatchMode) {
   await ctx.watch();
+
+  let headerChangeTimeout;
+
+  fs.watch(headerFile, () => {
+    clearTimeout(headerChangeTimeout);
+    headerChangeTimeout = setTimeout(async () => {
+      console.log(`Build started (change: "${headerFile}")`);
+      await ctx.dispose();
+      ctx = await createContext();
+      await ctx.watch();
+    }, 100);
+  });
+
   console.log("Watching source files. Press Ctrl-C to stop.");
 } else {
-  await esbuild.build(buildOptions);
+  await ctx.rebuild();
+  await ctx.dispose();
 }
