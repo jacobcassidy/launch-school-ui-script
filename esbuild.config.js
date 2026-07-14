@@ -45,7 +45,7 @@ async function createContext() {
     entryPoints: ["src/js/index.js"],
     bundle: true,
     outfile: `${distDir}/js/index.min.js`,
-    minify: true,
+    minify: !isWatchMode,
     logLevel: "info",
     plugins: [cssTextPlugin],
     banner: {
