@@ -48,6 +48,9 @@ async function createContext() {
     minify: !isWatchMode,
     logLevel: "info",
     plugins: [cssTextPlugin],
+    loader: {
+      ".svg": "text",
+    },
     banner: {
       js: userscriptHeader,
     },
