@@ -9,7 +9,7 @@ import { colorLog } from "./log.js";
  * @param {HTMLElement} secondaryActiveEl The optional secondary active element to flash.
  */
 export function flashActiveElement(activeEl, secondaryActiveEl) {
-  console.log("Running flashActiveElement()");
+  colorLog.run("Running flashActiveElement()");
   const isTabButton = activeEl.classList.contains("tab-button");
 
   if (isTabButton) {

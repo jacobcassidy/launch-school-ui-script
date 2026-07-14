@@ -42,7 +42,7 @@ export function showTabsPanel() {
  * @param {number} duration How long the toast should display
  */
 export function showToast(message, duration = 2500) {
-  console.log("Running showToast()");
+  colorLog.run("Running showToast()");
 
   const toastContainer = document.querySelector(".toast-container");
   const toast = document.createElement("div");

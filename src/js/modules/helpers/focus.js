@@ -11,7 +11,7 @@ const { tabsPanel } = elements;
  * @param {HTMLElement} focusEl The element that will be focused or contains the element to focus
  */
 export function handleFocus(focusEl) {
-  console.log("Running handleFocus()");
+  colorLog.run("Running handleFocus()");
 
   const isTextarea = focusEl instanceof HTMLTextAreaElement;
 
@@ -88,7 +88,7 @@ export function refocusPromptAfterSubmission() {
       promptObserver?.disconnect();
 
       promptObserver = new MutationObserver(() => {
-        console.log("Running promptObserver()");
+        colorLog.run("Running promptObserver()");
 
         if (!prompt.disabled) {
           promptObserver.disconnect();

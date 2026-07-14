@@ -53,7 +53,7 @@ export function runCmdShiftHotkeys() {
  * RUN `CMD + CTRL` HOTKEYS
  */
 export function runCmdCtrlHotkeys() {
-  console.log("Running runCmdCtrlHotkeys");
+  colorLog.run("Running runCmdCtrlHotkeys");
 
   let nextExerciseLink,
     exerciseCompleteBtn,
