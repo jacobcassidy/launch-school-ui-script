@@ -1,4 +1,4 @@
-import { colorLog } from "./helpers/utility.js";
+import { colorLog } from "./helpers/log.js";
 import { getHeaderElement, getTabsPanelElement, setHeaderElement } from "./helpers/state.js";
 import { watchShowSidebarBtn } from "./helpers/watch.js";
 

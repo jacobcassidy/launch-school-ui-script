@@ -1,7 +1,7 @@
 /**
  * STATES HELPER
  */
-import { colorLog } from "./utility.js";
+import { colorLog } from "./log.js";
 
 export const elements = {
   activeTabTextarea: null,

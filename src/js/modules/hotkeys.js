@@ -1,4 +1,4 @@
-import { colorLog } from "./helpers/utility";
+import { colorLog } from "./helpers/log.js";
 import {
   elements,
   // setIsHeaderPinned,

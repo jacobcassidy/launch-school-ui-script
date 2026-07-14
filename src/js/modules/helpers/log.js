@@ -1,8 +1,7 @@
 /**
- * UTILITIES
+ * LOG HELPERS
  */
 
-// Custom Logs
 export const colorLog = {
   alert: (msg, ...args) => console.log(`%c${msg}`, "color: #f00; font-weight: 700;", ...args),
   debug: (msg, ...args) => console.log(`%c${msg}`, "color: #f80;", ...args),

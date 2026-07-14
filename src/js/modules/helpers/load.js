@@ -1,4 +1,4 @@
-import { colorLog } from "./helpers/utility.js";
+import { colorLog } from "./log.js";
 
 import {
   elements,
@@ -9,16 +9,15 @@ import {
   setPreviousBody,
   setTabsPanelElement,
   getIsReloadScheduled,
-} from "./helpers/state.js";
+} from "./state.js";
 
-import injectStyles from "./helpers/style.js";
-import { injectHeader } from "./header.js";
-import { createToaster } from "./toaster.js";
-import { watchScrollEl } from "./scroll.js";
-import { addHotkeys } from "./hotkeys.js";
+import injectStyles from "./style.js";
+import { injectHeader } from "../header.js";
+import { createToaster } from "../toaster.js";
+import { addHotkeys } from "../hotkeys.js";
 import { focusOnTabClick, refocusPromptAfterSubmission } from "./focus.js";
-import { showLSBotPanelOnQbSubmission } from "./helpers/show.js";
-import { hideTabsPanel } from "./helpers/hide.js";
+import { showLSBotPanelOnQbSubmission } from "./show.js";
+import { hideTabsPanel } from "./hide.js";
 
 const { previousBody } = elements;
 

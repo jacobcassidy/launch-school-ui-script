@@ -1,7 +1,7 @@
 /**
  * DETECTION HELPER
  */
-import { colorLog } from "./utility.js";
+import { colorLog } from "./log.js";
 import { getLastUrl, getIsReloadScheduled, getObserverTimeoutId, setObserverTimeoutId } from "./state.js";
 import { scheduleReload } from "../load.js";
 import { showSidebar } from "./show.js";

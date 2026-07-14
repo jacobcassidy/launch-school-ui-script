@@ -1,4 +1,4 @@
-import { colorLog } from "./utility.js";
+import { colorLog } from "./log.js";
 import { elements, setIsHeaderPinned, setIsHeaderUnpinned } from "./state.js";
 
 const { header, tabsPanel, contentPanel, tabsPanelToggleButton } = elements;

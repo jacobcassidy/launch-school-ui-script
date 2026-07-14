@@ -1,4 +1,4 @@
-import { colorLog } from "./utility.js";
+import { colorLog } from "./log.js";
 import { showHeader, showSidebar, showTabsPanel } from "./show.js";
 import { hideHeader, hideSidebar, hideTabsPanel } from "./hide.js";
 import { getIsHeaderUnpinned } from "./state";
