@@ -1,4 +1,4 @@
-import { colorLog } from "./utility.js";
+import { colorLog } from "./log.js";
 import { flashActiveElement } from "./flash.js";
 import { setActiveTabTextareaElement, elements } from "./state.js";
 import { hideTabsPanel } from "./hide.js";
