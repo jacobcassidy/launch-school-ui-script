@@ -1,8 +1,8 @@
 /**
- * ADD TOASTER
+ * TOASTER
  */
-export function addToaster() {
-  console.log("Running addToaster()");
+export function createToaster() {
+  console.log("Running createToaster()");
 
   const toasterEl = document.createElement("div");
   toasterEl.classList.add("toast-container");
