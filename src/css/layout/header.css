@@ -84,7 +84,7 @@ body:not(:has(.nav-drawer)) {
     transform: translateY(-100%);
   }
 
-  .container {
+  .site-header__container {
     display: flex;
     align-items: center;
     gap: 6px;
