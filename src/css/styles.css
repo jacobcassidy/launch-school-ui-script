@@ -10,6 +10,7 @@
 
 /* --- COMPONENTS --- */
 @import "./components/buttons";
+@import "./components/settings";
 @import "./components/tabs.css";
 @import "./components/toasts.css";
 
