@@ -212,7 +212,7 @@ function createTabsPanelToggleButton(containerEl) {
  * Adds the offset style variables for the .site-header__container elements
  */
 function injectContainerStyleOffsets() {
-  console.log("Running injectContainerStyleOffsets()");
+  colorLog.run("Running injectContainerStyleOffsets()");
   const container1 = document.querySelector(".site-header__container.container-1");
   const container3 = document.querySelector(".site-header__container.container-3");
   const container1Width = container1?.offsetWidth || 0;
