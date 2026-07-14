@@ -1,6 +1,8 @@
 import { colorLog } from "./helpers/log.js";
-import { getHeaderElement, setTabsPanelElement, setHeaderElement } from "./helpers/state.js";
-import { watchShowSidebarBtn } from "./helpers/watch.js";
+import { setTabsPanelElement, setHeaderElement } from "./helpers/state.js";
+import settingsIcon from "../../svg/settings.svg";
+import panelsIcon from "../../svg/panels.svg";
+// import { watchShowSidebarBtn } from "./helpers/watch.js";
 
 /**
  * INJECT SITE HEADER
@@ -12,17 +14,16 @@ export function injectHeader() {
 
   const newHeader = createHeader();
   document.body.insertBefore(newHeader, document.body.firstChild);
+
   injectContainerStyleOffsets();
 
   // Set Header Properties
-  const header = document.querySelector(".site-header");
-  setHeaderElement(header);
   // const sidebarButton = document.querySelector(".btn--show-sidebar");
   // setSidebarButtonElement(sidebarButton);
   // setTabsPanelToggleButtonElement(document.querySelector(".btn--toggle-tabs-panel"));
 
   // Watch Header Elements
-  watchShowSidebarBtn();
+  // watchShowSidebarBtn();
 }
 
 /**
@@ -58,7 +59,8 @@ function addContainerElements(containerEl, containerNum) {
       containerEl.append(bookTocBtn);
     }
 
-    createToggleTabsPanelButton(containerEl);
+    createTabsPanelToggleButton(containerEl);
+    createSettingsMenu(containerEl);
   }
 }
 
@@ -125,14 +127,40 @@ function createHeader() {
  */
 function createHeaderContainers(headerEl) {
   for (let i = 0; i < 3; i += 1) {
-    const containerEl = document.createElement("div");
-    const containerNum = i + 1;
-    containerEl.classList.add("site-header__container", `container-${containerNum}`);
+    const createHeaderContainerEl = () => {
+      const containerEl = document.createElement("div");
+      const containerNum = i + 1;
+      containerEl.classList.add("site-header__container", `container-${containerNum}`);
 
-    addContainerElements(containerEl, containerNum);
+      addContainerElements(containerEl, containerNum);
 
-    headerEl.appendChild(containerEl);
+      return containerEl;
+    };
+
+    headerEl.appendChild(createHeaderContainerEl());
   }
+}
+
+/**
+ * CREATE SETTINGS MENU
+ */
+function createSettingsMenu(containerEl) {
+  const createSettingsMenuEl = () => {
+    const settingsMenuEl = document.createElement("div");
+    settingsMenuEl.classList.add("settings-menu");
+    settingsMenuEl.innerText = "Hide header by default";
+    return settingsMenuEl;
+  };
+
+  const createSettingsMenuToggleButtonEl = () => {
+    const settingsMenuToggleButtonEl = document.createElement("button");
+    settingsMenuToggleButtonEl.classList.add("site-header__button", "btn--settings-menu-toggle");
+    settingsMenuToggleButtonEl.innerHTML = settingsIcon;
+    return settingsMenuToggleButtonEl;
+  };
+
+  containerEl.append(createSettingsMenuToggleButtonEl());
+  containerEl.append(createSettingsMenuEl());
 }
 
 /**
@@ -142,38 +170,41 @@ function createHeaderContainers(headerEl) {
  * @param {HTMLDivElement} containerEl The container to which the button will be appended.
  */
 function createShowSidebarButton(containerEl) {
-  const showSidebarButtonEl = document.createElement("button");
-  showSidebarButtonEl.classList.add("site-header__button", "btn--show-sidebar");
+  const createShowSidebarButtonEl = () => {
+    const showSidebarButtonEl = document.createElement("button");
+    showSidebarButtonEl.classList.add("site-header__button", "btn--show-sidebar");
 
-  // Add hamburger icon to button
-  for (let i = 0; i < 3; i += 1) {
-    const lineEl = document.createElement("span");
-    lineEl.classList.add("hamburger-line");
-    showSidebarButtonEl.appendChild(lineEl);
-  }
+    // Add hamburger icon to button
+    for (let i = 0; i < 3; i += 1) {
+      const lineEl = document.createElement("span");
+      lineEl.classList.add("hamburger-line");
+      showSidebarButtonEl.appendChild(lineEl);
+    }
 
-  containerEl.appendChild(showSidebarButtonEl);
+    return showSidebarButtonEl;
+  };
+
+  containerEl.appendChild(createShowSidebarButtonEl());
 }
 
 /**
- * CREATE TOGGLE TABS PANEL BUTTON
- * Creates and appends a .btn--toggle-tabs-panel element in the .site-header to toggle the Tabs Panel when clicked
+ * INJECT TABS PANEL TOGGLE BUTTON
+ * Creates and injects a .btn--toggle-tabs-panel element in the .site-header to toggle the Tabs Panel when clicked
  *
  * @param {HTMLDivElement} containerEl The container to which the button will be appended.
  */
-function createToggleTabsPanelButton(containerEl) {
+function createTabsPanelToggleButton(containerEl) {
   const tabsPanel = document.querySelector(".tabs-panel");
   if (!tabsPanel) return;
 
-  setTabsPanelElement(tabsPanel);
+  const createTabsPanelToggleButtonEl = () => {
+    const tabsPanelToggleButtonEl = document.createElement("button");
+    tabsPanelToggleButtonEl.classList.add("site-header__button", "btn--toggle-tabs-panel");
+    tabsPanelToggleButtonEl.innerHTML = panelsIcon;
+    return tabsPanelToggleButtonEl;
+  };
 
-  const existingButton = document.querySelector(".btn--toggle-tabs-panel");
-  if (existingButton) return;
-
-  const tabsPanelToggleButtonEl = document.createElement("button");
-  tabsPanelToggleButtonEl.classList.add("site-header__button", "btn--toggle-tabs-panel");
-
-  containerEl.appendChild(tabsPanelToggleButtonEl);
+  containerEl.appendChild(createTabsPanelToggleButtonEl());
 }
 
 /**
