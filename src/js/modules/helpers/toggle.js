@@ -6,6 +6,33 @@ import { getIsHeaderUnpinned } from "./state";
  * TOGGLE
  */
 
+/**
+ * UPDATE SITE HEADER VISIBILITY
+ */
+// TODO - Update this
+// export function updateHeaderVisibility() {
+//   colorLog.run("Running updateHeaderVisibility()");
+
+//   if (scrollContainer?.scrollTop <= 2) {
+//     setIsHeaderTop(true);
+//     setIsHeaderPinned(false);
+//     setIsHeaderUnpinned(false);
+//     showHeader();
+//   } else {
+//     if (isHeaderPinned || isHeaderUnpinned || !isHeaderTop) return;
+//     setIsHeaderTop(false);
+//     hideHeader();
+//   }
+// }
+
+// TODO - Update this
+// if (isHeaderHidden) {
+//   header.classList.add("is-unpinned");
+//   isHeaderPinned = false;
+//   isHeaderUnpinned = true;
+//   hideHeader();
+// }
+
 export function toggleHeader() {
   colorLog.run("Running toggleHeader()");
   const isHeaderClosed = getIsHeaderUnpinned();
@@ -40,3 +67,13 @@ export function toggleTabsPanel() {
     showTabsPanel();
   }
 }
+
+// TODO - Update this and include in injectHeader()
+// Toggle Tabs Panel on button click
+// tabsPanelToggleButton?.addEventListener("click", function () {
+//   if (tabsPanel.classList.contains("hidden")) {
+//     showTabsPanel();
+//   } else {
+//     hideTabsPanel();
+//   }
+// });
