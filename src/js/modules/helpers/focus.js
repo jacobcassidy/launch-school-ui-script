@@ -1,7 +1,7 @@
-import { colorLog } from "./helpers/utility.js";
-import { flashActiveElement } from "./helpers/flash.js";
-import { setActiveTabTextareaElement, elements } from "./helpers/state.js";
-import { hideTabsPanel } from "./helpers/hide.js";
+import { colorLog } from "./utility.js";
+import { flashActiveElement } from "./flash.js";
+import { setActiveTabTextareaElement, elements } from "./state.js";
+import { hideTabsPanel } from "./hide.js";
 
 const { tabsPanel } = elements;
 
