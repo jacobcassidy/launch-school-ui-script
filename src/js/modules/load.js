@@ -11,9 +11,9 @@ import {
   getIsReloadScheduled,
 } from "./helpers/state.js";
 
-import injectStyles from "./styles.js";
-import { addHeader } from "./header.js";
-import { addToaster } from "./toasts.js";
+import injectStyles from "./helpers/style.js";
+import { injectHeader } from "./header.js";
+import { createToaster } from "./toaster.js";
 import { watchScrollEl } from "./scroll.js";
 import { addHotkeys } from "./hotkeys.js";
 import { focusOnTabClick, refocusPromptAfterSubmission } from "./focus.js";
@@ -42,8 +42,8 @@ export function loadUI() {
   setTabsPanelElement(tabsPanel);
 
   injectStyles();
-  addHeader();
-  addToaster();
+  injectHeader();
+  createToaster();
   watchScrollEl();
   addHotkeys();
   focusOnTabClick();
