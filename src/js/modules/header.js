@@ -1,5 +1,5 @@
 import { colorLog } from "./helpers/log.js";
-import { getHeaderElement, getTabsPanelElement, setHeaderElement } from "./helpers/state.js";
+import { getHeaderElement, setTabsPanelElement, setHeaderElement } from "./helpers/state.js";
 import { watchShowSidebarBtn } from "./helpers/watch.js";
 
 /**
@@ -8,31 +8,21 @@ import { watchShowSidebarBtn } from "./helpers/watch.js";
 export function injectHeader() {
   colorLog.run("Running injectHeader()");
   const currentDomHeader = document.querySelector(".site-header");
+  if (currentDomHeader) return;
 
-  if (!currentDomHeader) {
-    // Create header HTMLElement
-    const newHeader = createHeader();
+  const newHeader = createHeader();
+  document.body.insertBefore(newHeader, document.body.firstChild);
+  injectContainerStyleOffsets();
 
-    // Append the header HTMLElement into the DOM
-    document.body.insertBefore(newHeader, document.body.firstChild);
+  // Set Header Properties
+  const header = document.querySelector(".site-header");
+  setHeaderElement(header);
+  // const sidebarButton = document.querySelector(".btn--show-sidebar");
+  // setSidebarButtonElement(sidebarButton);
+  // setTabsPanelToggleButtonElement(document.querySelector(".btn--toggle-tabs-panel"));
 
-    // Inject offset styles into the DOM for .site-header__container
-    injectContainerStyleOffsets();
-
-    // Set header element properties after header is appended.
-    const header = document.querySelector(".site-header");
-    setHeaderElement(header);
-
-    // const sidebarButton = document.querySelector(".btn--show-sidebar");
-    // setSidebarButtonElement(sidebarButton);
-
-    // setTabsPanelToggleButtonElement(document.querySelector(".btn--toggle-tabs-panel"));
-
-    // Watch header elements after the header is injected.
-    watchShowSidebarBtn();
-  } else {
-    if (currentDomHeader !== getHeaderElement()) setHeaderElement(currentDomHeader);
-  }
+  // Watch Header Elements
+  watchShowSidebarBtn();
 }
 
 /**
@@ -51,6 +41,7 @@ function addContainerElements(containerEl, containerNum) {
   if (containerNum === 2) {
     // If breadcrumbs exist, move them inside the container, otherwise add the title there.
     const breadcrumbs = document.querySelector(".gretel-breadcrumbs");
+
     if (breadcrumbs) {
       containerEl.append(breadcrumbs);
     } else {
@@ -61,6 +52,7 @@ function addContainerElements(containerEl, containerNum) {
   if (containerNum === 3) {
     // If a book TOC button exists, move it inside the container.
     const bookTocBtn = document.querySelector(".toc-toggle-button");
+
     if (bookTocBtn) {
       bookTocBtn.classList.add("site-header__button");
       containerEl.append(bookTocBtn);
@@ -81,6 +73,7 @@ function addLoggedOutNavToHeader(containerEl) {
   if (loggedOutNav) {
     loggedOutNav.classList.remove("clearfix");
     loggedOutNav.classList.add("logged-out-nav");
+
     containerEl.appendChild(loggedOutNav);
   }
 }
@@ -106,6 +99,7 @@ function addTitleToHeaderWithNoBreadcrumbs(containerEl) {
   const newTitleEl = document.createElement("div");
   newTitleEl.classList.add("title-text");
   newTitleEl.innerHTML = titleText;
+
   containerEl.append(newTitleEl);
 }
 
@@ -117,7 +111,9 @@ function createHeader() {
   colorLog.run("Running createHeader()");
   const siteHeaderEl = document.createElement("header");
   siteHeaderEl.className = "site-header";
+
   createHeaderContainers(siteHeaderEl);
+
   return siteHeaderEl;
 }
 
@@ -166,8 +162,10 @@ function createShowSidebarButton(containerEl) {
  * @param {HTMLDivElement} containerEl The container to which the button will be appended.
  */
 function createToggleTabsPanelButton(containerEl) {
-  const tabsPanel = getTabsPanelElement();
+  const tabsPanel = document.querySelector(".tabs-panel");
   if (!tabsPanel) return;
+
+  setTabsPanelElement(tabsPanel);
 
   const existingButton = document.querySelector(".btn--toggle-tabs-panel");
   if (existingButton) return;
@@ -186,12 +184,8 @@ function injectContainerStyleOffsets() {
   console.log("Running injectContainerStyleOffsets()");
   const container1 = document.querySelector(".site-header__container.container-1");
   const container3 = document.querySelector(".site-header__container.container-3");
-
   const container1Width = container1?.offsetWidth || 0;
   const container3Width = container3?.offsetWidth || 0;
-
-  console.log(container1Width, container3Width);
-
   const siteHeaderPadding = 10;
   const gapBetweenContainers = 20;
   const sidebarWidth = 195;
