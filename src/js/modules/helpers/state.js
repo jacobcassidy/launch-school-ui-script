@@ -9,7 +9,7 @@ export const elements = {
   header: null,
   instructionsPanel: null,
   scrollContainer: null,
-  sidebar: null,
+  sidebarButton: null,
   tabsPanel: null,
   tabsPanelToggleButton: null,
 };
@@ -82,6 +82,10 @@ export function setScrollContainerElement(el) {
 
 export function setHeaderElement(el) {
   elements.header = el;
+}
+
+export function setSidebarButtonElement(el) {
+  elements.sidebarButton = el;
 }
 
 export function setTabsPanelToggleButtonElement(el) {
@@ -188,6 +192,10 @@ export function getScrollContainerElement() {
 
 export function getHeaderElement() {
   return elements.header;
+}
+
+export function getSidebarButtonElement() {
+  return elements.sidebarButton;
 }
 
 export function getTabsPanelToggleButtonElement() {
