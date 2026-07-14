@@ -9,7 +9,8 @@ export const elements = {
   header: null,
   instructionsPanel: null,
   scrollContainer: null,
-  sidebarButton: null,
+  sidebar: null,
+  sidebarShowButton: null,
   tabsPanel: null,
   tabsPanelToggleButton: null,
 };
@@ -84,8 +85,12 @@ export function setHeaderElement(el) {
   elements.header = el;
 }
 
-export function setSidebarButtonElement(el) {
-  elements.sidebarButton = el;
+export function setSidebarElement(el) {
+  elements.sidebar = el;
+}
+
+export function setSidebarShowButtonElement(el) {
+  elements.sidebarShowButton = el;
 }
 
 export function setTabsPanelToggleButtonElement(el) {
@@ -194,8 +199,12 @@ export function getHeaderElement() {
   return elements.header;
 }
 
-export function getSidebarButtonElement() {
-  return elements.sidebarButton;
+export function getSidebarElement() {
+  return elements.sidebar;
+}
+
+export function getSidebarShowButtonElement() {
+  return elements.sidebarShowButton;
 }
 
 export function getTabsPanelToggleButtonElement() {
