@@ -1,8 +1,10 @@
-import { colorLog } from "./helpers/log.js";
-import { setTabsPanelElement, setHeaderElement } from "./helpers/state.js";
+/**
+ * HEADER
+ */
+import panelsIcon from "../../svg/panels-solid.svg";
 import settingsIcon from "../../svg/settings.svg";
-import panelsIcon from "../../svg/panels.svg";
-// import { watchShowSidebarBtn } from "./helpers/watch.js";
+import { colorLog } from "./helpers/log.js";
+import { setElementHeader } from "./helpers/set.js";
 
 /**
  * INJECT SITE HEADER
@@ -14,16 +16,9 @@ export function injectHeader() {
 
   const newHeader = createHeader();
   document.body.insertBefore(newHeader, document.body.firstChild);
+  setElementHeader(document.querySelector(".site-header"));
 
   injectContainerStyleOffsets();
-
-  // Set Header Properties
-  // const sidebarButton = document.querySelector(".btn--show-sidebar");
-  // setSidebarButtonElement(sidebarButton);
-  // setTabsPanelToggleButtonElement(document.querySelector(".btn--toggle-tabs-panel"));
-
-  // Watch Header Elements
-  // watchShowSidebarBtn();
 }
 
 /**

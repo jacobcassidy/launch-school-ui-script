@@ -1,5 +1,5 @@
 /**
- * STYLE
+ * STYLE HELPERS
  */
 import { colorLog } from "./log";
 // eslint-disable-next-line import-x/no-unresolved -- Used for esbuild.config.js cssTextPlugin
@@ -8,7 +8,7 @@ import stylesToInject from "virtual-esbuild:styles";
 /**
  * INJECT CSS STYLES INTO LS APP
  */
-export default function injectStyles() {
+export function injectStyles() {
   colorLog.run("Running injectStyles()");
 
   const existingStyles = document.getElementById("ls-ui-script-styles");

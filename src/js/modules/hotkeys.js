@@ -78,9 +78,9 @@ export function runCmdCtrlHotkeys() {
     const tabsData = [];
 
     if (tabsPanel || instructionsPanel) {
-      const allTabButtons = document.querySelectorAll(".tab-button");
+      const allTabBtns = document.querySelectorAll(".tab-button");
 
-      allTabButtons.forEach((btn) => {
+      allTabBtns.forEach((btn) => {
         const isHidden = getComputedStyle(btn).display === "none";
         if (isHidden) return;
 
@@ -94,8 +94,8 @@ export function runCmdCtrlHotkeys() {
         const digitEventCode = `Digit${idx + 1}`;
 
         if (event.code == digitEventCode) {
-          const tabButton = document.querySelector(`.tab-button[data-tab='${tab.tabName}']`);
-          activateTab(tabButton);
+          const tabBtn = document.querySelector(`.tab-button[data-tab='${tab.tabName}']`);
+          activateTab(tabBtn);
         }
       });
     }
@@ -151,19 +151,17 @@ export function runCmdCtrlHotkeys() {
   }
 
   // Hotkey: Submit code editor solution to the LSBot Review
+
+  // TODO - See if the setTimeout can be removed after figuring out the network sync
   if (event.code === "KeyR") {
-    const reviewSubmitButton = document.querySelector("#lsbot-send-review");
-    if (!reviewSubmitButton) return;
+    const reviewSubmitBtn = document.querySelector("#lsbot-send-review");
+    if (!reviewSubmitBtn) return;
 
-    const lsbotTabButton = document.querySelector(".tab-button[data-tab='lsbot-help']");
-    const reviewTabButton = document.querySelector(".tab-button[data-tab='submit-review']");
-
-    // LSBot needs to be activated first before the Review Tab submission works.
-    lsbotTabButton.click();
-    reviewTabButton.click();
+    const reviewTabBtn = document.querySelector(".tab-button[data-tab='submit-review']");
+    activateTab(reviewTabBtn);
 
     setTimeout(() => {
-      reviewSubmitButton.click();
+      reviewSubmitBtn.click();
     }, 100);
 
     showToast("Solution submitted for LSBot Review");

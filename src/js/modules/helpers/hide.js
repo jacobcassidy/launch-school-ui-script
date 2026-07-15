@@ -1,17 +1,16 @@
+/**
+ * HIDE HELPERS
+ */
 import { colorLog } from "./log.js";
-import { elements, setIsHeaderPinned, setIsHeaderUnpinned } from "./state.js";
-
-const { header, tabsPanel, contentPanel, tabsPanelToggleButton } = elements;
+import { setIsHeaderPinned, setIsHeaderUnpinned, setIsSidebarOpen, setIsTabsPanelOpen } from "./set.js";
 
 /**
  * HIDE HEADER
  */
 export function hideHeader() {
   colorLog.run("Running hideHeader()");
-  header.classList.remove("is-pinned");
-  header.classList.add("is-unpinned");
-  setIsHeaderUnpinned(true);
   setIsHeaderPinned(false);
+  setIsHeaderUnpinned(true);
 }
 
 /**
@@ -19,9 +18,7 @@ export function hideHeader() {
  */
 export function hideSidebar() {
   colorLog.run("Running hideSidebar();");
-  const hideSidebarBtn = document.querySelector("#navbar-collapsor");
-  const isSidebarOpen = hideSidebarBtn && !hideSidebarBtn.checked;
-  if (isSidebarOpen) hideSidebarBtn.click();
+  setIsSidebarOpen(false);
 }
 
 /**
@@ -29,8 +26,5 @@ export function hideSidebar() {
  */
 export function hideTabsPanel() {
   colorLog.run("Running hideTabsPanel()");
-  tabsPanel.classList.add("hidden", "panel-collapsed");
-  contentPanel.classList.remove("halfWidth");
-  tabsPanel.classList.remove("halfWidth");
-  tabsPanelToggleButton.classList.remove("active");
+  setIsTabsPanelOpen(false);
 }

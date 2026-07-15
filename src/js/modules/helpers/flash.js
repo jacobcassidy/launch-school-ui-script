@@ -1,5 +1,7 @@
+/**
+ * FLASH HELPERS
+ */
 import { colorLog } from "./log.js";
-// import { setActiveTabTextareaElement } from "./state.js";
 
 /**
  * FLASH ACTIVE ELEMENT
@@ -13,14 +15,8 @@ export function flashActiveElement(activeEl, secondaryActiveEl) {
   const isTabButton = activeEl.classList.contains("tab-button");
 
   if (isTabButton) {
-    // const tabTextarea = setActiveTabTextareaElement(activeEl);
-    // const isActiveTextarea = document.activeElement === tabTextarea;
-    // colorLog.notice("tabTextarea:", tabTextarea);
-    // colorLog.info("isTabTextareaFocused:", isActiveTextarea);
     flashWithClass(activeEl, secondaryActiveEl);
   } else {
-    // const isActiveTextarea = document.activeElement === activeEl;
-    // colorLog.info("isActiveTextarea:", isActiveTextarea);
     flashWithClass(activeEl);
   }
 }

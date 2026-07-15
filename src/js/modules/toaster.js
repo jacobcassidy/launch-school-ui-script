@@ -3,6 +3,10 @@
  */
 import { colorLog } from "./helpers/log";
 
+/**
+ * INJECT TOASTER
+ * Appends a div.toast-container to the body that is used to show toasts.
+ */
 export function injectToaster() {
   colorLog.run("Running injectToaster()");
 

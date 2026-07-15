@@ -6,6 +6,7 @@
 /* --- LAYOUT --- */
 @import "./layout/header.css";
 @import "./layout/sidebar.css";
+@import "./layout/main.css";
 @import "./layout/panels.css";
 
 /* --- COMPONENTS --- */

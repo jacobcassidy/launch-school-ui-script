@@ -1,62 +1,41 @@
+/**
+ * LOAD HELPERS
+ */
 import { colorLog } from "./log.js";
-
-import {
-  elements,
-  setContentPanelElement,
-  setInstructionsPanelElement,
-  setIsReloadScheduled,
-  setLastUrl,
-  setPreviousBody,
-  setTabsPanelElement,
-  getIsReloadScheduled,
-} from "./state.js";
-
-import injectStyles from "./style.js";
+import { getIsReloadScheduled, getPreviousBody } from "./get.js";
+import { initHotkeys } from "../hotkeys.js";
 import { injectHeader } from "../header.js";
-import { createToaster } from "../toaster.js";
-import { addHotkeys } from "../hotkeys.js";
-import { focusOnTabClick, refocusPromptAfterSubmission } from "./focus.js";
-import { showLSBotPanelOnQbSubmission } from "./show.js";
-import { hideTabsPanel } from "./hide.js";
-
-const { previousBody } = elements;
+import { injectStyles } from "./style.js";
+import { injectToaster } from "../toaster.js";
+import { setIsReloadScheduled, setLastUrl, setPreviousBody } from "./set.js";
+import { syncNativeElementsState } from "./native.js";
+import { watchForPageChange, watchScrollContainer, watchShowSidebarBtn, watchTabBtnClick } from "./watch.js";
 
 /**
- * LOAD THE UI LAYOUT MODIFICATIONS
+ * LOAD UI
+ * Inserts the UI modifications into the DOM.
  */
 export function loadUI() {
   colorLog.run("Running loadUI()");
 
   const currentUrl = `${location.origin}${location.pathname}`;
-  const contentPanel =
-    document.querySelector(".assignment-content-panel") || document.querySelector(".book-content-panel");
-  const instructionsPanel = document.querySelector(".instructions-panel");
-  const tabsPanel = document.querySelector(".tabs-panel");
-
+  setLastUrl(currentUrl);
   setPreviousBody(document.body);
   setIsReloadScheduled(false);
-  setLastUrl(currentUrl);
-  setContentPanelElement(contentPanel);
-  setInstructionsPanelElement(instructionsPanel);
-  setTabsPanelElement(tabsPanel);
+  syncNativeElementsState();
 
   injectStyles();
   injectHeader();
-  createToaster();
-  watchScrollEl();
-  addHotkeys();
-  focusOnTabClick();
-  refocusPromptAfterSubmission();
-  showLSBotPanelOnQbSubmission();
-  if (tabsPanel) hideTabsPanel();
-  // if ( tabsPanel || instructionsPanel ) addTabButtonLabelClass();
+  injectToaster();
+  initHotkeys();
 }
 
 /**
- * Schedule UI reload for after DOM refresh.
+ * SCHEDULE RELOAD
+ * Schedules an UI reload for after a DOM refresh from a page change.
  */
 export function scheduleReload() {
-  console.log("Running scheduleReload()");
+  colorLog.run("Running scheduleReloadOnPageChange()");
   if (getIsReloadScheduled()) return;
   setIsReloadScheduled(true);
 
@@ -64,15 +43,14 @@ export function scheduleReload() {
   const startWait = performance.now();
 
   const waitForDom = () => {
-    console.log("Running waitForDom()");
+    colorLog.run("Running waitForDom()");
 
-    const isNewBody = document.body !== previousBody;
+    const isNewBody = document.body !== getPreviousBody();
     const isWaitMaxReached = performance.now() - startWait > 3000;
 
     if (isNewBody || isWaitMaxReached) {
-      if (isWaitMaxReached) colorLog.alert("Max wait time reached.");
-
-      colorLog.notice("New DOM is ready. Reloading UI layout.");
+      if (isWaitMaxReached) colorLog.alert("Max wait time reached. Reloading UI layout.");
+      if (isNewBody) colorLog.notice("New DOM is ready. Reloading UI layout.");
       loadUI();
       return;
     }

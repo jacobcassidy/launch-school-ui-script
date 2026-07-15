@@ -1,11 +1,10 @@
+/**
+ * TOGGLE HELPERS
+ */
 import { colorLog } from "./log.js";
 import { showHeader, showSidebar, showTabsPanel } from "./show.js";
 import { hideHeader, hideSidebar, hideTabsPanel } from "./hide.js";
-import { getIsHeaderUnpinned } from "./state";
-/**
- * TOGGLE
- */
-
+import { getIsHeaderUnpinned } from "./get";
 /**
  * UPDATE SITE HEADER VISIBILITY
  */
@@ -37,6 +36,30 @@ export function toggleHeader() {
   colorLog.run("Running toggleHeader()");
   const isHeaderClosed = getIsHeaderUnpinned();
 
+  // TODO - Refactor this section
+  // if (isHeaderTop) {
+  //   if (isHeaderHidden) {
+  //     showHeader();
+  //   } else {
+  //     hideHeader();
+  //   }
+  //   return;
+  // }
+
+  // // Toggle Pinned State
+  // isHeaderPinned = !isHeaderPinned;
+  // isHeaderUnpinned = !isHeaderPinned;
+
+  // if (isHeaderPinned) {
+  //   siteHeader.classList.add("is-pinned");
+  //   siteHeader.classList.remove("is-unpinned");
+  //   showHeader();
+  // } else {
+  //   siteHeader.classList.remove("is-pinned");
+  //   siteHeader.classList.add("is-unpinned");
+  //   hideHeader();
+  // }
+
   if (isHeaderClosed) {
     showHeader();
   } else {
@@ -58,6 +81,11 @@ export function toggleSidebar() {
 
 export function toggleTabsPanel() {
   colorLog.run("Running toggleTabsPanel()");
+
+  // const lsbotTab =
+  //   document.querySelector(".tab-button[data-tab='lsbot-help']") ||
+  //   document.querySelector(".tab-button[data-tab='lsbot-hints']");
+  // if (lsbotTab) activateTab(lsbotTab);
 
   const isTabsPanelOpen = document.querySelector(".tabs-panel.half-width");
 

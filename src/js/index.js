@@ -1,16 +1,10 @@
 /**
- * Script Initialization
+ * INDEX
  */
-import { loadUI } from "./modules/helpers/load.js";
-import { watchForPageChange } from "./modules/helpers/watch.js";
+import { initScript } from "./modules/helpers/init.js";
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", init, { once: true });
+  document.addEventListener("DOMContentLoaded", initScript, { once: true });
 } else {
-  init();
-}
-
-function init() {
-  loadUI();
-  watchForPageChange();
+  initScript();
 }
