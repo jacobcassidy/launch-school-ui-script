@@ -3,7 +3,6 @@
  */
 
 /* Resize handle between panels */
-
 .resize-handle {
   pointer-events: none;
   display: block;
@@ -16,28 +15,24 @@
 }
 
 /* All Panels */
-
 :is(.assignment-content-panel, .book-content-panel, .editor-panel, .instructions-panel, .tabs-panel) {
   background-color: var(--background-color-001) !important;
   padding: 0 !important;
 }
 
 /* Toggleable Panels */
-
 :is(.assignment-content-panel, .book-content-panel, .tabs-panel) {
-  &.halfWidth {
+  &.half-width {
     flex-basis: calc(50% - 2px) !important;
   }
 }
 
 /* Non-toggleable Panels */
-
 :is(.editor-panel, .instructions-panel) {
   flex-basis: calc(50% - 2px) !important;
 }
 
 /* Content Panels */
-
 :is(.assignment-content-panel, .book-content-panel) {
   flex-basis: 100% !important;
   background: var(--background-color-001);
@@ -58,19 +53,16 @@
 }
 
 /* Panels with Tabs */
-
 :is(.assignment-repl-tabs, .book-exercise-repl-tabs, .book-repl-tabs, .repl-tabs) {
   border: none !important;
   max-inline-size: initial !important;
 }
 
 /* Tabs Panel */
-
 .tabs-panel {
   border: none !important;
 
   /* Toggleable Panel */
-
   &.panel-collapsed {
     flex-basis: 0 !important;
   }

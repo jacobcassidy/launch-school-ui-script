@@ -15,7 +15,6 @@
   }
 
   /* Chat Bubbles */
-
   .message-content {
     .lsbot-message & {
       background: var(--color-blue-095) !important;
@@ -37,7 +36,6 @@
   }
 
   /* Solution Box */
-
   .detected-solution-box {
     .detected-solution-code {
       pre {

@@ -2,47 +2,55 @@
  * SETTERS
  */
 import { elements, states } from "./state";
-const { contentPanel, tabsPanel, tabsPanelToggleButton } = elements;
 
-// ELEMENT SETTERS
-export function setElementContentPanel(el) {
-  elements.contentPanel = el;
-}
-
-export function setElementInstructionsPanel(el) {
-  elements.instructionsPanel = el;
-}
-
+// INJECTED ELEMENTS SETTERS
 export function setElementHeader(el) {
-  elements.header = el;
+  elements.injected.header = el;
 }
 
-export function setElementScrollContainer(el) {
-  elements.scrollContainer = el;
+export function setElementSettingsMenu(el) {
+  elements.injected.settingsMenu = el;
 }
 
-export function setElementSidebar(el) {
-  elements.sidebar = el;
+export function setElementSettingsToggleBtn(el) {
+  elements.injected.settingsToggleBtn = el;
 }
 
 export function setElementSidebarShowButton(el) {
-  elements.sidebarShowButton = el;
-}
-
-export function setElementTabsPanel(el) {
-  elements.tabsPanel = el;
+  elements.injected.sidebarShowButton = el;
 }
 
 export function setElementTabsPanelToggleButton(el) {
-  elements.tabsPanelToggleButton = el;
+  elements.injected.tabsPanelToggleButton = el;
+}
+
+// NATIVE ELEMENTS SETTERS
+export function setElementContentPanel(el) {
+  elements.native.contentPanel = el;
+}
+
+export function setElementInstructionsPanel(el) {
+  elements.native.instructionsPanel = el;
+}
+
+export function setElementScrollContainer(el) {
+  elements.native.scrollContainer = el;
+}
+
+export function setElementSidebar(el) {
+  elements.native.sidebar = el;
+}
+
+export function setElementTabsPanel(el) {
+  elements.native.tabsPanel = el;
 }
 
 // STATE SETTERS
 export function setIsHeaderPinned(value) {
   if (value === true) {
-    elements.header.classList.add("is-pinned");
+    elements.injected.header.classList.add("is-pinned");
   } else {
-    elements.header.classList.remove("is-pinned");
+    elements.injected.header.classList.remove("is-pinned");
   }
 
   states.isHeaderPinned = value;
@@ -51,38 +59,23 @@ export function setIsHeaderPinned(value) {
 
 export function setIsHeaderTop(value) {
   if (value === true) {
-    elements.header.classList.add("is-top");
+    elements.injected.header.classList.add("is-top");
   } else {
-    elements.header.classList.remove("is-top");
+    elements.injected.header.classList.remove("is-top");
   }
 
   states.isHeaderTop = value;
 }
 
-export function setIsHeaderUnpinned(value) {
+export function setIsHeaderHidden(value) {
   if (value === true) {
-    elements.header.classList.add("is-unpinned");
+    elements.injected.header.classList.add("is-hidden");
   } else {
-    elements.header.classList.remove("is-unpinned");
+    elements.injected.header.classList.remove("is-hidden");
   }
 
-  states.isHeaderUnpinned = value;
-  sessionStorage.setItem("isHeaderUnpinned", value);
-}
-
-export function setIsHiddenDefaultHeader(value) {
-  states.isHiddenDefaultHeader = value;
-  sessionStorage.setItem("isHiddenDefaultHeader", value);
-}
-
-export function setIsHiddenDefaultSidebar(value) {
-  states.isHiddenDefaultSidebar = value;
-  sessionStorage.setItem("isHiddenDefaultSidebar", value);
-}
-
-export function setIsHiddenDefaultTabsPanel(value) {
-  states.isHiddenDefaultTabsPanel = value;
-  sessionStorage.setItem("isHiddenDefaultTabsPanel", value);
+  states.isHeaderHidden = value;
+  sessionStorage.setItem("isHeaderHidden", value);
 }
 
 export function setIsReloadScheduled(value) {
@@ -90,36 +83,47 @@ export function setIsReloadScheduled(value) {
 }
 
 // TODO - Refactor this so that it changes the native state as well so that on page change or reload, the sidebar is not open by default if it has been closed.
-export function setIsSidebarOpen(value) {
+export function setIsSidebarHidden(value) {
   const sidebarHideCheckbox = document.querySelector("#navbar-collapsor");
+
+  // If no sidebar found, set value to null.
   if (!sidebarHideCheckbox) {
-    states.isSidebarOpen = value;
+    states.isSidebarHidden = null;
     return;
   }
 
-  const isSidebarClosed = sidebarHideCheckbox.checked;
+  const isSidebarOpen = !sidebarHideCheckbox.checked;
+
   if (value === true) {
-    const sidebarShowBtn = document.querySelector("#navbar-expand");
-    if (isSidebarClosed) sidebarShowBtn.click();
+    if (isSidebarOpen) sidebarHideCheckbox.click();
   } else {
-    if (!isSidebarClosed) sidebarHideCheckbox.click();
+    const sidebarShowBtn = document.querySelector("#navbar-expand");
+    if (!isSidebarOpen) sidebarShowBtn.click();
   }
+
+  states.isSidebarHidden = value;
+  sessionStorage.setItem("isSidebarHidden", value);
 }
 
-export function setIsTabsPanelOpen(value) {
+export function setIsTabsPanelHidden(value) {
+  const tabsPanel = elements.native.tabsPanel;
+  const contentPanel = elements.native.contentPanel;
+  const tabsPanelToggleButton = elements.injected.tabsPanelToggleButton;
+
   if (value === true) {
-    tabsPanel.classList.remove("hidden", "panel-collapsed");
-    contentPanel.classList.add("halfWidth");
-    tabsPanel.classList.add("halfWidth");
-    tabsPanelToggleButton.classList.add("active");
-  } else {
     tabsPanel.classList.add("hidden", "panel-collapsed");
-    contentPanel.classList.remove("halfWidth");
-    tabsPanel.classList.remove("halfWidth");
+    contentPanel.classList.remove("half-width");
+    tabsPanel.classList.remove("half-width");
     tabsPanelToggleButton.classList.remove("active");
+  } else {
+    tabsPanel.classList.remove("hidden", "panel-collapsed");
+    contentPanel.classList.add("half-width");
+    tabsPanel.classList.add("half-width");
+    tabsPanelToggleButton.classList.add("active");
   }
 
-  states.isTabsPanelOpen = value;
+  states.isTabsPanelHidden = value;
+  sessionStorage.setItem("iisTabsPanelHidden", value);
 }
 
 export function setLastUrl(value) {

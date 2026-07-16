@@ -2,7 +2,7 @@
  * SHOW HELPERS
  */
 import { colorLog } from "./log.js";
-import { setIsHeaderPinned, setIsHeaderUnpinned, setIsSidebarOpen, setIsTabsPanelOpen } from "./set.js";
+import { setIsHeaderPinned, setIsHeaderHidden, setIsSidebarHidden, setIsTabsPanelHidden } from "./set.js";
 
 /**
  * SHOW HEADER
@@ -10,7 +10,7 @@ import { setIsHeaderPinned, setIsHeaderUnpinned, setIsSidebarOpen, setIsTabsPane
 export function showHeader() {
   colorLog.run("Running showHeader()");
   setIsHeaderPinned(true);
-  setIsHeaderUnpinned(false);
+  setIsHeaderHidden(false);
 }
 
 /**
@@ -18,7 +18,7 @@ export function showHeader() {
  */
 export function showSidebar() {
   colorLog.run("Running showSidebar()");
-  setIsSidebarOpen(true);
+  setIsSidebarHidden(false);
 }
 
 /**
@@ -26,7 +26,7 @@ export function showSidebar() {
  */
 export function showTabsPanel() {
   colorLog.run("Running showTabsPanel()");
-  setIsTabsPanelOpen(true);
+  setIsTabsPanelHidden(false);
 }
 
 /**

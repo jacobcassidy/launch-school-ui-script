@@ -4,8 +4,6 @@
 import { colorLog } from "./log";
 import { elements } from "./state";
 import { handleFocus } from "./focus";
-// import { showTabsPanel } from "./show";
-const { tabsPanel } = elements;
 
 /**
  * ACTIVATE CODE EDITOR
@@ -13,6 +11,7 @@ const { tabsPanel } = elements;
  */
 export function activateCodeEditor() {
   colorLog.run("Running activateCodeEditor()");
+  const tabsPanel = elements.native.tabsPanel;
 
   if (tabsPanel) {
     const scratchpad = document.querySelector(".tab-button[data-tab='code-editor']");
@@ -32,9 +31,4 @@ export function activateCodeEditor() {
 export function activateTab(tabBtn) {
   colorLog.run("Running activateTab()");
   tabBtn.click();
-
-  // if (tabsPanel) {
-  //   const isTabsPanelHidden = tabsPanel.classList.contains("hidden") || tabsPanel.classList.contains("panel-collapsed");
-  //   if (isTabsPanelHidden) showTabsPanel();
-  // }
 }

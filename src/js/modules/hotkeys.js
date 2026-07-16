@@ -6,23 +6,6 @@ import { colorLog } from "./helpers/log.js";
 import { elements } from "./helpers/state.js";
 import { showToast } from "./helpers/show.js";
 import { toggleHeader, toggleSidebar, toggleTabsPanel } from "./helpers/toggle.js";
-import { watchHotkeys } from "./helpers/watch.js";
-const { instructionsPanel, tabsPanel, sidebar } = elements;
-
-/**
- * INITIALIZE HOTKEYS
- */
-export function initHotkeys() {
-  colorLog.run("Running initHotkeys()");
-
-  if (document.documentElement.dataset.hotkeysBound === "true") {
-    colorLog.detail("Hotkeys already exist. Exited initHotkeys().");
-    return;
-  }
-
-  document.documentElement.dataset.hotkeysBound = "true";
-  watchHotkeys();
-}
 
 /**
  * RUN `CMD + SHIFT` HOTKEYS
@@ -54,6 +37,9 @@ export function runCmdShiftHotkeys() {
  */
 export function runCmdCtrlHotkeys() {
   colorLog.run("Running runCmdCtrlHotkeys");
+  const instructionsPanel = elements.native.instructionsPanel;
+  const tabsPanel = elements.native.tabsPanel;
+  const sidebar = elements.native.sidebar;
 
   let nextExerciseLink,
     exerciseCompleteBtn,

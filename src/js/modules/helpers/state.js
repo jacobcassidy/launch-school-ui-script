@@ -2,26 +2,29 @@
  * STATE HELPERS
  */
 export const elements = {
-  contentPanel: null,
-  header: null,
-  instructionsPanel: null,
-  scrollContainer: null,
-  sidebar: null,
-  sidebarShowButton: null,
-  tabsPanel: null,
-  tabsPanelToggleButton: null,
+  injected: {
+    header: null,
+    settingsMenu: null,
+    settingsToggleBtn: null,
+    sidebarShowButton: null,
+    tabsPanelToggleButton: null,
+  },
+  native: {
+    contentPanel: null,
+    instructionsPanel: null,
+    scrollContainer: null,
+    sidebar: null,
+    tabsPanel: null,
+  },
 };
 
 export const states = {
   isHeaderPinned: sessionStorage.getItem("isHeaderPinned") === "true",
   isHeaderTop: false,
-  isHeaderUnpinned: sessionStorage.getItem("isHeaderUnpinned") === "true",
-  isHiddenDefaultHeader: sessionStorage.getItem("isDefaultHeaderHidden") === "true",
-  isHiddenDefaultSidebar: sessionStorage.getItem("isDefaultSidebarHidden") === "true",
-  isHiddenDefaultTabsPanel: sessionStorage.getItem("isDefaultTabsPanelHidden") === "true",
+  isHeaderHidden: sessionStorage.getItem("isHeaderHidden") === "true",
+  isSidebarHidden: sessionStorage.getItem("isSidebarHidden") === "true",
+  isTabsPanelHidden: sessionStorage.getItem("isTabsPanelHidden") === "true",
   isReloadScheduled: false,
-  isSidebarOpen: true,
-  isTabsPanelOpen: true,
   lastUrl: null,
   previousBody: null,
 };

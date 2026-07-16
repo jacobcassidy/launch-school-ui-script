@@ -2,14 +2,23 @@
  * LOAD HELPERS
  */
 import { colorLog } from "./log.js";
-import { getIsReloadScheduled, getPreviousBody } from "./get.js";
-import { initHotkeys } from "../hotkeys.js";
 import { injectHeader } from "../header.js";
 import { injectStyles } from "./style.js";
 import { injectToaster } from "../toaster.js";
 import { setIsReloadScheduled, setLastUrl, setPreviousBody } from "./set.js";
-import { syncNativeElementsState } from "./native.js";
-import { watchForPageChange, watchScrollContainer, watchShowSidebarBtn, watchTabBtnClick } from "./watch.js";
+import { elements, states } from "./state.js";
+import { syncInjectedElementsState, syncNativeElementsState } from "./sync.js";
+import {
+  watchForPageChange,
+  watchHotkeys,
+  watchPromptSubmission,
+  watchQuestionBoxes,
+  watchScrollContainer,
+  watchShowSidebarBtn,
+  watchTabBtnClick,
+  watchTabsPanelToggleBtn,
+} from "./watch.js";
+import { showTabsPanel } from "./show.js";
 
 /**
  * LOAD UI
@@ -17,17 +26,29 @@ import { watchForPageChange, watchScrollContainer, watchShowSidebarBtn, watchTab
  */
 export function loadUI() {
   colorLog.run("Running loadUI()");
-
-  const currentUrl = `${location.origin}${location.pathname}`;
-  setLastUrl(currentUrl);
-  setPreviousBody(document.body);
-  setIsReloadScheduled(false);
-  syncNativeElementsState();
-
   injectStyles();
+  syncNativeElementsState();
   injectHeader();
   injectToaster();
-  initHotkeys();
+  syncInjectedElementsState();
+
+  // Apply active state on load
+  if (elements.native.tabsPanel && !states.isTabsPanelHidden) showTabsPanel();
+
+  // Set states
+  setLastUrl(`${location.origin}${location.pathname}`);
+  setPreviousBody(document.body);
+  setIsReloadScheduled(false);
+
+  // Watch elements:
+  watchForPageChange();
+  watchHotkeys();
+  watchPromptSubmission();
+  watchQuestionBoxes();
+  watchScrollContainer();
+  watchShowSidebarBtn();
+  watchTabBtnClick();
+  watchTabsPanelToggleBtn();
 }
 
 /**
@@ -35,8 +56,9 @@ export function loadUI() {
  * Schedules an UI reload for after a DOM refresh from a page change.
  */
 export function scheduleReload() {
-  colorLog.run("Running scheduleReloadOnPageChange()");
-  if (getIsReloadScheduled()) return;
+  colorLog.run("Running scheduleReload()");
+  const isReloadScheduled = states.isReloadScheduled;
+  if (isReloadScheduled) return;
   setIsReloadScheduled(true);
 
   colorLog.info("Waiting for new DOM to be ready...");
@@ -44,8 +66,7 @@ export function scheduleReload() {
 
   const waitForDom = () => {
     colorLog.run("Running waitForDom()");
-
-    const isNewBody = document.body !== getPreviousBody();
+    const isNewBody = document.body !== states.previousBody;
     const isWaitMaxReached = performance.now() - startWait > 3000;
 
     if (isNewBody || isWaitMaxReached) {

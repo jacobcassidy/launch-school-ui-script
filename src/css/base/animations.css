@@ -5,6 +5,7 @@
 /**
  * KEYFRAMES
  */
+
 @keyframes bg-flash {
   from {
     background-color: var(--background-flash-001);

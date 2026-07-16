@@ -2,31 +2,23 @@
  * PAGES
  */
 
-/**
- * BOOK PAGES
- */
-
-/* Book cover page */
-
+/* Book Cover Page */
 .books.show-page .large-11 {
   display: flex;
   align-items: center;
 }
 
-/* Book page header buttons */
-
+/* Book Page Header Buttons */
 .navigate-back,
 .toc-button-text,
 .toc-chevron {
   display: none;
 }
 
-/* Normal book page */
-
+/* Normal Book Page */
 .books.read-page {
   #book-repl-layout {
     /* Table of Content */
-
     .toc-dropdown-container {
       inset-block-start: var(--header-height) !important;
       inset-inline: auto 356px !important;
@@ -34,10 +26,7 @@
   }
 }
 
-/**
- * COURSES PAGE
- */
-
+/* Course Page */
 .nav-tabs.secondary-nav {
   margin: calc(var(--header-height) * -1) 0 var(--header-height) 0;
   padding-block-start: var(--header-height);

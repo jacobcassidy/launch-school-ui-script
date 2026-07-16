@@ -1,10 +1,10 @@
 /**
  * HEADER
  */
-import panelsIcon from "../../svg/panels-solid.svg";
+import panelsIcon from "../../svg/tabs-panel.svg";
 import settingsIcon from "../../svg/settings.svg";
 import { colorLog } from "./helpers/log.js";
-import { setElementHeader } from "./helpers/set.js";
+import { elements } from "./helpers/state.js";
 
 /**
  * INJECT SITE HEADER
@@ -16,8 +16,6 @@ export function injectHeader() {
 
   const newHeader = createHeader();
   document.body.insertBefore(newHeader, document.body.firstChild);
-  setElementHeader(document.querySelector(".site-header"));
-
   injectContainerStyleOffsets();
 }
 
@@ -189,7 +187,7 @@ function createShowSidebarButton(containerEl) {
  * @param {HTMLDivElement} containerEl The container to which the button will be appended.
  */
 function createTabsPanelToggleButton(containerEl) {
-  const tabsPanel = document.querySelector(".tabs-panel");
+  const tabsPanel = elements.native.tabsPanel;
   if (!tabsPanel) return;
 
   const createTabsPanelToggleButtonEl = () => {
@@ -212,12 +210,12 @@ function injectContainerStyleOffsets() {
   const container3 = document.querySelector(".site-header__container.container-3");
   const container1Width = container1?.offsetWidth || 0;
   const container3Width = container3?.offsetWidth || 0;
-  const siteHeaderPadding = 10;
-  const gapBetweenContainers = 20;
+  const siteHeaderInlinePadding = 12;
+  const gapBetweenContainers = 24;
   const sidebarWidth = 195;
   const navExpandBtnWidth = 30;
-  const container2LeftOffset = container1Width + siteHeaderPadding + gapBetweenContainers;
-  const container2RightOffset = container3Width + siteHeaderPadding + gapBetweenContainers;
+  const container2LeftOffset = container1Width + siteHeaderInlinePadding + gapBetweenContainers;
+  const container2RightOffset = container3Width + siteHeaderInlinePadding + gapBetweenContainers;
   const container2SidebarLeftOffset = sidebarWidth + navExpandBtnWidth + gapBetweenContainers;
   const root = document.documentElement;
 

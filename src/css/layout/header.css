@@ -3,7 +3,6 @@
  */
 
 /* Native App Header */
-
 body:not(:has(.nav-drawer)) {
   #header {
     .show-for-large-up {
@@ -17,7 +16,6 @@ body:not(:has(.nav-drawer)) {
 }
 
 /* Added Site Header */
-
 .site-header {
   position: fixed;
   z-index: 200;
@@ -38,7 +36,6 @@ body:not(:has(.nav-drawer)) {
   }
 
   /* Logged out elements when no sidebar */
-
   body:not(:has(.nav-drawer)) & {
     .columns:has(#logo + .nav) {
       float: initial;
@@ -80,6 +77,7 @@ body:not(:has(.nav-drawer)) {
     }
   }
 
+  /* &:not(.is-pinned, .is-top), */
   &.is-hidden {
     transform: translateY(-100%);
   }

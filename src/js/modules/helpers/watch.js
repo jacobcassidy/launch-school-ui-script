@@ -2,13 +2,13 @@
  * WATCH HELPERS
  */
 import { colorLog } from "./log.js";
-import { elements } from "./state.js";
-import { getElementScrollContainer, getIsHeaderTop, getIsReloadScheduled, getLastUrl } from "./get.js";
+import { elements, states } from "./state.js";
 import { handleFocus } from "./focus.js";
 import { runCmdCtrlHotkeys, runCmdShiftHotkeys } from "../hotkeys";
 import { scheduleReload } from "./load.js";
 import { setIsHeaderTop } from "./set.js";
 import { showSidebar } from "./show.js";
+import { toggleTabsPanel } from "./toggle.js";
 const { tabsPanel } = elements;
 
 /**
@@ -18,9 +18,7 @@ export function watchForPageChange() {
   colorLog.run("Running watchForPageChange()");
   let observerTimeoutId;
 
-  /**
-   * Observe document for page changes
-   */
+  // Observe document for page changes
   const observer = new MutationObserver(() => {
     const currentTimeoutId = observerTimeoutId;
     clearTimeout(currentTimeoutId);
@@ -83,13 +81,29 @@ export function watchForPageChange() {
 function scheduleReloadOnPageChange(from) {
   colorLog.detail(`Running scheduleReloadOnPageChange() from ${from}`);
 
-  const isReloadScheduled = getIsReloadScheduled();
-  if (isReloadScheduled) return;
+  const isReloadScheduled = states.isReloadScheduled;
+  if (isReloadScheduled) {
+    colorLog.detail("Reload already scheduled. Exiting scheduleReloadOnPageChange().");
+    return;
+  }
 
   const currentUrl = `${location.origin}${location.pathname}`;
-  if (currentUrl === getLastUrl()) return;
+  const lastUrl = states.lastUrl;
+  if (currentUrl === lastUrl) {
+    colorLog.detail("URL did not change. Exiting scheduleReloadOnPageChange().");
+    return;
+  }
 
   scheduleReload();
+}
+
+/**
+ * WATCH TABS PANEL TOGGLE BUTTON
+ */
+export function watchTabsPanelToggleBtn() {
+  colorLog.run("Running watchTabsPanelToggleBtn()");
+  const tabsPanelToggleBtn = elements.injected.tabsPanelToggleButton;
+  tabsPanelToggleBtn?.addEventListener("click", () => toggleTabsPanel());
 }
 
 /**
@@ -97,9 +111,9 @@ function scheduleReloadOnPageChange(from) {
  * Shows the sidebar when the button is clicked
  */
 export function watchShowSidebarBtn() {
-  // TODO - check if setSidebarShowBtn should be used here, or removed from the states
-  const showSidebarBtn = document.querySelector(".btn--show-sidebar");
-  showSidebarBtn?.addEventListener("click", () => showSidebar());
+  colorLog.run("Running watchShowSidebarBtn()");
+  const sidebarShowBtn = elements.injected.sidebarShowButton;
+  sidebarShowBtn?.addEventListener("click", () => showSidebar());
 }
 
 /**
@@ -107,36 +121,41 @@ export function watchShowSidebarBtn() {
  */
 export function watchScrollContainer() {
   colorLog.run("Running watchScrollContainer");
-  const scrollContainer = getElementScrollContainer();
+  const scrollContainer = elements.native.scrollContainer;
 
   if (!scrollContainer) {
     colorLog.info("There is no scrollContainer on this page to watch.");
     return;
   }
 
-  if (scrollContainer.scrollTop <= 2) {
-    console.log("header.is-top set with watchScrollContainer()");
-    setIsHeaderTop(true);
-  }
+  const isWindowScroll = scrollContainer === "window";
 
   const handleScroll = () => {
     colorLog.run("Running handleScroll()");
-    const isHeaderTop = getIsHeaderTop();
+    const isHeaderTop = states.isHeaderTop;
 
-    if (scrollContainer.scrollTop <= 2) {
-      if (!isHeaderTop) {
-        console.log("header.is-top set with handleScroll");
+    if (isWindowScroll) {
+      if (window.scrollY <= 2 && !isHeaderTop) {
         setIsHeaderTop(true);
+      } else if (window.scrollY > 2 && isHeaderTop) {
+        setIsHeaderTop(false);
       }
     } else {
-      if (isHeaderTop) {
-        console.log("header.is-top remove with handleScroll");
+      if (scrollContainer.scrollTop <= 2 && !isHeaderTop) {
+        setIsHeaderTop(true);
+      } else if (scrollContainer.scrollTop > 2 && isHeaderTop) {
         setIsHeaderTop(false);
       }
     }
   };
 
-  scrollContainer.addEventListener("scroll", handleScroll);
+  if (isWindowScroll) {
+    if (window.scrollY <= 2) setIsHeaderTop(true);
+    window.addEventListener("scroll", handleScroll);
+  } else {
+    if (scrollContainer.scrollTop <= 2) setIsHeaderTop(true);
+    scrollContainer.addEventListener("scroll", handleScroll);
+  }
 }
 
 /**
@@ -177,6 +196,7 @@ export function watchHotkeys() {
         return;
     }
 
+    // TODO - Check if this is needed, otherwise remove it.
     // event.preventDefault();
     // event.stopImmediatePropagation();
 

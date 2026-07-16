@@ -23,7 +23,6 @@
 }
 
 /* Tab Button */
-
 .tab-button {
   align-items: center !important;
   gap: 12px;
@@ -123,35 +122,54 @@
     }
 
     /* Overrides */
-
     body:has(#assignment-repl-layout) & {
       padding-inline-end: var(--padding-inline-w900) !important;
     }
   }
 
   /* Override */
-
   body:has(#book-repl-layout) & {
     margin-inline-end: 0 !important;
   }
 
   /* Tab content without a header */
-
   .tab-pane:not(:has(.tab-header), :has(.editor-mode-bar)) {
     padding: 24px var(--padding-inline-w900) !important;
   }
 
-  /* Instructions Tab Action Buttons */
+  /* Feedback Tab */
+  #tab-feedback {
+    body:has(#assignment-repl-layout, #book-repl-layout, #book-exercise-repl-layout, #exercise-repl-layout) & {
+      /* Feedback textarea override */
+      .feedback-form-inline form {
+        textarea.form-control {
+          border: 1px solid var(--border-color-001) !important;
+          padding: 12px 16px !important;
+          font-size: 0.9375rem !important;
 
-  #actions.gray-links {
-    button,
-    a {
-      border: 1px solid var(--border-color-001);
+          &:focus {
+            border-color: transparent !important;
+            box-shadow: 0 0 0 3px var(--color-blue-092) !important;
+          }
+        }
+      }
+    }
+  }
+
+  /* Instructions Tab */
+  #tab-instructions {
+    /* Action buttons */
+    #actions.gray-links {
+      border-color: var(--border-color-001) !important;
+
+      button,
+      a {
+        border: 1px solid var(--border-color-001);
+      }
     }
   }
 
   /* Community Tab */
-
   .community-solutions-section {
     background-color: var(--background-color-001) !important;
     border: none !important;

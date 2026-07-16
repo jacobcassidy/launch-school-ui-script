@@ -2,6 +2,7 @@
  * SETTINGS
  */
 
-.settings-menu {
+.settings-menu,
+.btn--settings-menu-toggle {
   display: none;
 }
