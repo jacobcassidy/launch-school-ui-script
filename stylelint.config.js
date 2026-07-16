@@ -49,7 +49,7 @@ export default {
     "function-linear-gradient-no-nonstandard-direction": true,
     "number-max-precision": 5,
     "plugin/declaration-block-no-ignored-properties": true,
-    "rule-empty-line-before": ["always", { ignore: ["first-nested"] }],
+    "rule-empty-line-before": ["always", { ignore: ["first-nested"], except: ["after-single-line-comment"] }],
     "scss/selector-no-redundant-nesting-selector": true,
 
     // TURN OFF RULES
