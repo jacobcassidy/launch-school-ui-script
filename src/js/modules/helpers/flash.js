@@ -1,7 +1,7 @@
 /**
  * FLASH HELPERS
  */
-import { colorLog } from "./log.js";
+// import { colorLog } from "./log.js";
 
 /**
  * FLASH ACTIVE ELEMENT
@@ -11,7 +11,7 @@ import { colorLog } from "./log.js";
  * @param {HTMLElement} secondaryActiveEl The optional secondary active element to flash.
  */
 export function flashActiveElement(activeEl, secondaryActiveEl) {
-  colorLog.run("Running flashActiveElement()");
+  // colorLog.run("Running flashActiveElement()");
   const isTabButton = activeEl.classList.contains("tab-button");
 
   if (isTabButton) {
@@ -29,7 +29,7 @@ export function flashActiveElement(activeEl, secondaryActiveEl) {
  * @param {HTMLElement} secondaryActiveEl The optional secondary active element to flash.
  */
 function flashWithClass(flashEl, secondaryFlashEl) {
-  colorLog.run("Running flashWithClass();");
+  // colorLog.run("Running flashWithClass();");
 
   const elementsToFlash = [flashEl];
   const flashDuration = 300;

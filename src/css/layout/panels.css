@@ -60,7 +60,12 @@
 
 /* Tabs Panel */
 .tabs-panel {
+  display: none !important;
   border: none !important;
+
+  &.is-active {
+    display: flex !important;
+  }
 
   /* Toggleable Panel */
   &.panel-collapsed {

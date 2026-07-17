@@ -6,156 +6,130 @@ import { elements, states } from "./state.js";
 import { handleFocus } from "./focus.js";
 import { runCmdCtrlHotkeys, runCmdShiftHotkeys } from "../hotkeys";
 import { scheduleReload } from "./load.js";
-import { setIsHeaderTop } from "./set.js";
 import { showSidebar } from "./show.js";
 import { toggleTabsPanel } from "./toggle.js";
-const { tabsPanel } = elements;
 
 /**
- * WATCH FOR PAGE CHANGE
+ * WATCH FOR CONTENT CHANGE
  */
-export function watchForPageChange() {
-  colorLog.run("Running watchForPageChange()");
-  let observerTimeoutId;
+export function watchForMissingHeader() {
+  // colorLog.run("Running watchForMissingHeader()");
+  if (document.documentElement.dataset.headerObserverBound) {
+    // colorLog.detail("Header watch already exist. Exited watchForMissingHeader().");
+    return;
+  }
+  document.documentElement.dataset.headerObserverBound = "true";
 
-  // Observe document for page changes
+  let headerMissingTimeoutId;
+
+  // Observe .site-header for mutations
   const observer = new MutationObserver(() => {
-    const currentTimeoutId = observerTimeoutId;
-    clearTimeout(currentTimeoutId);
-    const newTimeoutId = setTimeout(() => {
-      scheduleReloadOnPageChange("observer");
-    }, 100);
+    // colorLog.detail("Running contentChange observer");
 
-    observerTimeoutId = newTimeoutId;
+    if (document.querySelector(".site-header")) {
+      clearTimeout(headerMissingTimeoutId);
+      headerMissingTimeoutId = undefined;
+      return;
+    }
+
+    if (headerMissingTimeoutId) return;
+
+    headerMissingTimeoutId = setTimeout(() => {
+      headerMissingTimeoutId = undefined;
+      const siteHeader = document.querySelector(".site-header");
+      if (siteHeader) {
+        // colorLog.detail("header exists again.");
+      } else {
+        colorLog.detail(".site-header has been missing for over 300ms. Scheduling reload.");
+        scheduleReload();
+      }
+    }, 300);
   });
 
   observer.observe(document.documentElement, {
     childList: true,
     subtree: true,
   });
+}
 
-  // Triggered with browsers back/forward navigation
-  window.addEventListener("popstate", () => {
-    colorLog.notice("popstate: Browser back/forward nav");
-    scheduleReloadOnPageChange("popstate");
-  });
+/**
+ * WATCH FOR URL CHANGE
+ */
+export function watchForUrlChange() {
+  // colorLog.run("Running watchForUrlChange()");
 
-  // Triggered with url hashchange such as /page to /page#section2
-  window.addEventListener("hashchange", () => {
-    colorLog.notice("hashchange in URL");
-    scheduleReloadOnPageChange("hashchange");
-  });
-
-  // REMOVE IF NOT USED
-  document.addEventListener("turbo:load", () => {
-    colorLog.alert("EVENT UPDATE! turbo:load");
-    scheduleReloadOnPageChange("turbo:load");
-  });
-
-  // REMOVE IF NOT USED
-  document.addEventListener("turbo:render", () => {
-    colorLog.alert("EVENT UPDATE! turbo:render");
-    scheduleReloadOnPageChange("turbo:render");
-  });
+  if (document.documentElement.dataset.watchPageBound) {
+    // colorLog.detail("URL watch already exist. Exited watchForUrlChange().");
+    return;
+  }
+  document.documentElement.dataset.watchPageBound = "true";
 
   const originalPushState = history.pushState;
   const originalReplaceState = history.replaceState;
 
-  history.pushState = function (...args) {
-    colorLog.notice("history.pushState");
-    originalPushState.apply(this, args);
-    scheduleReloadOnPageChange("pushState");
-  };
+  /**
+   * CHECK FOR URL CHANGE
+   * Schedules a UI reload if the page URL has changed.
+   *
+   * @param {string} from Where this function was called from.
+   */
+  const checkForUrlChange = (from) => {
+    colorLog.detail(`checkForUrlChange() called from ${from}`);
 
-  history.replaceState = function (...args) {
-    colorLog.notice("history.replaceState");
-    originalReplaceState.apply(this, args);
-    scheduleReloadOnPageChange("replaceState");
-  };
-}
-
-/**
- * SCHEDULE RELOAD ON PAGE CHANGE
- * @param {string} from Where this function was called from.
- */
-function scheduleReloadOnPageChange(from) {
-  colorLog.detail(`Running scheduleReloadOnPageChange() from ${from}`);
-
-  const isReloadScheduled = states.isReloadScheduled;
-  if (isReloadScheduled) {
-    colorLog.detail("Reload already scheduled. Exiting scheduleReloadOnPageChange().");
-    return;
-  }
-
-  const currentUrl = `${location.origin}${location.pathname}`;
-  const lastUrl = states.lastUrl;
-  if (currentUrl === lastUrl) {
-    colorLog.detail("URL did not change. Exiting scheduleReloadOnPageChange().");
-    return;
-  }
-
-  scheduleReload();
-}
-
-/**
- * WATCH TABS PANEL TOGGLE BUTTON
- */
-export function watchTabsPanelToggleBtn() {
-  colorLog.run("Running watchTabsPanelToggleBtn()");
-  const tabsPanelToggleBtn = elements.injected.tabsPanelToggleButton;
-  tabsPanelToggleBtn?.addEventListener("click", () => toggleTabsPanel());
-}
-
-/**
- * WATCH SHOW SIDEBAR BUTTON
- * Shows the sidebar when the button is clicked
- */
-export function watchShowSidebarBtn() {
-  colorLog.run("Running watchShowSidebarBtn()");
-  const sidebarShowBtn = elements.injected.sidebarShowButton;
-  sidebarShowBtn?.addEventListener("click", () => showSidebar());
-}
-
-/**
- * WATCH PAGE SCROLL CONTAINER
- */
-export function watchScrollContainer() {
-  colorLog.run("Running watchScrollContainer");
-  const scrollContainer = elements.native.scrollContainer;
-
-  if (!scrollContainer) {
-    colorLog.info("There is no scrollContainer on this page to watch.");
-    return;
-  }
-
-  const isWindowScroll = scrollContainer === "window";
-
-  const handleScroll = () => {
-    colorLog.run("Running handleScroll()");
-    const isHeaderTop = states.isHeaderTop;
-
-    if (isWindowScroll) {
-      if (window.scrollY <= 2 && !isHeaderTop) {
-        setIsHeaderTop(true);
-      } else if (window.scrollY > 2 && isHeaderTop) {
-        setIsHeaderTop(false);
-      }
-    } else {
-      if (scrollContainer.scrollTop <= 2 && !isHeaderTop) {
-        setIsHeaderTop(true);
-      } else if (scrollContainer.scrollTop > 2 && isHeaderTop) {
-        setIsHeaderTop(false);
-      }
+    if (states.isReloadScheduled) {
+      // colorLog.detail("Reload already scheduled. Exited checkForUrlChange().");
+      return;
     }
+
+    const currentUrl = `${location.origin}${location.pathname}`;
+    const isChangedUrl = currentUrl !== states.lastUrl;
+
+    if (!isChangedUrl) {
+      // colorLog.detail("No URL change detected. Exiting checkForUrlChange().");
+      return;
+    }
+
+    colorLog.detail("URL has changed.");
+    scheduleReload();
   };
 
-  if (isWindowScroll) {
-    if (window.scrollY <= 2) setIsHeaderTop(true);
-    window.addEventListener("scroll", handleScroll);
-  } else {
-    if (scrollContainer.scrollTop <= 2) setIsHeaderTop(true);
-    scrollContainer.addEventListener("scroll", handleScroll);
-  }
+  // Triggered by browsers back/forward navigation
+  window.addEventListener("popstate", () => {
+    // colorLog.notice("popstate: Browser back/forward nav");
+    checkForUrlChange("popstate");
+  });
+
+  // Triggered by url hashchange such as /page to /page#section2
+  window.addEventListener("hashchange", () => {
+    // colorLog.notice("hashchange in URL");
+    checkForUrlChange("hashchange");
+  });
+
+  // Triggered by turbo:load
+  document.addEventListener("turbo:load", () => {
+    // colorLog.alert("EVENT UPDATE! turbo:load");
+    checkForUrlChange("turbo:load");
+  });
+
+  // Triggered by turbo:render
+  document.addEventListener("turbo:render", () => {
+    // colorLog.alert("EVENT UPDATE! turbo:render");
+    checkForUrlChange("turbo:render");
+  });
+
+  // Triggered by pushState
+  history.pushState = function (...args) {
+    // colorLog.notice("history.pushState");
+    originalPushState.apply(this, args);
+    checkForUrlChange("pushState");
+  };
+
+  // Triggered by replaceState
+  history.replaceState = function (...args) {
+    // colorLog.notice("history.replaceState");
+    originalReplaceState.apply(this, args);
+    checkForUrlChange("replaceState");
+  };
 }
 
 /**
@@ -163,7 +137,14 @@ export function watchScrollContainer() {
  * Runs the activated hotkey
  */
 export function watchHotkeys() {
-  colorLog.run("Running watchHotkeys()");
+  // colorLog.run("Running watchHotkeys()");
+
+  if (document.documentElement.dataset.hotkeysBound) {
+    // colorLog.detail("Hotkeys already exist. Exited watchHotkeys().");
+    return;
+  }
+  document.documentElement.dataset.hotkeysBound = "true";
+
   document.addEventListener("keydown", (event) => {
     const keyAlt = event.altKey;
     const keyCmd = event.metaKey;
@@ -191,31 +172,14 @@ export function watchHotkeys() {
         event.code !== "KeyE" &&
         event.code !== "KeyM" &&
         event.code !== "KeyN" &&
-        event.code !== "KeyR"
+        event.code !== "KeyR" &&
+        event.code !== "KeyT"
       )
         return;
     }
 
-    // TODO - Check if this is needed, otherwise remove it.
-    // event.preventDefault();
-    // event.stopImmediatePropagation();
-
     if (isCmdShift) runCmdShiftHotkeys();
     if (isCmdCtrl) runCmdCtrlHotkeys();
-  });
-}
-
-/**
- * WATCH TAB BUTTON CLICK
- * Run handleFocus() on each tab button click
- */
-export function watchTabBtnClick() {
-  colorLog.run("Running watchTabBtnClick()");
-  const tabButtons = document.querySelectorAll(".tab-button");
-  if (tabButtons.length < 1) return;
-
-  tabButtons.forEach((tabBtn) => {
-    tabBtn.addEventListener("click", () => handleFocus(tabBtn));
   });
 }
 
@@ -224,27 +188,40 @@ export function watchTabBtnClick() {
  * Refocuses the LSBOT prompt after the prompt is submitted.
  */
 export function watchPromptSubmission() {
-  colorLog.run("Running watchPromptSubmission()");
+  // colorLog.run("Running watchPromptSubmission()");
 
   const lsbotPromptInputs = document.querySelectorAll(".lsbot-question-input");
   if (lsbotPromptInputs.length < 1) return;
 
-  let promptObserver = null;
-
   lsbotPromptInputs.forEach((prompt) => {
-    prompt.addEventListener("focus", () => {
-      promptObserver?.disconnect();
+    if (prompt.dataset.focusObserverBound) {
+      // colorLog.detail("Prompt watch already exist. Exited watchPromptSubmission() for this prompt.");
+      return;
+    }
+    prompt.dataset.focusObserverBound = "true";
 
-      promptObserver = new MutationObserver(() => {
-        colorLog.run("Running promptObserver()");
+    let observer = null;
+
+    prompt.addEventListener("focus", () => {
+      console.log("Watching prompt focus.");
+
+      observer?.disconnect();
+
+      observer = new MutationObserver(() => {
+        // colorLog.run("Running prompt observer()");
+
+        if (prompt.disabled) {
+          console.log("Prompt is disabled.");
+        }
 
         if (!prompt.disabled) {
-          promptObserver.disconnect();
+          observer.disconnect();
+          console.log("Prompt focused.");
           prompt.focus();
         }
       });
 
-      promptObserver.observe(prompt, {
+      observer.observe(prompt, {
         attributes: true,
         attributeFilter: ["disabled"],
       });
@@ -257,32 +234,95 @@ export function watchPromptSubmission() {
  * Opens the Tabs Panel with the LSBOT tab active when a question box submission is made.
  */
 export function watchQuestionBoxes() {
-  colorLog.run("Running watchQuestionBoxes()");
+  // colorLog.run("Running watchQuestionBoxes()");
   const questionBoxes = document.querySelectorAll(".lsbot-question-box");
-  if (questionBoxes.length < 1 || !tabsPanel) return;
+  if (questionBoxes.length < 1 || !elements.native.tabsPanel) return;
 
   const lsbotTabBtn = document.querySelector(".tab-button[data-tab='lsbot-help']");
 
   const handleSubmitClick = () => {
-    colorLog.run("Running handleSubmitClick()");
+    // colorLog.run("Running handleSubmitClick()");
     handleFocus(lsbotTabBtn);
-    // showTabsPanel();
   };
 
   const handleSubmitHotkey = () => {
-    colorLog.run("Running handleSubmitHotkey()");
+    // colorLog.run("Running handleSubmitHotkey()");
     const isCmdEnter = event.metaKey && !event.ctrlKey && !event.altKey && !event.shiftKey && event.key === "Enter";
     if (!isCmdEnter) return;
     handleFocus(lsbotTabBtn);
-    // showTabsPanel();
   };
 
   questionBoxes.forEach((box) => {
+    if (box.dataset.questionEventBound) {
+      // colorLog.detail("Question box watch already exist. Exited watchQuestionBoxes() for this box.");
+      return;
+    }
+    box.dataset.questionEventBound = "true";
+
+    const boxSendLink = box.querySelector(".lsbot-question-link");
     const boxSubmitButton = box.querySelector(".lsbot-question-box-send-answer-button");
+    boxSendLink.addEventListener("click", handleSubmitClick);
     boxSubmitButton.addEventListener("click", handleSubmitClick);
 
     const boxTextarea = box.querySelector(".lsbot-question-box-answer-input");
     boxTextarea.addEventListener("focus", () => boxTextarea.addEventListener("keydown", handleSubmitHotkey));
     boxTextarea.addEventListener("blur", () => boxTextarea.removeEventListener("keydown", handleSubmitHotkey));
   });
+}
+
+/**
+ * WATCH SHOW SIDEBAR BUTTON
+ * Shows the sidebar when the button is clicked
+ */
+export function watchShowSidebarBtn() {
+  // colorLog.run("Running watchShowSidebarBtn()");
+  const sidebarShowBtn = elements.injected.sidebarShowButton;
+  if (!sidebarShowBtn) return;
+
+  if (sidebarShowBtn.dataset.sidebarBtnEventBound) {
+    // colorLog.detail("Show Sidebar Button watch already exist. Exited watchShowSidebarBtn().");
+    return;
+  }
+  sidebarShowBtn.dataset.sidebarBtnEventBound = "true";
+
+  sidebarShowBtn.addEventListener("click", () => showSidebar());
+}
+
+/**
+ * WATCH TAB BUTTON CLICK
+ * Run handleFocus() on each tab button click
+ */
+export function watchTabBtnClick() {
+  // colorLog.run("Running watchTabBtnClick()");
+  const tabButtons = document.querySelectorAll(".tab-button");
+  if (tabButtons.length < 1) return;
+
+  tabButtons.forEach((tabBtn) => {
+    if (tabBtn.dataset.tabBtnEventBound) {
+      // colorLog.detail("Tab Button watch already exist. Exited watchTabBtnClick() for this tab button.");
+      return;
+    }
+    tabBtn.dataset.tabBtnEventBound = "true";
+
+    tabBtn.addEventListener("click", () => {
+      handleFocus(tabBtn);
+    });
+  });
+}
+
+/**
+ * WATCH TABS PANEL TOGGLE BUTTON
+ */
+export function watchTabsPanelToggleBtn() {
+  // colorLog.run("Running watchTabsPanelToggleBtn()");
+  const tabsPanelToggleBtn = elements.injected.tabsPanelToggleButton;
+  if (!tabsPanelToggleBtn) return;
+
+  if (tabsPanelToggleBtn.dataset.tabsPanelToggleBtnEventBound) {
+    // colorLog.detail("Tabs Panel Toggle Button watch already exist. Exited watchTabsPanelToggleBtn().");
+    return;
+  }
+  tabsPanelToggleBtn.dataset.tabsPanelToggleBtnEventBound = "true";
+
+  tabsPanelToggleBtn.addEventListener("click", () => toggleTabsPanel());
 }

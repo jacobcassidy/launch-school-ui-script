@@ -1,21 +1,25 @@
 /**
  * HEADER
  */
+// import { colorLog } from "./helpers/log.js";
 import panelsIcon from "../../svg/tabs-panel.svg";
 import settingsIcon from "../../svg/settings.svg";
-import { colorLog } from "./helpers/log.js";
 import { elements } from "./helpers/state.js";
 
 /**
  * INJECT SITE HEADER
  */
 export function injectHeader() {
-  colorLog.run("Running injectHeader()");
+  // colorLog.run("Running injectHeader()");
   const currentDomHeader = document.querySelector(".site-header");
-  if (currentDomHeader) return;
+  if (currentDomHeader) {
+    // colorLog.detail(".site-header already exists. Exited injectHeader().");
+    return;
+  }
 
   const newHeader = createHeader();
   document.body.insertBefore(newHeader, document.body.firstChild);
+  // colorLog.detail(".site-header has been injected.");
   injectContainerStyleOffsets();
 }
 
@@ -103,7 +107,7 @@ function addTitleToHeaderWithNoBreadcrumbs(containerEl) {
  * Creates a new .site-header element to inject in the DOM
  */
 function createHeader() {
-  colorLog.run("Running createHeader()");
+  // colorLog.run("Running createHeader()");
   const siteHeaderEl = document.createElement("header");
   siteHeaderEl.className = "site-header";
 
@@ -205,7 +209,7 @@ function createTabsPanelToggleButton(containerEl) {
  * Adds the offset style variables for the .site-header__container elements
  */
 function injectContainerStyleOffsets() {
-  colorLog.run("Running injectContainerStyleOffsets()");
+  // colorLog.run("Running injectContainerStyleOffsets()");
   const container1 = document.querySelector(".site-header__container.container-1");
   const container3 = document.querySelector(".site-header__container.container-3");
   const container1Width = container1?.offsetWidth || 0;

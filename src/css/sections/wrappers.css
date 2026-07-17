@@ -31,7 +31,7 @@ body:has(#assignment-repl-layout, #book-repl-layout, #book-exercise-repl-layout,
       inset-block-start: var(--header-height) !important;
     }
 
-    body:has(.site-header.is-top.is-hidden, .site-header.is-hidden, .site-header:not(.is-pinned, .is-top)) & {
+    body:has(.site-header.is-hidden) & {
       inset-block-start: 0 !important;
     }
 

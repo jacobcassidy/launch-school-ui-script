@@ -1,7 +1,7 @@
 /**
  * ACTIVATE HELPERS
  */
-import { colorLog } from "./log";
+// import { colorLog } from "./log";
 import { elements } from "./state";
 import { handleFocus } from "./focus";
 
@@ -10,7 +10,7 @@ import { handleFocus } from "./focus";
  * Activates the Code Editor or Scratchpad depending on the current page
  */
 export function activateCodeEditor() {
-  colorLog.run("Running activateCodeEditor()");
+  // colorLog.run("Running activateCodeEditor()");
   const tabsPanel = elements.native.tabsPanel;
 
   if (tabsPanel) {
@@ -29,6 +29,15 @@ export function activateCodeEditor() {
  * @param {HTMLElement} tabBtn The selected .tab-button element
  */
 export function activateTab(tabBtn) {
-  colorLog.run("Running activateTab()");
+  // colorLog.run("Running activateTab()");
+
+  tabBtn.dispatchEvent(
+    new MouseEvent("mousedown", {
+      bubbles: true,
+      cancelable: true,
+      button: 0,
+    }),
+  );
+
   tabBtn.click();
 }

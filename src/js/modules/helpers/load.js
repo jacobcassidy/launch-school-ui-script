@@ -5,77 +5,85 @@ import { colorLog } from "./log.js";
 import { injectHeader } from "../header.js";
 import { injectStyles } from "./style.js";
 import { injectToaster } from "../toaster.js";
-import { setIsReloadScheduled, setLastUrl, setPreviousBody } from "./set.js";
-import { elements, states } from "./state.js";
+import { setIsReloadScheduled, setLastUrl, elements, states, setIgnoreMutationsUntil } from "./state.js";
 import { syncInjectedElementsState, syncNativeElementsState } from "./sync.js";
 import {
-  watchForPageChange,
+  watchForMissingHeader,
+  watchForUrlChange,
   watchHotkeys,
   watchPromptSubmission,
   watchQuestionBoxes,
-  watchScrollContainer,
   watchShowSidebarBtn,
   watchTabBtnClick,
   watchTabsPanelToggleBtn,
 } from "./watch.js";
-import { showTabsPanel } from "./show.js";
+import { hideHeader, hideTabsPanel } from "./hide.js";
 
 /**
  * LOAD UI
  * Inserts the UI modifications into the DOM.
  */
 export function loadUI() {
-  colorLog.run("Running loadUI()");
+  // colorLog.run("Running loadUI()");
   injectStyles();
   syncNativeElementsState();
   injectHeader();
   injectToaster();
   syncInjectedElementsState();
 
-  // Apply active state on load
-  if (elements.native.tabsPanel && !states.isTabsPanelHidden) showTabsPanel();
-
-  // Set states
-  setLastUrl(`${location.origin}${location.pathname}`);
-  setPreviousBody(document.body);
-  setIsReloadScheduled(false);
+  // Apply hidden state on load
+  if (elements.native.tabsPanel && states.isTabsPanelHidden) hideTabsPanel();
+  if (elements.injected.header && states.isHeaderHidden) hideHeader();
 
   // Watch elements:
-  watchForPageChange();
+  watchForUrlChange();
+  watchForMissingHeader();
   watchHotkeys();
   watchPromptSubmission();
   watchQuestionBoxes();
-  watchScrollContainer();
   watchShowSidebarBtn();
   watchTabBtnClick();
   watchTabsPanelToggleBtn();
 }
 
 /**
- * SCHEDULE RELOAD
- * Schedules an UI reload for after a DOM refresh from a page change.
+ * RELOAD UI
+ * Reloads loadUI() after a DOM refresh from a page/url change.
  */
 export function scheduleReload() {
-  colorLog.run("Running scheduleReload()");
-  const isReloadScheduled = states.isReloadScheduled;
-  if (isReloadScheduled) return;
+  // colorLog.run("Running scheduleReload()");
+  if (states.isReloadScheduled) {
+    // colorLog.detail("Reload is already scheduled. Exited scheduleReload().");
+    return;
+  }
   setIsReloadScheduled(true);
 
-  colorLog.info("Waiting for new DOM to be ready...");
+  const reloadUI = () => {
+    loadUI();
+    setLastUrl();
+    setIgnoreMutationsUntil(performance.now() + 500);
+    setIsReloadScheduled(false);
+  };
+
+  colorLog.detail("Waiting for new DOM to be ready...");
   const startWait = performance.now();
 
   const waitForDom = () => {
-    colorLog.run("Running waitForDom()");
+    // colorLog.run("Running waitForDom()");
     const isNewBody = document.body !== states.previousBody;
     const isWaitMaxReached = performance.now() - startWait > 3000;
 
-    if (isNewBody || isWaitMaxReached) {
-      if (isWaitMaxReached) colorLog.alert("Max wait time reached. Reloading UI layout.");
-      if (isNewBody) colorLog.notice("New DOM is ready. Reloading UI layout.");
-      loadUI();
+    if (isNewBody) {
+      colorLog.info("New DOM is ready, calling reloadUI().");
+      requestAnimationFrame(reloadUI);
       return;
+    } else if (isWaitMaxReached) {
+      colorLog.alert("Max wait time reached, calling reloadUI().");
+      requestAnimationFrame(reloadUI);
+      return;
+    } else {
+      requestAnimationFrame(waitForDom);
     }
-    requestAnimationFrame(waitForDom);
   };
 
   requestAnimationFrame(waitForDom);

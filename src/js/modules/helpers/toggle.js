@@ -1,7 +1,7 @@
 /**
  * TOGGLE HELPERS
  */
-import { colorLog } from "./log.js";
+// import { colorLog } from "./log.js";
 import { showHeader, showSidebar, showTabsPanel } from "./show.js";
 import { hideHeader, hideSidebar, hideTabsPanel } from "./hide.js";
 import { states } from "./state.js";
@@ -10,7 +10,7 @@ import { states } from "./state.js";
  * TOGGLE HEADER
  */
 export function toggleHeader() {
-  colorLog.run("Running toggleHeader()");
+  // colorLog.run("Running toggleHeader()");
   const isHeaderHidden = states.isHeaderHidden;
 
   if (isHeaderHidden) {
@@ -24,7 +24,7 @@ export function toggleHeader() {
  * TOGGLE SIDEBAR
  */
 export function toggleSidebar() {
-  colorLog.run("Running toggleSidebar()");
+  // colorLog.run("Running toggleSidebar()");
   const isSidebarHidden = states.isSidebarHidden;
 
   if (isSidebarHidden) {
@@ -38,7 +38,7 @@ export function toggleSidebar() {
  * TOGGLE TABS PANEL
  */
 export function toggleTabsPanel() {
-  colorLog.run("Running toggleTabsPanel()");
+  // colorLog.run("Running toggleTabsPanel()");
   const isTabsPanelHidden = states.isTabsPanelHidden;
 
   if (isTabsPanelHidden) {

@@ -1,10 +1,18 @@
 /**
  * INDEX
  */
-import { initScript } from "./modules/helpers/init.js";
+import { setLastUrl, setPreviousBody, setIgnoreMutationsUntil } from "./modules/helpers/state.js";
+import { loadUI } from "./modules/helpers/load.js";
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initScript, { once: true });
+  document.addEventListener("DOMContentLoaded", init, { once: true });
 } else {
-  initScript();
+  init();
+}
+
+function init() {
+  setLastUrl(`${location.origin}${location.pathname}`);
+  setPreviousBody(document.body);
+  setIgnoreMutationsUntil(performance.now() + 500);
+  loadUI();
 }

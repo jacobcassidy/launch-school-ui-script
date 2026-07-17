@@ -1,7 +1,7 @@
 /**
  * SYNC HELPERS
  */
-import { colorLog } from "./log";
+// import { colorLog } from "./log";
 import {
   setElementContentPanel,
   setElementHeader,
@@ -13,14 +13,14 @@ import {
   setElementSidebarShowButton,
   setElementTabsPanel,
   setElementTabsPanelToggleButton,
-} from "./set";
+} from "./state.js";
 
 /**
  * SYNC NATIVE ELEMENTS STATE
  * Sets the states properties for the page's native app DOM elements
  */
 export function syncNativeElementsState() {
-  colorLog.run("Running syncNativeElementsState()");
+  // colorLog.run("Running syncNativeElementsState()");
   const contentPanel =
     document.querySelector(".assignment-content-panel") || document.querySelector(".book-content-panel");
   const instructionsPanel = document.querySelector(".instructions-panel");
@@ -36,8 +36,6 @@ export function syncNativeElementsState() {
   setElementScrollContainer(scrollContainer);
   setElementSidebar(sidebar);
   setElementTabsPanel(tabsPanel);
-
-  // if (tabsPanel) setIsTabsPanelHidden(false);
 }
 
 /**

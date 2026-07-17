@@ -77,7 +77,6 @@ body:not(:has(.nav-drawer)) {
     }
   }
 
-  /* &:not(.is-pinned, .is-top), */
   &.is-hidden {
     transform: translateY(-100%);
   }

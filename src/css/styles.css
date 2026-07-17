@@ -13,6 +13,7 @@
 @import "./components/settings";
 @import "./components/tabs.css";
 @import "./components/toasts.css";
+@import "./components/toc.css";
 
 /* --- SECTIONS --- */
 @import "./sections/editor.css";

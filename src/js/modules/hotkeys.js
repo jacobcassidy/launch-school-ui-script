@@ -2,7 +2,7 @@
  * HOTKEYS
  */
 import { activateCodeEditor, activateTab } from "./helpers/activate.js";
-import { colorLog } from "./helpers/log.js";
+// import { colorLog } from "./helpers/log.js";
 import { elements } from "./helpers/state.js";
 import { showToast } from "./helpers/show.js";
 import { toggleHeader, toggleSidebar, toggleTabsPanel } from "./helpers/toggle.js";
@@ -11,7 +11,7 @@ import { toggleHeader, toggleSidebar, toggleTabsPanel } from "./helpers/toggle.j
  * RUN `CMD + SHIFT` HOTKEYS
  */
 export function runCmdShiftHotkeys() {
-  colorLog.run("Running runCmdShiftHotkeys()");
+  // colorLog.run("Running runCmdShiftHotkeys()");
 
   // Hotkey: Toggle Header
   if (event.code == "Digit1") {
@@ -36,7 +36,7 @@ export function runCmdShiftHotkeys() {
  * RUN `CMD + CTRL` HOTKEYS
  */
 export function runCmdCtrlHotkeys() {
-  colorLog.run("Running runCmdCtrlHotkeys");
+  // colorLog.run("Running runCmdCtrlHotkeys");
   const instructionsPanel = elements.native.instructionsPanel;
   const tabsPanel = elements.native.tabsPanel;
   const sidebar = elements.native.sidebar;
@@ -137,8 +137,6 @@ export function runCmdCtrlHotkeys() {
   }
 
   // Hotkey: Submit code editor solution to the LSBot Review
-
-  // TODO - See if the setTimeout can be removed after figuring out the network sync
   if (event.code === "KeyR") {
     const reviewSubmitBtn = document.querySelector("#lsbot-send-review");
     if (!reviewSubmitBtn) return;
@@ -151,6 +149,15 @@ export function runCmdCtrlHotkeys() {
     }, 100);
 
     showToast("Solution submitted for LSBot Review");
+    return;
+  }
+
+  // Hotkey: Toggle Book Table of Content
+  if (event.code === "KeyT") {
+    const tocBtn = document.querySelector(".toc-toggle-button");
+    if (!tocBtn) return;
+
+    tocBtn.click();
     return;
   }
 }

@@ -1,9 +1,10 @@
 /**
  * FOCUS HELPERS
  */
-import { colorLog } from "./log.js";
+// import { colorLog } from "./log.js";
 import { flashActiveElement } from "./flash.js";
-import { getActiveTabTextareaElement } from "./get.js";
+import { states } from "./state.js";
+import { showTabsPanel } from "./show.js";
 
 /**
  * HANDLE FOCUS
@@ -11,67 +12,74 @@ import { getActiveTabTextareaElement } from "./get.js";
  * @param {HTMLElement} focusEl The element that will be focused or contains the element to focus
  */
 export function handleFocus(focusEl) {
-  colorLog.run("Running handleFocus()");
+  // colorLog.run("Running handleFocus()");
   const isTextarea = focusEl instanceof HTMLTextAreaElement;
   const isTabButton = focusEl.classList.contains("tab-button");
 
-  if (isTextarea) {
-    const codeMirror = focusEl.closest(".CodeMirror");
-    const isCodeMirrorFocused = codeMirror?.classList.contains("CodeMirror-focused");
+  const getTabTextareaElement = () => {
+    const tabButtonData = focusEl?.dataset?.tab;
+    if (!tabButtonData) return;
 
-    if (isCodeMirrorFocused) {
-      flashActiveElement(codeMirror);
-      return;
-    }
+    const tabContainerId = `tab-${tabButtonData}`;
+    const tabContainer = document.getElementById(tabContainerId);
+    if (!tabContainer) return;
 
-    focusEl.focus();
-    return;
-  }
+    const tabContainerTextarea =
+      tabContainer.querySelector(".CodeMirror textarea") || tabContainer.querySelector("textarea") || null;
+
+    return tabContainerTextarea;
+  };
 
   if (isTabButton) {
     const activeTab = document.querySelector(".tab-button.active, .tab-button[aria-selected='true']");
-    const isTabActive = activeTab?.dataset?.tab === focusEl.dataset?.tab;
-    const tabTextarea = getActiveTabTextareaElement(focusEl);
+    const isActiveTab = activeTab?.dataset?.tab === focusEl.dataset?.tab;
+    const tabTextarea = getTabTextareaElement();
     const isTextareaFocused = document.activeElement === tabTextarea;
+    const isTabsPanelHidden = states.isTabsPanelHidden;
+    const codeMirror = tabTextarea?.closest(".CodeMirror");
+    const isCodeMirrorFocused = codeMirror?.classList.contains("CodeMirror-focused");
 
-    const focusTextarea = () => {
-      setTimeout(() => {
-        tabTextarea.focus();
-      }, 100);
-    };
+    // console.log("activeTab:", activeTab);
+    // console.log("isActiveTab:", isActiveTab);
+    // console.log("tabTextarea:", tabTextarea);
+    // console.log("isTextareaFocused:", isTextareaFocused);
+    // console.log("isTabsPanelHidden:", isTabsPanelHidden);
+    // console.log("codeMirror:", codeMirror);
+    // console.log("isCodeMirrorFocused:", isCodeMirrorFocused);
 
-    if (isTabActive && tabTextarea && isTextareaFocused) {
+    if (isTabsPanelHidden) showTabsPanel();
+
+    if (isActiveTab && isCodeMirrorFocused) {
+      flashActiveElement(focusEl, codeMirror);
+      return;
+    }
+
+    if (isActiveTab && isTextareaFocused) {
       flashActiveElement(focusEl, tabTextarea);
       return;
     }
 
-    if (isTabActive && !tabTextarea) {
+    if (isActiveTab && !tabTextarea) {
       flashActiveElement(focusEl);
       return;
     }
 
     if (tabTextarea && !isTextareaFocused) {
-      focusTextarea();
+      setTimeout(() => {
+        tabTextarea.focus();
+      }, 100);
       return;
     }
+  }
 
-    // TODO - See if you can remove this after figuring out how to trigger the network sync (maybe mousedown).
-    // const isReviewTabBtn = tabBtn.dataset?.tab === "submit-review";
-    // if (isReviewTabBtn) {
-    //   const lsbotTabBtn = document.querySelector(".tab-button[data-tab='lsbot-help']");
-    //   const reviewTabBtn = document.querySelector(".tab-button[data-tab='submit-review']");
-
-    //   // LSBot needs to be activated first before the Review Tab submission works.
-    //   lsbotTabBtn.click();
-    //   reviewTabBtn.click();
-    // }
-
-    // if (isTabActive && isTextareaFocused) {
-    //   hideTabsPanel();
-    //   return;
-    // } else {
-    //   focusTextarea();
-    //   return;
-    // }
+  if (isTextarea) {
+    const codeMirror = focusEl.closest(".CodeMirror");
+    const isCodeMirrorFocused = codeMirror?.classList.contains("CodeMirror-focused");
+    if (isCodeMirrorFocused) {
+      flashActiveElement(codeMirror);
+    } else {
+      focusEl.focus();
+    }
+    return;
   }
 }

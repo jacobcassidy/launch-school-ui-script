@@ -24,7 +24,8 @@
     .code-editor-wrapper,
     .code-editor-wrapper .CodeMirror,
     .code-editor-wrapper .CodeMirror .CodeMirror-scroll,
-    .CodeMirror-gutters {
+    .CodeMirror-gutters,
+    #exercise-code-editor {
       background-color: var(--background-color-002) !important;
     }
 
@@ -33,6 +34,10 @@
       border-radius: var(--border-radius-001);
       margin-block-start: 24px;
       padding: 12px !important;
+
+      #exercise-code-editor {
+        border: none !important;
+      }
 
       .CodeMirror-activeline-background {
         background-color: var(--background-color-003) !important;

@@ -1,15 +1,14 @@
 /**
  * SHOW HELPERS
  */
-import { colorLog } from "./log.js";
-import { setIsHeaderPinned, setIsHeaderHidden, setIsSidebarHidden, setIsTabsPanelHidden } from "./set.js";
+// import { colorLog } from "./log.js";
+import { setIsHeaderHidden, setIsSidebarHidden, setIsTabsPanelHidden } from "./state.js";
 
 /**
  * SHOW HEADER
  */
 export function showHeader() {
-  colorLog.run("Running showHeader()");
-  setIsHeaderPinned(true);
+  // colorLog.run("Running showHeader()");
   setIsHeaderHidden(false);
 }
 
@@ -17,7 +16,7 @@ export function showHeader() {
  * SHOW SIDEBAR
  */
 export function showSidebar() {
-  colorLog.run("Running showSidebar()");
+  // colorLog.run("Running showSidebar()");
   setIsSidebarHidden(false);
 }
 
@@ -25,7 +24,7 @@ export function showSidebar() {
  * SHOW TABS PANEL
  */
 export function showTabsPanel() {
-  colorLog.run("Running showTabsPanel()");
+  // colorLog.run("Running showTabsPanel()");
   setIsTabsPanelHidden(false);
 }
 
@@ -36,7 +35,7 @@ export function showTabsPanel() {
  * @param {number} duration How long the toast should display
  */
 export function showToast(message, duration = 2500) {
-  colorLog.run("Running showToast()");
+  // colorLog.run("Running showToast()");
 
   const toastContainer = document.querySelector(".toast-container");
   const toast = document.createElement("div");
