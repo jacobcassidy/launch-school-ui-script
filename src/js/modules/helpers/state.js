@@ -23,7 +23,8 @@ export const elements = {
 // STATES OBJECT
 export const states = {
   isHeaderHidden: sessionStorage.getItem("isHeaderHidden") === "true",
-  isSidebarHidden: sessionStorage.getItem("isSidebarHidden") === "true",
+  isSidebarHidden:
+    sessionStorage.getItem("isSidebarHidden") === "true" || document.querySelector("#navbar-collapsor").checked,
   isTabsPanelHidden: sessionStorage.getItem("isTabsPanelHidden") === "true",
   isReloadScheduled: false,
   ignoreMutationsUntil: 0,
