@@ -18,6 +18,7 @@ import {
   watchTabsPanelToggleBtn,
 } from "./watch.js";
 import { hideHeader, hideTabsPanel } from "./hide.js";
+import { showTabsPanel } from "./show.js";
 
 /**
  * LOAD UI
@@ -32,7 +33,14 @@ export function loadUI() {
   syncInjectedElementsState();
 
   // Apply hidden state on load
-  if (elements.native.tabsPanel && states.isTabsPanelHidden) hideTabsPanel();
+  if (elements.native.tabsPanel) {
+    if (states.isTabsPanelHidden) {
+      hideTabsPanel();
+    } else {
+      showTabsPanel();
+    }
+  }
+
   if (elements.injected.header && states.isHeaderHidden) hideHeader();
 
   // Watch elements:
