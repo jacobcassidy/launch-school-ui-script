@@ -42,7 +42,7 @@
   :is(.assignment-content-wrapper, .book-content-wrapper) {
     max-inline-size: 100% !important;
     margin: 0 !important;
-    padding: 40px !important;
+    padding: 40px var(--inline-spacing) !important;
 
     > * {
       inline-size: 100% !important;
