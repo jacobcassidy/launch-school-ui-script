@@ -98,11 +98,6 @@ export function setIsReloadScheduled(value) {
   states.isReloadScheduled = value;
 }
 
-// SET IGNORE MUTATIONS UNTIL
-export function setIgnoreMutationsUntil(value) {
-  states.ignoreMutationsUntil = value;
-}
-
 // SET IS SIDEBAR HIDDEN
 export function setIsSidebarHidden(value) {
   const sidebarHideCheckbox = document.querySelector("#navbar-collapsor");

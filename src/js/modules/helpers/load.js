@@ -5,7 +5,7 @@ import { colorLog } from "./log.js";
 import { injectHeader } from "../header.js";
 import { injectStyles } from "./style.js";
 import { injectToaster } from "../toaster.js";
-import { setIsReloadScheduled, setLastUrl, elements, states, setIgnoreMutationsUntil } from "./state.js";
+import { setIsReloadScheduled, setLastUrl, elements, states } from "./state.js";
 import { syncInjectedElementsState, syncNativeElementsState } from "./sync.js";
 import {
   watchForMissingHeader,
@@ -69,7 +69,6 @@ export function scheduleReload() {
   const reloadUI = () => {
     loadUI();
     setLastUrl();
-    setIgnoreMutationsUntil(performance.now() + 500);
     setIsReloadScheduled(false);
   };
 

@@ -1,7 +1,7 @@
 /**
  * INDEX
  */
-import { setLastUrl, setPreviousBody, setIgnoreMutationsUntil } from "./modules/helpers/state.js";
+import { setLastUrl, setPreviousBody } from "./modules/helpers/state.js";
 import { loadUI } from "./modules/helpers/load.js";
 
 if (document.readyState === "loading") {
@@ -13,6 +13,5 @@ if (document.readyState === "loading") {
 function init() {
   setLastUrl(`${location.origin}${location.pathname}`);
   setPreviousBody(document.body);
-  setIgnoreMutationsUntil(performance.now() + 500);
   loadUI();
 }
