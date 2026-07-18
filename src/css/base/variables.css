@@ -8,7 +8,7 @@
   --background-color-003: var(--color-grayscale-095);
   --background-flash-001: var(--color-brand-001-alpha);
   --border-color-001: var(--color-grayscale-095);
-  --color-brand-001-alpha: #f2585833;
+  --color-brand-001-alpha: #f258581a;
   --color-brand-001: #f25858;
   --color-brand-002: #d41010;
   --color-grayscale-035: oklch(35% 0 0deg);
@@ -29,7 +29,7 @@
   --transition-short: all var(--duration-short) ease;
   --border-radius-001: 6px;
   --padding-inline-w900: calc(50% - 450px); /* Gives it a max-width of 900px) */
-  --inline-spacing: 24px;
+  --inline-spacing: clamp(1.5rem, -2.5rem + 5vi, 2.5rem);
 
   @media (width < calc(1800px + 24px + 24px + 4px + 24px + 24px)) {
     --padding-inline-w900: var(--inline-spacing);
