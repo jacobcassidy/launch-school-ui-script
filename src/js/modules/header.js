@@ -53,6 +53,7 @@ function addContainerElements(containerEl, containerNum) {
 
     if (bookTocBtn) {
       bookTocBtn.classList.add("site-header__button");
+      bookTocBtn.title = "Toggle Table of Contents";
       containerEl.append(bookTocBtn);
     }
 
@@ -152,6 +153,7 @@ function createSettingsMenu(containerEl) {
   const createSettingsMenuToggleButtonEl = () => {
     const settingsMenuToggleButtonEl = document.createElement("button");
     settingsMenuToggleButtonEl.classList.add("site-header__button", "btn--settings-menu-toggle");
+    settingsMenuToggleButtonEl.title = "Toggle Settings Menu";
     settingsMenuToggleButtonEl.innerHTML = settingsIcon;
     return settingsMenuToggleButtonEl;
   };
@@ -170,6 +172,7 @@ function createShowSidebarButton(containerEl) {
   const createShowSidebarButtonEl = () => {
     const showSidebarButtonEl = document.createElement("button");
     showSidebarButtonEl.classList.add("site-header__button", "btn--show-sidebar");
+    showSidebarButtonEl.title = "Open Menu";
 
     // Add hamburger icon to button
     for (let i = 0; i < 3; i += 1) {
@@ -197,6 +200,7 @@ function createTabsPanelToggleButton(containerEl) {
   const createTabsPanelToggleButtonEl = () => {
     const tabsPanelToggleButtonEl = document.createElement("button");
     tabsPanelToggleButtonEl.classList.add("site-header__button", "btn--toggle-tabs-panel");
+    tabsPanelToggleButtonEl.title = "Toggle Tabs Panel";
     tabsPanelToggleButtonEl.innerHTML = panelsIcon;
     return tabsPanelToggleButtonEl;
   };
