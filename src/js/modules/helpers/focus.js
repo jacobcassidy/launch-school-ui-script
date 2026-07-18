@@ -39,14 +39,6 @@ export function handleFocus(focusEl) {
     const codeMirror = tabTextarea?.closest(".CodeMirror");
     const isCodeMirrorFocused = codeMirror?.classList.contains("CodeMirror-focused");
 
-    // console.log("activeTab:", activeTab);
-    // console.log("isActiveTab:", isActiveTab);
-    // console.log("tabTextarea:", tabTextarea);
-    // console.log("isTextareaFocused:", isTextareaFocused);
-    // console.log("isTabsPanelHidden:", isTabsPanelHidden);
-    // console.log("codeMirror:", codeMirror);
-    // console.log("isCodeMirrorFocused:", isCodeMirrorFocused);
-
     if (isTabsPanelHidden) showTabsPanel();
 
     if (isActiveTab && isCodeMirrorFocused) {
