@@ -25,7 +25,7 @@ export function runCmdShiftHotkeys() {
     return;
   }
 
-  // Hotkey: Focus CodeEditor or Toggle Scratchpad
+  // Hotkey: Focus CodeEditor or Scratchpad
   if (event.code == "KeyE") {
     activateCodeEditor();
     return;
