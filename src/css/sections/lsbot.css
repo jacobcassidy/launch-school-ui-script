@@ -3,7 +3,7 @@
  */
 
 :is(.conversation-area, .lsbot-input-area) {
-  padding-inline: var(--padding-inline-w900) !important;
+  padding-inline: var(--padding-inline-mw900) !important;
 }
 
 .conversation-area {
@@ -75,7 +75,7 @@
     position: static !important;
     color: var(--color-grayscale-074) !important;
     margin: -8px 0 8px !important;
-    padding: 0 var(--padding-inline-w900) !important;
+    padding: 0 var(--padding-inline-mw900) !important;
 
     i {
       color: var(--color-grayscale-074) !important;

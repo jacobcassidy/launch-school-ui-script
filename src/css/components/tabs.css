@@ -15,7 +15,7 @@
   border-block-end: 1px solid var(--border-color-001) !important;
   block-size: var(--header-height);
   margin: 0 !important;
-  padding: 0 var(--padding-inline-w900) !important;
+  padding: 0 var(--padding-inline-mw900) !important;
 
   @media (width < calc(1800px + 24px + 24px + 4px + 24px + 24px)) {
     padding-inline-start: 0 !important;
@@ -111,7 +111,7 @@
     border-block-end: 1px solid var(--border-color-001) !important;
     block-size: var(--header-height);
     margin: 0 !important;
-    padding-inline: var(--padding-inline-w900) !important;
+    padding-inline: var(--padding-inline-mw900) !important;
 
     .tab-header-actions {
       gap: 8px !important;
@@ -123,7 +123,7 @@
 
     /* Overrides */
     body:has(#assignment-repl-layout) & {
-      padding-inline-end: var(--padding-inline-w900) !important;
+      padding-inline-end: var(--padding-inline-mw900) !important;
     }
   }
 
@@ -134,7 +134,7 @@
 
   /* Tab content without a header */
   .tab-pane:not(:has(.tab-header), :has(.editor-mode-bar)) {
-    padding: 24px var(--padding-inline-w900) !important;
+    padding: 24px var(--padding-inline-mw900) !important;
   }
 
   /* Feedback Tab */

@@ -28,10 +28,11 @@
   --transition-long: all var(--duration-long) ease;
   --transition-short: all var(--duration-short) ease;
   --border-radius-001: 6px;
-  --padding-inline-w900: calc(50% - 450px); /* Gives it a max-width of 900px) */
-  --inline-spacing: clamp(1.5rem, -2.5rem + 5vi, 2.5rem);
+  --padding-inline-mw900: calc(50% - 450px); /* Gives it a max-width of 900px) */
+  --inline-spacing: clamp(1.5rem, -0.5rem + 3.125vi, 3rem); /* 1024 = 24px, 1280 = 32px, 1536 = 40px, 1792= 48px */
 
-  @media (width < calc(1800px + 24px + 24px + 4px + 24px + 24px)) {
-    --padding-inline-w900: var(--inline-spacing);
+  /* Width of ((48px padding + 900px content + 48px padding) * 2) + 4px divider line = 1996px */
+  @media (width < 1996px) {
+    --padding-inline-mw900: var(--inline-spacing);
   }
 }

@@ -10,7 +10,7 @@
     inline-size: 100% !important;
     max-inline-size: 100% !important;
     margin: 0 !important;
-    padding-inline: var(--padding-inline-w900) !important;
+    padding-inline: var(--padding-inline-mw900) !important;
   }
 
   .tab-pane .CodeMirror {
@@ -19,7 +19,7 @@
 
   :is(.code-editor-section, .editor-content-wrapper) {
     max-inline-size: 100% !important;
-    padding-inline: var(--padding-inline-w900) !important;
+    padding-inline: var(--padding-inline-mw900) !important;
 
     .code-editor-wrapper,
     .code-editor-wrapper .CodeMirror,
