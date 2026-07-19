@@ -4,12 +4,12 @@
 
 .toc-dropdown-menu {
   border-color: var(--border-color-001) !important;
-  max-block-size: calc(100vb - var(--header-height) - 8px - 24px) !important;
+  max-block-size: calc(100vb - var(--header-height) - 8px - 16px) !important;
   transition: var(--transition-long);
 
   body:has(.site-header.is-hidden) & {
     inset-block-start: calc(100% - var(--header-height) + 8px) !important;
-    max-block-size: calc(100vb - 8px - 24px) !important;
+    max-block-size: calc(100vb - 8px - 16px) !important;
   }
 }
 

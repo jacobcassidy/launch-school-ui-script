@@ -21,7 +21,7 @@
     /* Table of Content */
     .toc-dropdown-container {
       inset-block-start: var(--header-height) !important;
-      inset-inline: auto 356px !important;
+      inset-inline: auto 360px !important;
     }
   }
 }
