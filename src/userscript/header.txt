@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LaunchSchool UI Modifications
 // @namespace    https://tampermonkey.net/
-// @version      2026-07-18
+// @version      2026-07-20
 // @description  Update the Launch School UI for a cleaner, more minimal layout and add additional hotkeys.
 // @author       Jacob Cassidy
 // @match        https://launchschool.com/**
