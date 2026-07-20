@@ -4,6 +4,7 @@
 
 // import { colorLog } from "./log";
 import {
+  elements,
   setElementContentPanel,
   setElementHeader,
   setElementInstructionsPanel,
@@ -55,4 +56,6 @@ export function syncInjectedElementsState() {
   setElementSettingsToggleBtn(settingsToggleBtn);
   setElementSidebarShowButton(sidebarShowBtn);
   setElementTabsPanelToggleButton(tabsPanelToggleBtn);
+
+  console.log(elements.injected.settingsToggleButton);
 }

@@ -8,7 +8,7 @@ import { handleFocus } from "./focus.js";
 import { runCmdCtrlHotkeys, runCmdShiftHotkeys } from "../hotkeys";
 import { scheduleReload } from "./load.js";
 import { showSidebar } from "./show.js";
-import { toggleTabsPanel } from "./toggle.js";
+import { toggleSettingsMenu, toggleTabsPanel } from "./toggle.js";
 
 /**
  * WATCH FOR CONTENT CHANGE
@@ -174,6 +174,7 @@ export function watchHotkeys() {
         event.code !== "KeyM" &&
         event.code !== "KeyN" &&
         event.code !== "KeyR" &&
+        event.code !== "KeyS" &&
         event.code !== "KeyT"
       )
         return;
@@ -269,6 +270,24 @@ export function watchQuestionBoxes() {
     boxTextarea.addEventListener("focus", () => boxTextarea.addEventListener("keydown", handleSubmitHotkey));
     boxTextarea.addEventListener("blur", () => boxTextarea.removeEventListener("keydown", handleSubmitHotkey));
   });
+}
+
+/**
+ * WATCH SETTINGS MENU TOGGLE BUTTON
+ * Toggles the settings menu when clicked.
+ */
+export function watchSettingMenuToggleBtn() {
+  // colorLog.run("Running watchSettingMenuToggleBtn()");
+  const settingsMenuToggleBtn = elements.injected.settingsToggleButton;
+  if (!settingsMenuToggleBtn) return;
+
+  if (settingsMenuToggleBtn.dataset.settingsMenuToggleBtnEventBound) {
+    // colorLog.detail("Settings Menu Toggle Button watch already exist. Exited watchSettingMenuToggleBtn().");
+    return;
+  }
+  settingsMenuToggleBtn.dataset.settingsMenuToggleBtnEventBound = "true";
+
+  settingsMenuToggleBtn.addEventListener("click", () => toggleSettingsMenu());
 }
 
 /**

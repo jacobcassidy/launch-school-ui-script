@@ -86,7 +86,6 @@ body:not(:has(.nav-drawer)) {
     align-items: center;
     gap: 6px;
     max-inline-size: 100%;
-    text-transform: capitalize;
 
     &.container-1,
     &.container-3 {

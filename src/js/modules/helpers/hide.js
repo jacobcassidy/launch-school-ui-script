@@ -3,7 +3,8 @@
  */
 
 // import { colorLog } from "./log.js";
-import { setIsHeaderHidden, setIsSidebarHidden, setIsTabsPanelHidden } from "./state.js";
+import { handleOutsideSettingsMenuClick } from "./settings.js";
+import { elements, setIsHeaderHidden, setIsSidebarHidden, setIsTabsPanelHidden } from "./state.js";
 
 /**
  * HIDE HEADER
@@ -11,6 +12,19 @@ import { setIsHeaderHidden, setIsSidebarHidden, setIsTabsPanelHidden } from "./s
 export function hideHeader() {
   // colorLog.run("Running hideHeader()");
   setIsHeaderHidden(true);
+}
+
+/**
+ * HIDE SETTINGS MENU
+ */
+export function hideSettingsMenu() {
+  // colorLog.run("Running hideSettingsMenu()");
+  const settingsMenu = elements.injected.settingsMenu;
+  const settingsMenuToggleBtn = elements.injected.settingsToggleButton;
+  settingsMenu.classList.remove("active");
+  settingsMenuToggleBtn.classList.remove("active");
+
+  document.removeEventListener("pointerdown", handleOutsideSettingsMenuClick);
 }
 
 /**

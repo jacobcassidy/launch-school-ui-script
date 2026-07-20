@@ -4,8 +4,8 @@
 
 // import { colorLog } from "./helpers/log.js";
 import panelsIcon from "../../svg/tabs-panel.svg";
-import settingsIcon from "../../svg/settings.svg";
 import { elements } from "./helpers/state.js";
+import { createSettingsMenu } from "./helpers/settings.js";
 
 /**
  * INJECT SITE HEADER
@@ -53,7 +53,7 @@ function addContainerElements(containerEl, containerNum) {
     const bookTocBtn = document.querySelector(".toc-toggle-button");
 
     if (bookTocBtn) {
-      bookTocBtn.classList.add("site-header__button");
+      bookTocBtn.classList.add("site-header__button", "has-dropdown");
       bookTocBtn.title = "Toggle Table of Contents";
       containerEl.append(bookTocBtn);
     }
@@ -138,29 +138,6 @@ function createHeaderContainers(headerEl) {
 
     headerEl.appendChild(createHeaderContainerEl());
   }
-}
-
-/**
- * CREATE SETTINGS MENU
- */
-function createSettingsMenu(containerEl) {
-  const createSettingsMenuEl = () => {
-    const settingsMenuEl = document.createElement("div");
-    settingsMenuEl.classList.add("settings-menu");
-    settingsMenuEl.innerText = "Hide header by default";
-    return settingsMenuEl;
-  };
-
-  const createSettingsMenuToggleButtonEl = () => {
-    const settingsMenuToggleButtonEl = document.createElement("button");
-    settingsMenuToggleButtonEl.classList.add("site-header__button", "btn--settings-menu-toggle");
-    settingsMenuToggleButtonEl.title = "Toggle Settings Menu";
-    settingsMenuToggleButtonEl.innerHTML = settingsIcon;
-    return settingsMenuToggleButtonEl;
-  };
-
-  containerEl.append(createSettingsMenuToggleButtonEl());
-  containerEl.append(createSettingsMenuEl());
 }
 
 /**

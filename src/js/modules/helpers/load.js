@@ -14,6 +14,7 @@ import {
   watchHotkeys,
   watchPromptSubmission,
   watchQuestionBoxes,
+  watchSettingMenuToggleBtn,
   watchShowSidebarBtn,
   watchTabBtnClick,
   watchTabsPanelToggleBtn,
@@ -53,6 +54,7 @@ export function loadUI() {
   watchShowSidebarBtn();
   watchTabBtnClick();
   watchTabsPanelToggleBtn();
+  watchSettingMenuToggleBtn();
 }
 
 /**

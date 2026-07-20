@@ -1,10 +1,11 @@
 /**
  * @module helpers/toggle
  */
-// import { colorLog } from "./log.js";
-import { showHeader, showSidebar, showTabsPanel } from "./show.js";
-import { hideHeader, hideSidebar, hideTabsPanel } from "./hide.js";
-import { states } from "./state.js";
+
+import { colorLog } from "./log.js";
+import { showHeader, showSettingsMenu, showSidebar, showTabsPanel } from "./show.js";
+import { hideHeader, hideSettingsMenu, hideSidebar, hideTabsPanel } from "./hide.js";
+import { elements, states } from "./state.js";
 
 /**
  * TOGGLE HEADER
@@ -17,6 +18,18 @@ export function toggleHeader() {
     showHeader();
   } else {
     hideHeader();
+  }
+}
+
+/**
+ * TOGGLE SETTINGS MENU
+ */
+export function toggleSettingsMenu() {
+  colorLog.run("Running toggleSettingsMenu()");
+  if (elements.injected.settingsMenu.classList.contains("active")) {
+    hideSettingsMenu();
+  } else {
+    showSettingsMenu();
   }
 }
 

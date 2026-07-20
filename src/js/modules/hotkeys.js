@@ -1,5 +1,5 @@
 /**
- * HOTKEYS
+ * @module hotkeys
  */
 
 import { activateCodeEditor, activateTab } from "./helpers/activate.js";
@@ -7,6 +7,7 @@ import { activateCodeEditor, activateTab } from "./helpers/activate.js";
 import { elements } from "./helpers/state.js";
 import { showToast } from "./helpers/show.js";
 import { toggleHeader, toggleSidebar, toggleTabsPanel } from "./helpers/toggle.js";
+// import { addHotkeyMenuItem } from "./header.js";
 
 /**
  * RUN `CMD + SHIFT` HOTKEYS
@@ -150,6 +151,15 @@ export function runCmdCtrlHotkeys() {
     }, 100);
 
     showToast("Solution submitted for LSBot Review");
+    return;
+  }
+
+  // Hotkey: Toggle Settings Menu
+  if (event.code === "KeyS") {
+    const settingsMenuBtn = document.querySelector(".btn--toggle-settings");
+    if (!settingsMenuBtn) return;
+
+    settingsMenuBtn.click();
     return;
   }
 

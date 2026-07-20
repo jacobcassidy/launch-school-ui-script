@@ -7,7 +7,7 @@ export const elements = {
   injected: {
     header: null,
     settingsMenu: null,
-    settingsToggleBtn: null,
+    settingsToggleButton: null,
     sidebarShowButton: null,
     tabsPanelToggleButton: null,
   },
@@ -44,7 +44,7 @@ export function setElementSettingsMenu(el) {
 
 // SET INJECTED SETTINGS TOGGLE BTN
 export function setElementSettingsToggleBtn(el) {
-  elements.injected.settingsToggleBtn = el;
+  elements.injected.settingsToggleButton = el;
 }
 
 // SET INJECTED SIDEBAR SHOW BUTTON
