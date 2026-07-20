@@ -1,6 +1,7 @@
 /**
  * HOTKEYS
  */
+
 import { activateCodeEditor, activateTab } from "./helpers/activate.js";
 // import { colorLog } from "./helpers/log.js";
 import { elements } from "./helpers/state.js";

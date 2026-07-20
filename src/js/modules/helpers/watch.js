@@ -1,6 +1,7 @@
 /**
- * WATCH HELPERS
+ * @module helpers/watch
  */
+
 import { colorLog } from "./log.js";
 import { elements, states } from "./state.js";
 import { handleFocus } from "./focus.js";

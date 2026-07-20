@@ -1,6 +1,7 @@
 /**
- * FLASH HELPERS
+ * @module helpers/flash
  */
+
 // import { colorLog } from "./log.js";
 
 /**

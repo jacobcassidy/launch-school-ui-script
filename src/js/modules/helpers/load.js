@@ -1,6 +1,7 @@
 /**
- * LOAD HELPERS
+ * @module helpers/load
  */
+
 import { colorLog } from "./log.js";
 import { injectHeader } from "../header.js";
 import { injectStyles } from "./style.js";

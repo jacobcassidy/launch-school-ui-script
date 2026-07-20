@@ -1,6 +1,7 @@
 /**
- * STYLE HELPERS
+ * @module helpers/style
  */
+
 // import { colorLog } from "./log";
 // eslint-disable-next-line import-x/no-unresolved -- Used for esbuild.config.js cssTextPlugin
 import stylesToInject from "virtual-esbuild:styles";

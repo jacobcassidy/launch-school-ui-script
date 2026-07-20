@@ -1,5 +1,5 @@
 /**
- * TOGGLE HELPERS
+ * @module helpers/toggle
  */
 // import { colorLog } from "./log.js";
 import { showHeader, showSidebar, showTabsPanel } from "./show.js";

@@ -1,6 +1,7 @@
 /**
- * SYNC HELPERS
+ * @module helpers/sync
  */
+
 // import { colorLog } from "./log";
 import {
   setElementContentPanel,

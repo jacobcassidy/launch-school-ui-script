@@ -1,6 +1,7 @@
 /**
- * FOCUS HELPERS
+ * @module helpers/focus
  */
+
 // import { colorLog } from "./log.js";
 import { flashActiveElement } from "./flash.js";
 import { states } from "./state.js";

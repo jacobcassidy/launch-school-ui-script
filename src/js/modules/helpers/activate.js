@@ -1,6 +1,7 @@
 /**
- * ACTIVATE HELPERS
+ * @module helpers/activate
  */
+
 // import { colorLog } from "./log";
 import { elements } from "./state";
 import { handleFocus } from "./focus";

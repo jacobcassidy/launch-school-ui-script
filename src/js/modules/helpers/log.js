@@ -1,5 +1,5 @@
 /**
- * LOG HELPERS
+ * @module helpers/log
  */
 
 export const colorLog = {

@@ -1,5 +1,5 @@
 /**
- * STATE HELPERS
+ * @module helpers/state
  */
 
 // ELEMENTS OBJECT

@@ -1,6 +1,7 @@
 /**
- * HIDE HELPERS
+ * @module helpers/hide
  */
+
 // import { colorLog } from "./log.js";
 import { setIsHeaderHidden, setIsSidebarHidden, setIsTabsPanelHidden } from "./state.js";
 

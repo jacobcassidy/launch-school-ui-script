@@ -1,6 +1,7 @@
 /**
- * TOASTER
+ * @module toaster
  */
+
 // import { colorLog } from "./helpers/log";
 
 /**

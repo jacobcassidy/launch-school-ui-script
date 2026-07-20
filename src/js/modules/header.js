@@ -1,6 +1,7 @@
 /**
- * HEADER
+ * @module header
  */
+
 // import { colorLog } from "./helpers/log.js";
 import panelsIcon from "../../svg/tabs-panel.svg";
 import settingsIcon from "../../svg/settings.svg";
