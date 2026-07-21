@@ -1,4 +1,5 @@
 /**
+ * SHOW
  * @module helpers/show
  */
 

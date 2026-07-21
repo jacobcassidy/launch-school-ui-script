@@ -1,4 +1,5 @@
 /**
+ * STYLE
  * @module helpers/style
  */
 

@@ -1,4 +1,5 @@
 /**
+ * SETTINGS
  * @module helpers/settings
  */
 

@@ -1,4 +1,5 @@
 /**
+ * TOGGLE
  * @module helpers/toggle
  */
 

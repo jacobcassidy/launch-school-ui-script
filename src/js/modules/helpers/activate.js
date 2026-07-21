@@ -1,4 +1,5 @@
 /**
+ * ACTIVATE
  * @module helpers/activate
  */
 

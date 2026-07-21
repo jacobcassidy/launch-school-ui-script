@@ -1,4 +1,5 @@
 /**
+ * WATCH
  * @module helpers/watch
  */
 

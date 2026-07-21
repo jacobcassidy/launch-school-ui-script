@@ -1,4 +1,5 @@
 /**
+ * LOG
  * @module helpers/log
  */
 

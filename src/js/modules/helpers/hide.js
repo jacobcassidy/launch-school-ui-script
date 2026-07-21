@@ -1,4 +1,5 @@
 /**
+ * HIDE
  * @module helpers/hide
  */
 

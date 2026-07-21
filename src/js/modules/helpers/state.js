@@ -1,4 +1,5 @@
 /**
+ * STATE
  * @module helpers/state
  */
 

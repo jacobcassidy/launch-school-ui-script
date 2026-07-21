@@ -1,4 +1,5 @@
 /**
+ * LOAD
  * @module helpers/load
  */
 

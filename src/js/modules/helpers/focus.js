@@ -1,4 +1,5 @@
 /**
+ * FOCUS
  * @module helpers/focus
  */
 

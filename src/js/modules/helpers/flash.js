@@ -1,4 +1,5 @@
 /**
+ * FLASH
  * @module helpers/flash
  */
 

@@ -1,4 +1,5 @@
 /**
+ * SYNC
  * @module helpers/sync
  */
 
