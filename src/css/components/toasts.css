@@ -21,11 +21,11 @@
   opacity: 0;
   padding: 16px 20px;
   transition:
-    opacity 500ms ease,
-    transform 500ms ease;
+    opacity var(--duration-long) ease,
+    transform var(--duration-long) ease;
 }
 
 .toast.show {
   transform: translateY(0);
-  opacity: 1;
+  opacity: 0.9;
 }

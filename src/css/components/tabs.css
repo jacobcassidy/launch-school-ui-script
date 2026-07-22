@@ -9,7 +9,6 @@
 .tab-nav {
   align-items: center;
   gap: 0 !important;
-  overflow: initial !important;
   background-color: var(--background-color-001) !important;
   border-color: var(--border-color-001) !important;
   border-block-end: 1px solid var(--border-color-001) !important;
@@ -93,7 +92,7 @@
   }
 
   &.flash-active {
-    animation: bg-flash 300ms;
+    animation: bg-flash var(--duration-long);
   }
 }
 

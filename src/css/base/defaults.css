@@ -25,7 +25,7 @@ textarea {
   font-size: 0.9375rem !important;
 
   &.flash-active {
-    animation: bg-flash var(--duration-short);
+    animation: bg-flash var(--duration-long);
   }
 
   &:focus {

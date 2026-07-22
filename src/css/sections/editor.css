@@ -50,7 +50,7 @@
       .CodeMirror-activeline {
         .flash-active & {
           .CodeMirror-line {
-            animation: bg-flash 300ms;
+            animation: bg-flash var(--duration-long);
           }
         }
       }
