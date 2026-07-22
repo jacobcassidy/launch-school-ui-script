@@ -6,7 +6,7 @@
 import { colorLog } from "./log.js";
 import { elements, states } from "./state.js";
 import { handleFocus } from "./focus.js";
-import { runCmdCtrlHotkeys, runCmdShiftHotkeys } from "../hotkeys";
+import { triggerHotkeyAction } from "../hotkeys.js";
 import { scheduleReload } from "./load.js";
 import { showSidebar } from "./show.js";
 import { toggleSettingsMenu, toggleTabsPanel } from "./toggle.js";
@@ -78,13 +78,13 @@ export function watchForUrlChange() {
   const checkForUrlChange = (from) => {
     colorLog.detail(`checkForUrlChange() called from ${from}`);
 
-    if (states.isReloadScheduled) {
+    if (states.load.isReloadScheduled) {
       // colorLog.detail("Reload already scheduled. Exited checkForUrlChange().");
       return;
     }
 
     const currentUrl = `${location.origin}${location.pathname}`;
-    const isChangedUrl = currentUrl !== states.lastUrl;
+    const isChangedUrl = currentUrl !== states.load.lastUrl;
 
     if (!isChangedUrl) {
       // colorLog.detail("No URL change detected. Exiting checkForUrlChange().");
@@ -154,6 +154,10 @@ export function watchHotkeys() {
     const keyShift = event.shiftKey;
     const isCmdShift = keyCmd && keyShift;
     const isCmdCtrl = keyCmd && keyCtrl;
+    let modifier;
+
+    if (isCmdShift) modifier = "cmdShift";
+    if (isCmdCtrl) modifier = "cmdCtrl";
 
     // Disallowed key combos
     if (event.repeat || (!isCmdShift && !isCmdCtrl) || (isCmdShift && keyCtrl) || (isCmdCtrl && keyShift) || keyAlt)
@@ -175,14 +179,13 @@ export function watchHotkeys() {
         event.code !== "KeyM" &&
         event.code !== "KeyN" &&
         event.code !== "KeyR" &&
-        event.code !== "KeyS" &&
-        event.code !== "KeyT"
+        event.code !== "KeyT" &&
+        event.code !== "Comma"
       )
         return;
     }
 
-    if (isCmdShift) runCmdShiftHotkeys();
-    if (isCmdCtrl) runCmdCtrlHotkeys();
+    triggerHotkeyAction(modifier, event.code);
   });
 }
 
@@ -206,7 +209,7 @@ export function watchPromptSubmission() {
     let observer = null;
 
     prompt.addEventListener("focus", () => {
-      console.log("Watching prompt focus.");
+      // console.log("Watching prompt focus.");
 
       observer?.disconnect();
 
@@ -214,12 +217,12 @@ export function watchPromptSubmission() {
         // colorLog.run("Running prompt observer()");
 
         if (prompt.disabled) {
-          console.log("Prompt is disabled.");
+          // console.log("Prompt is disabled.");
         }
 
         if (!prompt.disabled) {
           observer.disconnect();
-          console.log("Prompt focused.");
+          // console.log("Prompt focused.");
           prompt.focus();
         }
       });
