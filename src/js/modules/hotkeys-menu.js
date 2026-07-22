@@ -23,6 +23,9 @@ export function injectHotkeysMenu() {
     hotkeysMenuTitleEl.innerText = "Current Page Hotkeys";
     hotkeysMenuEl.append(hotkeysMenuTitleEl);
 
+    const modifiersWrapperEl = document.createElement("div");
+    modifiersWrapperEl.classList.add("settings-list-wrapper");
+
     for (const [modifierListKey, modifierListObj] of Object.entries(states.hotkeys)) {
       let modifierKey;
       if (modifierListKey === "cmdShift") modifierKey = "Shift";
@@ -32,15 +35,15 @@ export function injectHotkeysMenu() {
       modifierListEl.classList.add("settings-list");
       const modifierListTitleEl = document.createElement("li");
       modifierListTitleEl.classList.add("settings-list__title");
-      modifierListTitleEl.innerText = `Cmd ${modifierKey} Shortcuts`;
+      modifierListTitleEl.innerText = `${modifierKey} Shortcuts`;
       modifierListEl.append(modifierListTitleEl);
 
       for (const hotkeyObj of Object.values(modifierListObj)) {
         const hotkeyItemEl = document.createElement("li");
         hotkeyItemEl.classList.add("settings-list__item");
 
-        const hotkeyItemKeyContainerEl = document.createElement("div");
-        hotkeyItemKeyContainerEl.classList.add("setting-status", "hotkey-shortcut");
+        const hotkeyItemKeyEl = document.createElement("div");
+        hotkeyItemKeyEl.classList.add("setting-status", "hotkey-shortcut");
 
         const keys = ["Cmd", modifierKey, hotkeyObj.symbol];
 
@@ -48,17 +51,17 @@ export function injectHotkeysMenu() {
           const keySpan = document.createElement("span");
           keySpan.classList.add("key");
           keySpan.innerText = key;
-          hotkeyItemKeyContainerEl.append(keySpan);
+          hotkeyItemKeyEl.append(keySpan);
 
           // Add a `+` symbol after each key, except the last key.
           const isLast = index === keys.length - 1;
           if (isLast) return;
           const plusSpan = document.createElement("span");
           plusSpan.innerText = "+";
-          hotkeyItemKeyContainerEl.append(plusSpan);
+          hotkeyItemKeyEl.append(plusSpan);
         });
 
-        hotkeyItemEl.append(hotkeyItemKeyContainerEl);
+        hotkeyItemEl.append(hotkeyItemKeyEl);
 
         const hotkeyItemLabelEl = document.createElement("div");
         hotkeyItemLabelEl.classList.add("setting-desc", "hotkey-label");
@@ -68,8 +71,10 @@ export function injectHotkeysMenu() {
         modifierListEl.append(hotkeyItemEl);
       }
 
-      hotkeysMenuEl.append(modifierListEl);
+      modifiersWrapperEl.append(modifierListEl);
     }
+
+    hotkeysMenuEl.append(modifiersWrapperEl);
 
     return hotkeysMenuEl;
   };
