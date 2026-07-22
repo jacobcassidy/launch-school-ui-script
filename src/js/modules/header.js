@@ -3,7 +3,7 @@
  * @module header
  */
 // import { colorLog } from "./helpers/log.js";
-import { injectSettingsMenu } from "./helpers/settings.js";
+import { injectSettingsMenu } from "./settings-menu.js";
 import {
   injectSettingsMenuToggleButton,
   injectSidebarShowButton,

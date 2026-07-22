@@ -14,7 +14,7 @@ import { elements } from "./helpers/state";
 export function injectSettingsMenu(containerEl) {
   const createSettingsMenu = () => {
     const settingsMenuEl = document.createElement("div");
-    settingsMenuEl.classList.add("settings-menu");
+    settingsMenuEl.classList.add("settings-menu", "dropdown-menu");
     const settingsMenuHeaderEl = document.createElement("h2");
     settingsMenuHeaderEl.classList.add("setting-menu__title");
     settingsMenuHeaderEl.innerText = "Settings";
