@@ -19,7 +19,7 @@
   scrollbar-color: #d1d5db #f8f9fa;
   scrollbar-width: thin;
   max-block-size: calc(100vb - var(--header-height) - 8px - 16px);
-  inline-size: 350px;
+  inline-size: 420px;
   padding: 16px;
   transition: var(--transition-long);
 
@@ -48,54 +48,71 @@
     font-size: 1rem;
   }
 
-  .list-title {
-    grid-column: 1 / -1;
-    border-block-end: 1px solid var(--border-color-001);
-    padding: 4px 8px;
-    font-size: 0.9375rem;
-  }
-
-  .hotkeys-list {
+  .settings-list {
     display: grid;
     grid-template-columns: max-content 1fr;
     border: 1px solid var(--border-color-001);
     border-radius: var(--border-radius-001);
+
+    + .settings-list {
+      margin-block-start: 8px;
+    }
   }
 
-  .hotkeys-list__item {
+  .settings-list__title {
+    grid-column: 1 / -1;
+    border-block-end: 1px solid var(--border-color-001);
+    color: var(--color-grayscale-065);
+    padding: 8px 12px;
+    font-size: 0.9375rem;
+  }
+
+  .settings-list__item {
     display: grid;
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
+    border-block-end: 1px solid var(--border-color-001);
 
-    span {
+    .setting-status,
+    .setting-desc {
       display: flex;
       align-items: center;
-      border: 0 solid var(--border-color-001);
-      border-block-end-width: 1px;
-      padding: 4px 8px;
+      padding: 8px 12px;
+      line-height: 1.5;
+    }
 
-      &:first-child {
-        border-inline-end-width: 1px;
+    .setting-status {
+      gap: 2px;
+      border-inline-end: 1px solid var(--border-color-001);
+      color: var(--color-grayscale-065);
+      font-family: Monaco, Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+
+      .key {
+        background-color: var(--color-grayscale-097);
+        border-radius: 2px;
+        padding: 0 4px;
+
+        &:last-child {
+          background-color: var(--color-brand-001-alpha);
+          color: var(--color-brand-001);
+          font-weight: 700;
+        }
       }
+    }
+
+    .setting-desc {
+      color: var(--color-grayscale-050);
+      font-size: 0.8125rem;
+    }
+
+    &:nth-child(even) {
+      background-color: var(--color-grayscale-098);
     }
 
     &:last-child {
-      span {
-        border-block-end-width: 0;
-      }
+      border-block-end-width: 0;
     }
-  }
-
-  .hotkey-key {
-    background-color: var(--color-grayscale-098);
-    color: var(--color-grayscale-065);
-    font-family: Monaco, Menlo, Consolas, monospace;
-    font-size: 0.75rem;
-  }
-
-  .hotkey-label {
-    color: var(--color-grayscale-050);
-    font-size: 0.8125rem;
   }
 
   &.active {
