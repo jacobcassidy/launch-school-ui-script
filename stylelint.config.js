@@ -47,6 +47,8 @@ export default {
     ],
     "font-weight-notation": "numeric",
     "function-linear-gradient-no-nonstandard-direction": true,
+    "hue-degree-notation": "number",
+    "lightness-notation": "number",
     "number-max-precision": 5,
     "plugin/declaration-block-no-ignored-properties": true,
     "rule-empty-line-before": ["always", { ignore: ["first-nested"], except: ["after-single-line-comment"] }],
