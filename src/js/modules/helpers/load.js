@@ -3,7 +3,7 @@
  * @module helpers/load
  */
 
-import { colorLog } from "./log.js";
+// import { colorLog } from "./log.js";
 import { injectHeader } from "../header.js";
 import { injectStyles } from "./style.js";
 import { injectToaster } from "../toaster.js";
@@ -29,7 +29,6 @@ import { injectHotkeysMenu } from "../hotkeys-menu.js";
  * Inserts the UI modifications into the DOM.
  */
 export function loadUI() {
-  // colorLog.run("Running loadUI()");
   injectStyles();
   syncNativeElementsState();
   injectHeader();
@@ -38,7 +37,7 @@ export function loadUI() {
   syncAvailableHotkeys();
   injectHotkeysMenu();
 
-  // Apply hidden state on load
+  // Apply Tabs Panel hidden state on load
   if (elements.native.tabsPanel) {
     if (states.hidden.isTabsPanelHidden) {
       hideTabsPanel();
@@ -47,9 +46,9 @@ export function loadUI() {
     }
   }
 
+  // Apply Header hidden state on load
   if (elements.injected.header && states.hidden.isHeaderHidden) hideHeader();
 
-  // Watch elements:
   watchForUrlChange();
   watchForMissingHeader();
   watchHotkeys();
@@ -74,12 +73,13 @@ export function scheduleReload() {
   setIsReloadScheduled(true);
 
   const reloadUI = () => {
+    // colorLog.run("Running reloadUI()");
     loadUI();
     setLastUrl();
     setIsReloadScheduled(false);
   };
 
-  colorLog.detail("Waiting for new DOM to be ready...");
+  // colorLog.detail("Waiting for new DOM to be ready...");
   const startWait = performance.now();
 
   const waitForDom = () => {
@@ -88,11 +88,11 @@ export function scheduleReload() {
     const isWaitMaxReached = performance.now() - startWait > 3000;
 
     if (isNewBody) {
-      colorLog.info("New DOM is ready, calling reloadUI().");
+      // colorLog.info("New DOM is ready, calling reloadUI().");
       requestAnimationFrame(reloadUI);
       return;
     } else if (isWaitMaxReached) {
-      colorLog.alert("Max wait time reached, calling reloadUI().");
+      // colorLog.alert("Max wait time reached, calling reloadUI().");
       requestAnimationFrame(reloadUI);
       return;
     } else {
