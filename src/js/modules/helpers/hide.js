@@ -38,3 +38,11 @@ export function hideSidebar() {
 export function hideTabsPanel() {
   setIsTabsPanelHidden(true);
 }
+
+/**
+ * HIDE TABLE OF CONTENTS MENU
+ */
+export function hideTocMenu() {
+  const tocBtn = elements.native.tocButton;
+  if (tocBtn) tocBtn.click();
+}
