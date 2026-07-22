@@ -3,8 +3,8 @@
  * @module helpers/toggle
  */
 
-import { showHeader, showSettingsMenu, showSidebar, showTabsPanel } from "./show.js";
-import { hideHeader, hideSettingsMenu, hideSidebar, hideTabsPanel } from "./hide.js";
+import { showHeader, showSettingsMenu, showSidebar, showTabsPanel, showToast, showTocMenu } from "./show.js";
+import { hideHeader, hideSettingsMenu, hideSidebar, hideTabsPanel, hideTocMenu } from "./hide.js";
 import { elements, states } from "./state.js";
 
 /**
@@ -71,5 +71,18 @@ export function toggleTabsPanel() {
     showTabsPanel();
   } else {
     hideTabsPanel();
+  }
+}
+
+/**
+ * TOGGLE TABLE OF CONTENTS
+ */
+export function toggleTocMenu() {
+  const tocBtn = elements.native.tocButton;
+
+  if (tocBtn && tocBtn.classList.contains("open")) {
+    hideTocMenu();
+  } else if (tocBtn) {
+    showTocMenu();
   }
 }
