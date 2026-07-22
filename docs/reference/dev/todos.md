@@ -46,7 +46,7 @@
       - setAvailableHotkey()
 
   - eventListeners
-    - runHotkey()
+    - triggerHotkeyAction()
 
 - injectHeader()
   - createHeader()

@@ -16,7 +16,7 @@ export function injectSettingsMenuToggleButton(containerEl) {
   const createSettingsMenuToggleButton = () => {
     const settingsMenuToggleButtonEl = document.createElement("button");
     settingsMenuToggleButtonEl.classList.add("site-header__button", "btn--toggle-settings", "has-dropdown");
-    settingsMenuToggleButtonEl.title = "Toggle Settings Menu";
+    settingsMenuToggleButtonEl.title = "Toggle Hotkeys Menu";
     settingsMenuToggleButtonEl.innerHTML = cmdKeyIcon;
     return settingsMenuToggleButtonEl;
   };

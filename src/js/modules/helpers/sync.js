@@ -77,7 +77,7 @@ export function syncAvailableHotkeys() {
       label = "Focus Editor";
     } else {
       focusEl = focusScratchpad;
-      label = "Focus Scratchpad";
+      label = "Focus Scratchpad Editor";
     }
 
     setAvailableHotkey(modifier, "KeyE", "E", label, focusEl);
@@ -118,7 +118,8 @@ export function syncAvailableHotkeys() {
       let label;
       if (elements.native.scratchpad) label = "Copy Scratchpad Code";
       else label = "Copy Editor Code";
-      setAvailableHotkey("cmdCrl", "KeyC", "C", label, triggerCopyBtn);
+
+      setAvailableHotkey("cmdCtrl", "KeyC", "C", label, triggerCopyBtn);
     };
 
     const handleNextExerciseHotkey = () => {
@@ -166,7 +167,7 @@ export function syncAvailableHotkeys() {
     const handleTocHotkey = () => document.querySelector(".toc-toggle-button").click();
 
     if (tabsNavExists) handleTabsHotkeys();
-    if (sidebarExists) setAvailableHotkey("cmdCtrl", "KeyB", "B", "Show Sidebar Menu", toggleSidebar);
+    if (sidebarExists) setAvailableHotkey("cmdCtrl", "KeyB", "B", "Toggle Sidebar Menu", toggleSidebar);
     if (copyCodeBtnExists) handleCopyCodeHotkey();
     if (editorExists || scratchpadExists) handleEditorHotkey("cmdCtrl");
     if (markExerciseBtnExists)
@@ -175,7 +176,7 @@ export function syncAvailableHotkeys() {
       setAvailableHotkey("cmdCtrl", "KeyN", "N", "Go to next exercise", handleNextExerciseHotkey);
     if (submitReviewBtnExists) setAvailableHotkey("cmdCtrl", "KeyR", "R", "Submit Review", handleSubmitReviewHotkey);
     if (tocButtonExists) setAvailableHotkey("cmdCtrl", "KeyT", "T", "Toggle Table of Content", handleTocHotkey);
-    if (settingsMenuExists) setAvailableHotkey("cmdCtrl", "Comma", ",", "Toggle Settings Menu", toggleSettingsMenu);
+    if (settingsMenuExists) setAvailableHotkey("cmdCtrl", "Comma", ",", "Toggle Hotkeys Menu", toggleSettingsMenu);
   };
 
   // const syncNativeHotkeys = () => {};

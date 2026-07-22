@@ -22,7 +22,7 @@ import {
 } from "./watch.js";
 import { hideHeader, hideTabsPanel } from "./hide.js";
 import { showTabsPanel } from "./show.js";
-import { injectHotkeysMenu } from "../hotkeys.js";
+import { injectHotkeysMenu } from "../hotkeys-menu.js";
 
 /**
  * LOAD UI

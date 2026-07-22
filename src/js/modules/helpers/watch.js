@@ -3,10 +3,10 @@
  * @module helpers/watch
  */
 
+import { activateHotkey } from "./activate.js";
 import { colorLog } from "./log.js";
 import { elements, states } from "./state.js";
 import { handleFocus } from "./focus.js";
-import { triggerHotkeyAction } from "../hotkeys.js";
 import { scheduleReload } from "./load.js";
 import { showSidebar } from "./show.js";
 import { toggleSettingsMenu, toggleTabsPanel } from "./toggle.js";
@@ -185,7 +185,7 @@ export function watchHotkeys() {
         return;
     }
 
-    triggerHotkeyAction(modifier, event.code);
+    activateHotkey(modifier, event.code);
   });
 }
 

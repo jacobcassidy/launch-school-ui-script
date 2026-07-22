@@ -4,7 +4,7 @@
  */
 
 // import { colorLog } from "./log.js";
-import { handleOutsideSettingsMenuClick } from "./settings.js";
+import { handleOutsideSettingsMenuClick } from "../settings-menu.js";
 import { elements, setIsHeaderHidden, setIsSidebarHidden, setIsTabsPanelHidden } from "./state.js";
 
 /**

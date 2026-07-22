@@ -4,6 +4,24 @@
  */
 
 // import { colorLog } from "./log";
+import { states } from "./state";
+
+/**
+ * ACTIVATES HOTKEY
+ * Runs the callback function for the hotkey.
+ *
+ * @param {string} modifier The settings object's modifier key name being accessed [cmdShift, cmdCtrl]
+ * @param {string} eventCode The non-modifier key's event.code used for the hotkey
+ */
+export function activateHotkey(modifier, eventCode) {
+  const keyEvents = states.hotkeys[modifier];
+
+  for (const [key, keyObj] of Object.entries(keyEvents)) {
+    if (key === eventCode) {
+      keyObj.callback;
+    }
+  }
+}
 
 /**
  * ACTIVATE TAB

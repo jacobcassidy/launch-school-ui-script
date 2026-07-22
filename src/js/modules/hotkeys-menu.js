@@ -11,8 +11,11 @@ import { states } from "./helpers/state.js";
  * Injects the hotkeys menu as a section of the settings menu.
  */
 export function injectHotkeysMenu() {
-  const settingsMenu = document.querySelector("settings-menu");
-
+  const settingsMenu = document.querySelector(".settings-menu");
+  if (!settingsMenu) {
+    console.log("No settings menu found.");
+    return;
+  }
   const createHotkeysMenu = () => {
     const hotkeysMenuEl = document.createElement("section");
     hotkeysMenuEl.classList.add("hotkeys-section");
@@ -34,14 +37,14 @@ export function injectHotkeysMenu() {
       modifierListTitleEl.innerText = `Cmd ${modifierKey} Shortcuts`;
       modifierListEl.append(modifierListTitleEl);
 
-      for (const [hotkey, hotkeyObj] of Object.entries(modifierListObj)) {
+      for (const hotkeyObj of Object.values(modifierListObj)) {
         const hotkeyItemEl = document.createElement("li");
         hotkeyItemEl.classList.add("settings-list__item");
 
         const hotkeyItemKeyContainerEl = document.createElement("div");
         hotkeyItemKeyContainerEl.classList.add("setting-status", "hotkey-shortcut");
 
-        const keys = ["Cmd", modifierKey, hotkey];
+        const keys = ["Cmd", modifierKey, hotkeyObj.symbol];
 
         keys.forEach((key, index) => {
           const keySpan = document.createElement("span");
@@ -74,21 +77,4 @@ export function injectHotkeysMenu() {
   };
 
   settingsMenu.append(createHotkeysMenu());
-}
-
-/**
- * TRIGGER HOTKEY ACTION
- * Runs the callback function for the hotkey.
- *
- * @param {string} modifier The settings object's modifier key name being accessed [cmdShift, cmdCtrl]
- * @param {string} eventCode The non-modifier key's event.code used for the hotkey
- */
-export function triggerHotkeyAction(modifier, eventCode) {
-  const keyEvents = states.hotkeys[modifier];
-
-  for (const [key, keyObj] of Object.entries(keyEvents)) {
-    if (key === eventCode) {
-      keyObj.callback;
-    }
-  }
 }
