@@ -16,10 +16,11 @@ import {
   setElementSettingsToggleBtn,
   setElementSidebar,
   setElementSidebarShowButton,
-  setElementTabsNav,
+  setElementTabNav,
   setElementTabsPanel,
   setElementTabsPanelToggleButton,
   setElementTocButton,
+  states,
 } from "./state.js";
 import { toggleExerciseStatus, toggleHeader, toggleSettingsMenu, toggleSidebar, toggleTabsPanel } from "./toggle.js";
 import { handleFocus } from "./focus.js";
@@ -30,7 +31,10 @@ import { showToast } from "./show.js";
  * Syncs the hotkeys available on the current page
  */
 export function syncAvailableHotkeys() {
-  // colorLog.run("Running syncAvailableHotkeys()");
+  // Clear any previous hotkeys when syncing.
+  states.hotkeys.cmdShift = {};
+  states.hotkeys.cmdCtrl = {};
+  states.hotkeys.native = {};
 
   // Injected elements
   const headerExists = elements.injected.header;
@@ -44,7 +48,7 @@ export function syncAvailableHotkeys() {
   const scratchpadExists = elements.native.scratchpad;
   const sidebarExists = elements.native.sidebar;
   const submitReviewBtnExists = document.querySelector("#lsbot-send-review");
-  const tabsNavExists = elements.native.tabsNav;
+  const tabNavExists = elements.native.tabNav;
   const tabsPanelExists = elements.native.tabsPanel;
   const tocButtonExists = elements.native.tocButton;
   let nextExerciseLinkExists, nextExerciseLink;
@@ -110,7 +114,7 @@ export function syncAvailableHotkeys() {
         copyBtn.click();
 
         if (elements.native.scratchpad) showToast("Scratchpad code copied");
-        if (elements.native.editorPanel) showToast("Editor code copied");
+        else if (elements.native.editorPanel) showToast("Editor code copied");
         else showToast("Code copied");
       };
 
@@ -148,15 +152,16 @@ export function syncAvailableHotkeys() {
         const isHidden = getComputedStyle(btn).display === "none";
         if (isHidden) return;
 
-        const label = btn.getAttribute("aria-label") || btn.innerText;
-        tabs.push([btn, label]);
+        const label = btn.getAttribute("aria-label") || btn.textContent.trim();
+        const fullLabel = `Focus ${label} Tab`;
+        tabs.push([btn, fullLabel]);
       });
 
       tabs.forEach((tab, index) => {
         const btnEl = tab[0];
         const btnLabel = tab[1];
-        const eventCode = `Digit${key}`;
         const key = index + 1;
+        const eventCode = `Digit${key}`;
         const triggerTab = () => activateTab(btnEl);
 
         setAvailableHotkey("cmdCtrl", eventCode, key, btnLabel, triggerTab);
@@ -165,7 +170,7 @@ export function syncAvailableHotkeys() {
 
     const handleTocHotkey = () => document.querySelector(".toc-toggle-button").click();
 
-    if (tabsNavExists) handleTabsHotkeys();
+    if (tabNavExists) handleTabsHotkeys();
     if (sidebarExists) setAvailableHotkey("cmdCtrl", "KeyB", "B", "Toggle Sidebar Menu", toggleSidebar);
     if (copyCodeBtnExists) handleCopyCodeHotkey();
     if (editorExists || scratchpadExists) handleEditorHotkey("cmdCtrl");
@@ -214,7 +219,7 @@ export function syncNativeElementsState() {
   const scratchpad = document.querySelector("#tab-code-editor");
   const instructionsPanel = document.querySelector(".instructions-panel");
   const sidebar = document.querySelector(".nav-drawer");
-  const tabsNav = document.querySelector(".tabs-nav");
+  const tabNav = document.querySelector(".tab-nav");
   const tabsPanel = document.querySelector(".tabs-panel");
   const tocButton = document.querySelector(".toc-toggle-button");
 
@@ -223,7 +228,7 @@ export function syncNativeElementsState() {
   setElementInstructionsPanel(instructionsPanel);
   setElementScratchpad(scratchpad);
   setElementSidebar(sidebar);
-  setElementTabsNav(tabsNav);
+  setElementTabNav(tabNav);
   setElementTabsPanel(tabsPanel);
   setElementTocButton(tocButton);
 }
