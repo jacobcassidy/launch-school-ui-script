@@ -1,174 +1,94 @@
 /**
+ * HOTKEYS
  * @module hotkeys
  */
 
-import { activateCodeEditor, activateTab } from "./helpers/activate.js";
 // import { colorLog } from "./helpers/log.js";
-import { elements } from "./helpers/state.js";
-import { showToast } from "./helpers/show.js";
-import { toggleHeader, toggleSidebar, toggleTabsPanel } from "./helpers/toggle.js";
-// import { addHotkeyMenuItem } from "./header.js";
+import { states } from "./helpers/state.js";
 
 /**
- * RUN `CMD + SHIFT` HOTKEYS
+ * INJECT HOTKEYS MENU
+ * Injects the hotkeys menu as a section of the settings menu.
  */
-export function runCmdShiftHotkeys() {
-  // colorLog.run("Running runCmdShiftHotkeys()");
+export function injectHotkeysMenu() {
+  const settingsMenu = document.querySelector("settings-menu");
 
-  // Hotkey: Toggle Header
-  if (event.code == "Digit1") {
-    toggleHeader();
-    return;
-  }
+  const createHotkeysMenu = () => {
+    const hotkeysMenuEl = document.createElement("section");
+    hotkeysMenuEl.classList.add("hotkeys-section");
 
-  // Hotkey: Toggle Tabs Panel
-  if (event.code == "Digit2") {
-    toggleTabsPanel();
-    return;
-  }
+    const hotkeysMenuTitleEl = document.createElement("h3");
+    hotkeysMenuTitleEl.classList.add("section-title");
+    hotkeysMenuTitleEl.innerText = "Current Page Hotkeys";
+    hotkeysMenuEl.append(hotkeysMenuTitleEl);
 
-  // Hotkey: Focus CodeEditor or Scratchpad
-  if (event.code == "KeyE") {
-    activateCodeEditor();
-    return;
-  }
+    for (const [modifierListKey, modifierListObj] of Object.entries(states.hotkeys)) {
+      let modifierKey;
+      if (modifierListKey === "cmdShift") modifierKey = "Shift";
+      if (modifierListKey === "cmdCtrl") modifierKey = "Ctrl";
+
+      const modifierListEl = document.createElement("ul");
+      modifierListEl.classList.add("settings-list");
+      const modifierListTitleEl = document.createElement("li");
+      modifierListTitleEl.classList.add("settings-list__title");
+      modifierListTitleEl.innerText = `Cmd ${modifierKey} Shortcuts`;
+      modifierListEl.append(modifierListTitleEl);
+
+      for (const [hotkey, hotkeyObj] of Object.entries(modifierListObj)) {
+        const hotkeyItemEl = document.createElement("li");
+        hotkeyItemEl.classList.add("settings-list__item");
+
+        const hotkeyItemKeyContainerEl = document.createElement("div");
+        hotkeyItemKeyContainerEl.classList.add("setting-status", "hotkey-shortcut");
+
+        const keys = ["Cmd", modifierKey, hotkey];
+
+        keys.forEach((key, index) => {
+          const keySpan = document.createElement("span");
+          keySpan.classList.add("key");
+          keySpan.innerText = key;
+          hotkeyItemKeyContainerEl.append(keySpan);
+
+          // Add a `+` symbol after each key, except the last key.
+          const isLast = index === keys.length - 1;
+          if (isLast) return;
+          const plusSpan = document.createElement("span");
+          plusSpan.innerText = "+";
+          hotkeyItemKeyContainerEl.append(plusSpan);
+        });
+
+        hotkeyItemEl.append(hotkeyItemKeyContainerEl);
+
+        const hotkeyItemLabelEl = document.createElement("div");
+        hotkeyItemLabelEl.classList.add("setting-desc", "hotkey-label");
+        hotkeyItemLabelEl.innerText = hotkeyObj.label;
+        hotkeyItemEl.append(hotkeyItemLabelEl);
+
+        modifierListEl.append(hotkeyItemEl);
+      }
+
+      hotkeysMenuEl.append(modifierListEl);
+    }
+
+    return hotkeysMenuEl;
+  };
+
+  settingsMenu.append(createHotkeysMenu());
 }
 
 /**
- * RUN `CMD + CTRL` HOTKEYS
+ * TRIGGER HOTKEY ACTION
+ * Runs the callback function for the hotkey.
+ *
+ * @param {string} modifier The settings object's modifier key name being accessed [cmdShift, cmdCtrl]
+ * @param {string} eventCode The non-modifier key's event.code used for the hotkey
  */
-export function runCmdCtrlHotkeys() {
-  // colorLog.run("Running runCmdCtrlHotkeys");
-  const instructionsPanel = elements.native.instructionsPanel;
-  const tabsPanel = elements.native.tabsPanel;
-  const sidebar = elements.native.sidebar;
+export function triggerHotkeyAction(modifier, eventCode) {
+  const keyEvents = states.hotkeys[modifier];
 
-  let nextExerciseLink,
-    exerciseCompleteBtn,
-    exerciseCompleteUndoBtn = null;
-
-  if (instructionsPanel) {
-    nextExerciseLink = [...document.querySelectorAll("a")].find((a) =>
-      a.textContent.includes("Go to the next exercise"),
-    );
-
-    exerciseCompleteBtn = [...document.querySelectorAll("button")].find((btn) =>
-      btn.textContent.includes("Mark this exercise as complete"),
-    );
-
-    exerciseCompleteUndoBtn = [...document.querySelectorAll("button")].find((btn) =>
-      btn.textContent.includes("Undo mark complete"),
-    );
-  }
-
-  // Hotkey: Toggle or Focus Tab Panel in numbered order
-  if (event.code.startsWith("Digit")) {
-    const tabsData = [];
-
-    if (tabsPanel || instructionsPanel) {
-      const allTabBtns = document.querySelectorAll(".tab-button");
-
-      allTabBtns.forEach((btn) => {
-        const isHidden = getComputedStyle(btn).display === "none";
-        if (isHidden) return;
-
-        const dataTabStr = btn?.dataset?.tab;
-        if (dataTabStr) {
-          tabsData.push({ tabName: dataTabStr });
-        }
-      });
-
-      tabsData.forEach((tab, idx) => {
-        const digitEventCode = `Digit${idx + 1}`;
-
-        if (event.code == digitEventCode) {
-          const tabBtn = document.querySelector(`.tab-button[data-tab='${tab.tabName}']`);
-          activateTab(tabBtn);
-        }
-      });
+  for (const [key, keyObj] of Object.entries(keyEvents)) {
+    if (key === eventCode) {
+      keyObj.callback;
     }
-    return;
-  }
-
-  // Hotkey: Toggle Sidebar
-  if (event.code === "KeyB") {
-    if (sidebar) toggleSidebar();
-    return;
-  }
-
-  // Hotkey: Activate Copy Code button
-  if (event.code === "KeyC") {
-    const copyBtn = document.querySelector(".btn-copy-code");
-    if (!copyBtn) return;
-
-    copyBtn.click();
-
-    if (tabsPanel) {
-      showToast("Scratchpad code copied");
-    } else {
-      showToast("Editor code copied");
-    }
-    return;
-  }
-
-  // Hotkey: Focus CodeEditor or Toggle Scratchpad
-  if (event.code == "KeyE") {
-    activateCodeEditor();
-    return;
-  }
-
-  // Hotkey: Toggle 'Exercise Marked Complete'
-  if (event.code === "KeyM") {
-    if (exerciseCompleteBtn) {
-      showToast("Exercise marked as Completed");
-      exerciseCompleteBtn.click();
-    } else if (exerciseCompleteUndoBtn) {
-      showToast("Exercise marked as Incomplete");
-      exerciseCompleteUndoBtn.click();
-    }
-    return;
-  }
-
-  // Hotkey: Click "Go to next exercise" link
-  if (event.code === "KeyN") {
-    if (!nextExerciseLink) return;
-
-    showToast("Going to next exercise");
-    nextExerciseLink.click();
-    return;
-  }
-
-  // Hotkey: Submit code editor solution to the LSBot Review
-  if (event.code === "KeyR") {
-    const reviewSubmitBtn = document.querySelector("#lsbot-send-review");
-    if (!reviewSubmitBtn) return;
-
-    const reviewTabBtn = document.querySelector(".tab-button[data-tab='submit-review']");
-    activateTab(reviewTabBtn);
-
-    setTimeout(() => {
-      reviewSubmitBtn.click();
-    }, 100);
-
-    showToast("Solution submitted for LSBot Review");
-    return;
-  }
-
-  // Hotkey: Toggle Settings Menu
-  if (event.code === "KeyS") {
-    const settingsMenuBtn = document.querySelector(".btn--toggle-settings");
-    if (!settingsMenuBtn) return;
-
-    settingsMenuBtn.click();
-    return;
-  }
-
-  // Hotkey: Toggle Book Table of Content
-  if (event.code === "KeyT") {
-    const tocBtn = document.querySelector(".toc-toggle-button");
-    if (!tocBtn) return;
-
-    tocBtn.click();
-    return;
   }
 }

@@ -8,7 +8,7 @@ import { injectHeader } from "../header.js";
 import { injectStyles } from "./style.js";
 import { injectToaster } from "../toaster.js";
 import { setIsReloadScheduled, setLastUrl, elements, states } from "./state.js";
-import { syncInjectedElementsState, syncNativeElementsState } from "./sync.js";
+import { syncAvailableHotkeys, syncInjectedElementsState, syncNativeElementsState } from "./sync.js";
 import {
   watchForMissingHeader,
   watchForUrlChange,
@@ -22,6 +22,7 @@ import {
 } from "./watch.js";
 import { hideHeader, hideTabsPanel } from "./hide.js";
 import { showTabsPanel } from "./show.js";
+import { injectHotkeysMenu } from "../hotkeys.js";
 
 /**
  * LOAD UI
@@ -34,17 +35,19 @@ export function loadUI() {
   injectHeader();
   injectToaster();
   syncInjectedElementsState();
+  syncAvailableHotkeys();
+  injectHotkeysMenu();
 
   // Apply hidden state on load
   if (elements.native.tabsPanel) {
-    if (states.isTabsPanelHidden) {
+    if (states.hidden.isTabsPanelHidden) {
       hideTabsPanel();
     } else {
       showTabsPanel();
     }
   }
 
-  if (elements.injected.header && states.isHeaderHidden) hideHeader();
+  if (elements.injected.header && states.hidden.isHeaderHidden) hideHeader();
 
   // Watch elements:
   watchForUrlChange();
@@ -64,7 +67,7 @@ export function loadUI() {
  */
 export function scheduleReload() {
   // colorLog.run("Running scheduleReload()");
-  if (states.isReloadScheduled) {
+  if (states.load.isReloadScheduled) {
     // colorLog.detail("Reload is already scheduled. Exited scheduleReload().");
     return;
   }
@@ -81,7 +84,7 @@ export function scheduleReload() {
 
   const waitForDom = () => {
     // colorLog.run("Running waitForDom()");
-    const isNewBody = document.body !== states.previousBody;
+    const isNewBody = document.body !== states.load.previousBody;
     const isWaitMaxReached = performance.now() - startWait > 3000;
 
     if (isNewBody) {

@@ -12,14 +12,31 @@ import { elements, states } from "./state.js";
  * TOGGLE HEADER
  */
 export function toggleHeader() {
-  // colorLog.run("Running toggleHeader()");
-  const isHeaderHidden = states.isHeaderHidden;
+  colorLog.run("Running toggleHeader()");
+  const isHeaderHidden = states.hidden.isHeaderHidden;
 
   if (isHeaderHidden) {
     showHeader();
   } else {
     hideHeader();
   }
+}
+
+/**
+ * TOGGLE EXERCISE STATUS
+ */
+export function toggleExerciseStatus() {
+  const statusToggleButton = document.querySelector(".edit_exercise_submission .button");
+
+  statusToggleButton.dispatchEvent(
+    new MouseEvent("mousedown", {
+      bubbles: true,
+      cancelable: true,
+      button: 0,
+    }),
+  );
+
+  statusToggleButton.click();
 }
 
 /**
@@ -39,7 +56,7 @@ export function toggleSettingsMenu() {
  */
 export function toggleSidebar() {
   // colorLog.run("Running toggleSidebar()");
-  const isSidebarHidden = states.isSidebarHidden;
+  const isSidebarHidden = states.hidden.isSidebarHidden;
 
   if (isSidebarHidden) {
     showSidebar();
@@ -53,7 +70,7 @@ export function toggleSidebar() {
  */
 export function toggleTabsPanel() {
   // colorLog.run("Running toggleTabsPanel()");
-  const isTabsPanelHidden = states.isTabsPanelHidden;
+  const isTabsPanelHidden = states.hidden.isTabsPanelHidden;
 
   if (isTabsPanelHidden) {
     showTabsPanel();
