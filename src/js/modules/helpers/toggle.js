@@ -26,6 +26,19 @@ export function toggleHeader() {
 export function toggleExerciseStatus() {
   const statusToggleButton = document.querySelector(".edit_exercise_submission .button");
 
+  if (statusToggleButton.disabled) {
+    showToast("Warning: exercise status change is still in progress.");
+    return;
+  }
+
+  const markIncomplete = document.querySelector(".edit_exercise_submission input[value='delete']");
+  console.log(markIncomplete);
+
+  let toastMsg;
+
+  if (markIncomplete) toastMsg = "Exercise marked incomplete.";
+  else toastMsg = "Exercise marked complete.";
+
   statusToggleButton.dispatchEvent(
     new MouseEvent("mousedown", {
       bubbles: true,
@@ -35,6 +48,8 @@ export function toggleExerciseStatus() {
   );
 
   statusToggleButton.click();
+
+  showToast(toastMsg);
 }
 
 /**
