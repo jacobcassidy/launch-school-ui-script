@@ -2,14 +2,18 @@
  * HEADER
  * @module header
  */
-
 // import { colorLog } from "./helpers/log.js";
-import panelsIcon from "../../svg/tabs-panel.svg";
-import { elements } from "./helpers/state.js";
-import { createSettingsMenu } from "./helpers/settings.js";
+import { injectSettingsMenu } from "./helpers/settings.js";
+import {
+  injectSettingsMenuToggleButton,
+  injectSidebarShowButton,
+  injectTabsPanelToggleButton,
+  moveTocBtnToHeader,
+} from "./buttons.js";
 
 /**
  * INJECT SITE HEADER
+ * Injects a new .site-header element in the DOM
  */
 export function injectHeader() {
   // colorLog.run("Running injectHeader()");
@@ -19,23 +23,57 @@ export function injectHeader() {
     return;
   }
 
-  const newHeader = createHeader();
-  document.body.insertBefore(newHeader, document.body.firstChild);
+  const createHeader = () => {
+    // colorLog.run("Running createHeader()");
+    const siteHeaderEl = document.createElement("header");
+    siteHeaderEl.className = "site-header";
+
+    injectHeaderContainers(siteHeaderEl);
+
+    return siteHeaderEl;
+  };
+
+  // Inject the site header as the first child of the body element.
+  document.body.insertBefore(createHeader(), document.body.firstChild);
   // colorLog.detail(".site-header has been injected.");
+
+  // Inject the container offset styles after the header has been injected since it uses measurements based on the injected header
   injectContainerStyleOffsets();
 }
 
 /**
- * ADD CONTAINER ELEMENTS
- * Adds elements to each .site-header__container
+ * INJECT HEADER CONTAINERS
+ * Injects three .site-header__container elements to the .site-header
+ *
+ * @param {HTMLElement} headerEl The header element to which the containers will be appended.
+ */
+function injectHeaderContainers(headerEl) {
+  for (let i = 0; i < 3; i += 1) {
+    const createHeaderContainer = () => {
+      const containerEl = document.createElement("div");
+      const containerNum = i + 1;
+      containerEl.classList.add("site-header__container", `container-${containerNum}`);
+
+      injectContainerElements(containerEl, containerNum);
+
+      return containerEl;
+    };
+
+    headerEl.appendChild(createHeaderContainer());
+  }
+}
+
+/**
+ * INJECT CONTAINER ELEMENTS
+ * Injects elements to each .site-header__container
  *
  * @param {HTMLDivElement} containerEl The container to which the elements will be appended..
  * @param {number} containerNum The number of the container to which the elements will be appended.
  */
-function addContainerElements(containerEl, containerNum) {
+function injectContainerElements(containerEl, containerNum) {
   if (containerNum === 1) {
-    createShowSidebarButton(containerEl);
-    addLoggedOutNavToHeader(containerEl);
+    injectSidebarShowButton(containerEl);
+    moveLoggedOutNavToHeader(containerEl);
   }
 
   if (containerNum === 2) {
@@ -45,48 +83,25 @@ function addContainerElements(containerEl, containerNum) {
     if (breadcrumbs) {
       containerEl.append(breadcrumbs);
     } else {
-      addTitleToHeaderWithNoBreadcrumbs(containerEl);
+      injectTitleToHeaderWithNoBreadcrumbs(containerEl);
     }
   }
 
   if (containerNum === 3) {
-    // If a book TOC button exists, move it inside the container.
-    const bookTocBtn = document.querySelector(".toc-toggle-button");
-
-    if (bookTocBtn) {
-      bookTocBtn.classList.add("site-header__button", "has-dropdown");
-      bookTocBtn.title = "Toggle Table of Contents";
-      containerEl.append(bookTocBtn);
-    }
-
-    createTabsPanelToggleButton(containerEl);
-    createSettingsMenu(containerEl);
+    moveTocBtnToHeader(containerEl);
+    injectTabsPanelToggleButton(containerEl);
+    injectSettingsMenuToggleButton(containerEl);
+    injectSettingsMenu(containerEl);
   }
 }
 
 /**
- * ADD LOGGED-OUT NAV TO HEADER
- * Moves the logged out nav to the .site-header when the user is logged out
- *
- * @param {HTMLDivElement} containerEl The container to which the logged-out nav will be appended.
- */
-function addLoggedOutNavToHeader(containerEl) {
-  const loggedOutNav = document.querySelector(".columns:has(> #logo + .nav)");
-  if (loggedOutNav) {
-    loggedOutNav.classList.remove("clearfix");
-    loggedOutNav.classList.add("logged-out-nav");
-
-    containerEl.appendChild(loggedOutNav);
-  }
-}
-
-/**
- * ADD TITLE TO HEADER WITH NO BREADCRUMBS
- * If breadcrumbs don't exist, adds the non-default HTML title to the .site-header__container
+ * INJECT TITLE TO HEADER WITH NO BREADCRUMBS
+ * If breadcrumbs don't exist, injects the non-default HTML title to the .site-header__container
  *
  * @param {HTMLDivElement} containerEl The container to which the title will be appended.
  */
-function addTitleToHeaderWithNoBreadcrumbs(containerEl) {
+function injectTitleToHeaderWithNoBreadcrumbs(containerEl) {
   // Don't add title when the logged-out nav exists.
   const loggedOutNav = document.querySelector(".columns:has(> #logo + .nav)");
   if (loggedOutNav) return;
@@ -98,93 +113,15 @@ function addTitleToHeaderWithNoBreadcrumbs(containerEl) {
   // Don't add the title if it's the default one.
   if (titleText === defaultTitle) return;
 
-  const newTitleEl = document.createElement("div");
-  newTitleEl.classList.add("title-text");
-  newTitleEl.innerHTML = titleText;
+  const createHeaderTitle = () => {
+    const headerTitleEl = document.createElement("div");
+    headerTitleEl.classList.add("title-text");
+    headerTitleEl.innerHTML = titleText;
 
-  containerEl.append(newTitleEl);
-}
-
-/**
- * CREATE HEADER
- * Creates a new .site-header element to inject in the DOM
- */
-function createHeader() {
-  // colorLog.run("Running createHeader()");
-  const siteHeaderEl = document.createElement("header");
-  siteHeaderEl.className = "site-header";
-
-  createHeaderContainers(siteHeaderEl);
-
-  return siteHeaderEl;
-}
-
-/**
- * CREATE HEADER CONTAINERS
- * Creates and appends three .site-header__container elements to the .site-header
- *
- * @param {HTMLElement} headerEl The header element to which the containers will be appended.
- */
-function createHeaderContainers(headerEl) {
-  for (let i = 0; i < 3; i += 1) {
-    const createHeaderContainerEl = () => {
-      const containerEl = document.createElement("div");
-      const containerNum = i + 1;
-      containerEl.classList.add("site-header__container", `container-${containerNum}`);
-
-      addContainerElements(containerEl, containerNum);
-
-      return containerEl;
-    };
-
-    headerEl.appendChild(createHeaderContainerEl());
-  }
-}
-
-/**
- * CREATE SHOW SIDEBAR BUTTON
- * Creates and appends a .btn--show-sidebar element in the .site-header__container to open the sidebar when clicked.
- *
- * @param {HTMLDivElement} containerEl The container to which the button will be appended.
- */
-function createShowSidebarButton(containerEl) {
-  const createShowSidebarButtonEl = () => {
-    const showSidebarButtonEl = document.createElement("button");
-    showSidebarButtonEl.classList.add("site-header__button", "btn--show-sidebar");
-    showSidebarButtonEl.title = "Open Menu";
-
-    // Add hamburger icon to button
-    for (let i = 0; i < 3; i += 1) {
-      const lineEl = document.createElement("span");
-      lineEl.classList.add("hamburger-line");
-      showSidebarButtonEl.appendChild(lineEl);
-    }
-
-    return showSidebarButtonEl;
+    return headerTitleEl;
   };
 
-  containerEl.appendChild(createShowSidebarButtonEl());
-}
-
-/**
- * INJECT TABS PANEL TOGGLE BUTTON
- * Creates and injects a .btn--toggle-tabs-panel element in the .site-header to toggle the Tabs Panel when clicked
- *
- * @param {HTMLDivElement} containerEl The container to which the button will be appended.
- */
-function createTabsPanelToggleButton(containerEl) {
-  const tabsPanel = elements.native.tabsPanel;
-  if (!tabsPanel) return;
-
-  const createTabsPanelToggleButtonEl = () => {
-    const tabsPanelToggleButtonEl = document.createElement("button");
-    tabsPanelToggleButtonEl.classList.add("site-header__button", "btn--toggle-tabs-panel");
-    tabsPanelToggleButtonEl.title = "Toggle Tabs Panel";
-    tabsPanelToggleButtonEl.innerHTML = panelsIcon;
-    return tabsPanelToggleButtonEl;
-  };
-
-  containerEl.appendChild(createTabsPanelToggleButtonEl());
+  containerEl.append(createHeaderTitle());
 }
 
 /**
@@ -209,4 +146,20 @@ function injectContainerStyleOffsets() {
   root.style.setProperty("--header-container2-left-offset", `${container2LeftOffset}px`);
   root.style.setProperty("--header-container2-right-offset", `${container2RightOffset}px`);
   root.style.setProperty("--header-container2-sidebar-left-offset", `${container2SidebarLeftOffset}px`);
+}
+
+/**
+ * ADD LOGGED-OUT NAV TO HEADER
+ * Moves the logged out nav to the .site-header when the user is logged out
+ *
+ * @param {HTMLDivElement} containerEl The container to which the logged-out nav will be appended.
+ */
+function moveLoggedOutNavToHeader(containerEl) {
+  const loggedOutNav = document.querySelector(".columns:has(> #logo + .nav)");
+  if (loggedOutNav) {
+    loggedOutNav.classList.remove("clearfix");
+    loggedOutNav.classList.add("logged-out-nav");
+
+    containerEl.appendChild(loggedOutNav);
+  }
 }
