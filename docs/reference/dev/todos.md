@@ -36,3 +36,32 @@
 - [] Create Hotkeys toggle button with a svg icon for site-header that toggles the visibility of the Hotkeys menu (can use the existing, but hidden settings menu).
 
 - [] Add note on how to change the border colors if more or less contrast is desired.
+
+- [] Update hotkeys menu to only show the hotkeys available on the current page
+  - hotkeys.js
+    - injectHotkeysMenu()
+      - createHotkeysMenuSection()
+    - syncAvailableHotkeys()
+      - updateHotkeysMenu
+      - setAvailableHotkey()
+
+  - eventListeners
+    - runHotkey()
+
+- injectHeader()
+  - createHeader()
+    - injectHeaderContainers()
+      - createHeaderContainer()
+        - injectContainerElements()
+          - injectSidebarShowButton()
+            - createSidebarShowButton()
+          - moveLoggedOutNavToHeader()
+          - injectTitleToHeaderWithNoBreadcrumbs()
+            - createHeaderTitle()
+          - injectTabsPanelToggleButton()
+            - createTabsPanelToggleButton()
+          - injectSettingsMenuToggleButton()
+            - createSettingsMenuToggleButton()
+          - injectSettingsMenu()
+            - createSettingsMenu()
+  - injectContainerStyleOffsets()
