@@ -22,7 +22,14 @@ import {
   setElementTocButton,
   states,
 } from "./state.js";
-import { toggleExerciseStatus, toggleHeader, toggleSettingsMenu, toggleSidebar, toggleTabsPanel } from "./toggle.js";
+import {
+  toggleExerciseStatus,
+  toggleHeader,
+  toggleSettingsMenu,
+  toggleSidebar,
+  toggleTabsPanel,
+  toggleTocMenu,
+} from "./toggle.js";
 import { handleFocus } from "./focus.js";
 import { showToast } from "./show.js";
 
@@ -168,8 +175,6 @@ export function syncAvailableHotkeys() {
       });
     };
 
-    const handleTocHotkey = () => document.querySelector(".toc-toggle-button").click();
-
     if (tabNavExists) handleTabsHotkeys();
     if (sidebarExists) setAvailableHotkey("cmdCtrl", "KeyB", "B", "Toggle Sidebar Menu", toggleSidebar);
     if (copyCodeBtnExists) handleCopyCodeHotkey();
@@ -179,7 +184,7 @@ export function syncAvailableHotkeys() {
     if (nextExerciseLinkExists)
       setAvailableHotkey("cmdCtrl", "KeyN", "N", "Go to next exercise", handleNextExerciseHotkey);
     if (submitReviewBtnExists) setAvailableHotkey("cmdCtrl", "KeyR", "R", "Submit Review", handleSubmitReviewHotkey);
-    if (tocButtonExists) setAvailableHotkey("cmdCtrl", "KeyT", "T", "Toggle Table of Content", handleTocHotkey);
+    if (tocButtonExists) setAvailableHotkey("cmdCtrl", "KeyT", "T", "Toggle Table of Content", toggleTocMenu);
     if (settingsMenuExists) setAvailableHotkey("cmdCtrl", "Comma", ",", "Toggle Hotkeys Menu", toggleSettingsMenu);
   };
 
