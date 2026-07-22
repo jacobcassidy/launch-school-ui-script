@@ -39,28 +39,45 @@ export function handleFocus(focusEl) {
     const codeMirror = tabTextarea?.closest(".CodeMirror");
     const isCodeMirrorFocused = codeMirror?.classList.contains("CodeMirror-focused");
 
-    if (isTabsPanelHidden) showTabsPanel();
-
-    if (isActiveTab && isCodeMirrorFocused) {
-      flashActiveElement(focusEl, codeMirror);
-      return;
-    }
-
-    if (isActiveTab && isTextareaFocused) {
-      flashActiveElement(focusEl, tabTextarea);
-      return;
-    }
-
-    if (isActiveTab && !tabTextarea) {
-      flashActiveElement(focusEl);
-      return;
-    }
-
-    if (tabTextarea && !isTextareaFocused) {
+    const focusTabTextarea = () => {
       setTimeout(() => {
         tabTextarea.focus();
       }, 100);
-      return;
+    };
+
+    if (isTabsPanelHidden) showTabsPanel();
+
+    if (isActiveTab) {
+      // Flash the Scratchpad tab button and  active editor line.
+      if (isCodeMirrorFocused) {
+        flashActiveElement(focusEl, codeMirror);
+        return;
+      }
+
+      // Flash the active tab button and textarea.
+      if (isTextareaFocused) {
+        flashActiveElement(focusEl, tabTextarea);
+        return;
+      }
+
+      // Flash the active tab textarea only (no flash for the tab button).
+      if (tabTextarea && !isTextareaFocused) {
+        focusTabTextarea();
+        flashActiveElement(tabTextarea);
+        return;
+      }
+
+      // Flash the tab button only since there is not textarea to flash.
+      if (!tabTextarea) {
+        flashActiveElement(focusEl);
+        return;
+      }
+    } else {
+      // Focus the tab's textarea without flashing it.
+      if (tabTextarea && !isTextareaFocused) {
+        focusTabTextarea();
+        return;
+      }
     }
   }
 
