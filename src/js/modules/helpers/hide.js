@@ -3,7 +3,6 @@
  * @module helpers/hide
  */
 
-// import { colorLog } from "./log.js";
 import { handleOutsideSettingsMenuClick } from "../settings-menu.js";
 import { elements, setIsHeaderHidden, setIsSidebarHidden, setIsTabsPanelHidden } from "./state.js";
 
@@ -11,7 +10,6 @@ import { elements, setIsHeaderHidden, setIsSidebarHidden, setIsTabsPanelHidden }
  * HIDE HEADER
  */
 export function hideHeader() {
-  // colorLog.run("Running hideHeader()");
   setIsHeaderHidden(true);
 }
 
@@ -19,7 +17,6 @@ export function hideHeader() {
  * HIDE SETTINGS MENU
  */
 export function hideSettingsMenu() {
-  // colorLog.run("Running hideSettingsMenu()");
   const settingsMenu = elements.injected.settingsMenu;
   const settingsMenuToggleBtn = elements.injected.settingsToggleButton;
   settingsMenu.classList.remove("active");
@@ -32,7 +29,6 @@ export function hideSettingsMenu() {
  * HIDE SIDEBAR
  */
 export function hideSidebar() {
-  // colorLog.run("Running hideSidebar();");
   setIsSidebarHidden(true);
 }
 
@@ -40,6 +36,5 @@ export function hideSidebar() {
  * HIDE TABS PANEL
  */
 export function hideTabsPanel() {
-  // colorLog.run("Running hideTabsPanel()");
   setIsTabsPanelHidden(true);
 }

@@ -209,16 +209,11 @@ export function watchPromptSubmission() {
     let observer = null;
 
     prompt.addEventListener("focus", () => {
-      // console.log("Watching prompt focus.");
-
       observer?.disconnect();
 
       observer = new MutationObserver(() => {
         // colorLog.run("Running prompt observer()");
-
-        if (prompt.disabled) {
-          // console.log("Prompt is disabled.");
-        }
+        // if (prompt.disabled)  console.log("Prompt is disabled.");
 
         if (!prompt.disabled) {
           observer.disconnect();

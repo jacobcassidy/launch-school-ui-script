@@ -3,8 +3,6 @@
  * @module helpers/state
  */
 
-import { colorLog } from "./log";
-
 // ELEMENTS OBJECT
 export const elements = {
   injected: {
@@ -20,7 +18,7 @@ export const elements = {
     instructionsPanel: null,
     scratchpad: null,
     sidebar: null,
-    tabsNav: null,
+    tabNav: null,
     tabsPanel: null,
     tocButton: null,
   },
@@ -102,8 +100,8 @@ export function setElementTabsPanel(el) {
 }
 
 // SET NATIVE TABS NAV
-export function setElementTabsNav(el) {
-  elements.native.tabsNav = el;
+export function setElementTabNav(el) {
+  elements.native.tabNav = el;
 }
 
 // SET NATIVE TOC MENU
@@ -121,8 +119,6 @@ export function setElementTocButton(el) {
  * @param {() => void|null} callbackFunc The function that will run when the hotkey is triggered.
  */
 export function setAvailableHotkey(modifier, key, symbol, label, callbackFunc = null) {
-  colorLog.notice("Running setAvailableHotkey().");
-
   let callback;
   if (!callbackFunc) {
     callback = null;

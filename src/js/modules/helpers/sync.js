@@ -3,7 +3,6 @@
  * @module helpers/sync
  */
 
-// import { colorLog } from "./log";
 import { activateTab } from "./activate.js";
 import {
   elements,

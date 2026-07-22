@@ -12,10 +12,8 @@ import { states } from "./helpers/state.js";
  */
 export function injectHotkeysMenu() {
   const settingsMenu = document.querySelector(".settings-menu");
-  if (!settingsMenu) {
-    console.log("No settings menu found.");
-    return;
-  }
+  if (!settingsMenu) return;
+
   const createHotkeysMenu = () => {
     const hotkeysMenuEl = document.createElement("section");
     hotkeysMenuEl.classList.add("hotkeys-section");

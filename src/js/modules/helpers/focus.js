@@ -3,7 +3,6 @@
  * @module helpers/focus
  */
 
-// import { colorLog } from "./log.js";
 import { flashActiveElement } from "./flash.js";
 import { states } from "./state.js";
 import { showTabsPanel } from "./show.js";
@@ -14,7 +13,6 @@ import { showTabsPanel } from "./show.js";
  * @param {HTMLElement} focusEl The element that will be focused or contains the element to focus
  */
 export function handleFocus(focusEl) {
-  // colorLog.run("Running handleFocus()");
   const isTextarea = focusEl instanceof HTMLTextAreaElement;
   const isTabButton = focusEl.classList.contains("tab-button");
 

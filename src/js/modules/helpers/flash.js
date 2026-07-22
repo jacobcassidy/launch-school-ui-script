@@ -3,8 +3,6 @@
  * @module helpers/flash
  */
 
-// import { colorLog } from "./log.js";
-
 /**
  * FLASH ACTIVE ELEMENT
  * Flashes the background of an already active item when it is reactivated.
