@@ -51,7 +51,7 @@ An unofficial script for modifying the LaunchSchool.com UI for a cleaner, minima
 > 2. Select `File > Add to Dock...`
 > 3. Make the title "Launch School" and click "Add".
 > 4. Open the new Launch School app you just created.
-> 5. In the menubar, click `Launch School > Settings` or use the `CMD + ,` settings hotkey.
+> 5. In the menubar, click `Launch School > Settings` or use the `CMD` + `,` settings hotkey.
 > 6. In the Settings "General" tab, deselect "Show navigation controls".
 > 7. In the Settings "Extensions" tab, click "Browse Extensions" and install "Tampermonkey" (or an equivalent extension).
 > 8. Then follow the rest of the [Quickstart Guide](#quickstart-guide) above to complete the setup.
@@ -66,6 +66,7 @@ An unofficial script for modifying the LaunchSchool.com UI for a cleaner, minima
   - Breadcrumbs placed center in the header.
   - If the page has no breadcrumbs, the page title is place center in the header instead.
   - Moved the logged-out nav to the header for logged-out users.
+
 - Added a blue background flash to an already active tab/textarea that is activated again via a hotkey so you can quickly see where the active focus is.
 - Added an automatic textbox focus when a tab or editor is selected via button click or hotkey.
 - Added the ability to completely hide the sidebar from view.
@@ -73,6 +74,7 @@ An unofficial script for modifying the LaunchSchool.com UI for a cleaner, minima
 - Added automatic LSBot tab focus when a question box answer is submitted in the content panel.
 - Added automatic refocus of the LSBot prompt textarea after a prompt submission completes.
 - Added a container that displays the current page's hotkeys in the Settings Menu.
+
 - Added hotkeys:
 
   | Hotkey            | Function                                                                   |
