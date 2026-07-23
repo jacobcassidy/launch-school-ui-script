@@ -44,7 +44,7 @@ An unofficial script for modifying the LaunchSchool.com UI for a cleaner, minima
 4. Copy the code from [/dist/js/index.min.js](https://github.com/jacobcassidy/launch-school-ui-script/blob/main/dist/js/index.min.js) then paste it into the Tampermonkey editor and save it (`CMD + S`).
 5. Go to [launchschool.com](https://launchschoo.com) or refresh the page if you're already there and the script should now be active (if not, check your Tampermonkey extension settings to make sure it's active on launchschool.com).
 
-> [!NOTE]
+> [!TIP]
 > If you want the clean look from the screenshots (no URL bar, tabs, browser nav, etc), do the following:
 >
 > 1. Open launchschool.com in the Safari browser.
