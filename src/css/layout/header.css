@@ -108,6 +108,8 @@ body:not(:has(.nav-drawer)) {
       position: absolute;
       inset-inline-start: var(--header-container2-left-offset);
       justify-content: center;
+      overflow: hidden;
+      max-block-size: 100%;
       inline-size: calc(100% - var(--header-container2-left-offset) - var(--header-container2-right-offset));
       transition: var(--transition-long);
 
