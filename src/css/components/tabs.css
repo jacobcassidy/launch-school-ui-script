@@ -2,93 +2,83 @@
  * TABS
  */
 
-/**
- * TAB NAV
- */
-
+/* TAB NAV */
 .tab-nav {
+  --inactive-button-border: var(--border-color-default);
+  --active-button-border: var(--border-color-dark);
+  display: flex;
   align-items: center;
   gap: 0 !important;
+  overflow: initial !important;
   background-color: var(--background-color-001) !important;
-  border-color: var(--border-color-001) !important;
-  border-block-end: 1px solid var(--border-color-001) !important;
+  /* border: 1px solid transparent !important; */
+  border-block-end: 1px solid var(--active-button-border) !important;
   block-size: var(--header-height);
   margin: 0 !important;
   padding: 0 var(--padding-inline-mw900) !important;
 
-  @media (width < calc(1800px + 24px + 24px + 4px + 24px + 24px)) {
+  /* Width of ((48px padding + 900px content + 48px padding) * 2) + 4px divider line = 1996px */
+  @media (width < 1996px) {
     padding-inline-start: 0 !important;
   }
 }
 
-/* Tab Button */
+/* TAB BUTTON */
 .tab-button {
+  --inactive-button-border: var(--border-color-default);
+  --active-button-border: var(--border-color-dark);
+  display: flex;
   align-items: center !important;
   gap: 12px;
   transform: none !important;
   border: 1px solid transparent !important;
   border-radius: 0 !important;
-  border-inline-end-color: var(--border-color-001) !important;
+  border-inline-start-color: var(--inactive-button-border) !important;
   color: var(--color-grayscale-074) !important;
   block-size: calc(100% + 1px) !important;
   margin: 0 0 -1px !important;
   padding: 2px var(--inline-spacing) 0 !important;
-  font-weight: 700 !important;
 
   &:first-child {
-    border-inline-start: 1px solid var(--border-color-001) !important;
-
     body:has(#assignment-repl-layout, #book-repl-layout, #book-exercise-repl-layout, #exercise-repl-layout) & {
       margin: 0 !important;
     }
 
-    @media (width < calc(1800px + 24px + 24px + 4px + 24px + 24px)) {
-      border-inline-start: none !important;
-    }
-  }
+    /* Width of ((48px padding + 900px content + 48px padding) * 2) + 4px divider line = 1996px */
+    @media (width < 1996px) {
+      border-inline-start-color: transparent !important;
 
-  i {
-    padding-block-end: 2px;
-    font-weight: 700 !important;
-  }
-
-  svg {
-    path {
-      transition: var(--transition-short);
-    }
-  }
-
-  &:where(:not(.active)) {
-    svg {
-      path {
-        fill: var(--color-grayscale-074) !important;
+      &.active {
+        border-inline-start-color: transparent !important;
       }
     }
+  }
 
-    &:hover {
-      color: var(--color-brand-001) !important;
-
-      svg {
-        path {
-          fill: var(--color-brand-001) !important;
-        }
-      }
-    }
+  &:last-child {
+    border-inline-end-color: var(--inactive-button-border) !important;
   }
 
   &.active {
     border-block-end-color: var(--background-color-001) !important;
+    border-inline-start-color: var(--active-button-border) !important;
     color: var(--color-grayscale-050) !important;
+
+    + .tab-button,
+    + .is-hidden + .tab-button {
+      border-inline-start-color: var(--active-button-border) !important;
+    }
+
+    &:last-child {
+      border-inline-end-color: var(--active-button-border) !important;
+    }
+  }
+
+  &:hover {
+    color: var(--color-brand-001) !important;
   }
 
   &:active {
     color: var(--color-brand-002) !important;
-
-    svg {
-      path {
-        fill: var(--color-brand-002) !important;
-      }
-    }
   }
 
   &.flash-active {
@@ -96,10 +86,7 @@
   }
 }
 
-/**
- * TAB CONTENT
- */
-
+/* TAB CONTENT */
 .tab-content {
   margin: 0 !important;
   padding: 0 !important;
@@ -107,16 +94,24 @@
   .tab-header {
     align-items: center;
     background-color: var(--background-color-001) !important;
-    border-block-end: 1px solid var(--border-color-001) !important;
+    border-block-end: 1px solid var(--border-color-dark) !important;
     block-size: var(--header-height);
     margin: 0 !important;
     padding-inline: var(--padding-inline-mw900) !important;
 
     .tab-header-actions {
-      gap: 8px !important;
+      gap: 0 !important;
 
-      .lsbot-tab-button {
-        padding: 0 !important;
+      button {
+        display: flex;
+        align-items: center;
+        color: var(--color-grayscale-050) !important;
+        padding: 8px !important;
+
+        svg {
+          block-size: 1rem;
+          inline-size: 1rem;
+        }
       }
     }
 
@@ -126,44 +121,34 @@
     }
   }
 
-  /* Override */
-  body:has(#book-repl-layout) & {
-    margin-inline-end: 0 !important;
-  }
-
   /* Tab content without a header */
   .tab-pane:not(:has(.tab-header), :has(.editor-mode-bar)) {
     padding: 24px var(--padding-inline-mw900) !important;
   }
 
-  /* Feedback Tab */
-  #tab-feedback {
-    body:has(#assignment-repl-layout, #book-repl-layout, #book-exercise-repl-layout, #exercise-repl-layout) & {
-      /* Feedback textarea override */
-      .feedback-form-inline form {
-        textarea.form-control {
-          border: 1px solid var(--border-color-001) !important;
-          padding: 12px 16px !important;
-          font-size: 0.9375rem !important;
-
-          &:focus {
-            border-color: transparent !important;
-            box-shadow: 0 0 0 3px var(--color-blue-092) !important;
-          }
-        }
-      }
-    }
+  /* Override */
+  body:has(#book-repl-layout) & {
+    margin-inline-end: 0 !important;
   }
 
-  /* Instructions Tab */
-  #tab-instructions {
-    /* Action buttons */
-    #actions.gray-links {
-      border-color: var(--border-color-001) !important;
+  #actions {
+    border-color: var(--border-color-dark) !important;
+    margin-block: 24px !important;
+    padding-block-start: 24px !important;
 
-      button,
-      a {
-        border: 1px solid var(--border-color-001);
+    button,
+    a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border-color-dark);
+      padding: 12px 16px !important;
+      font-size: 0.9375rem !important;
+      line-height: 1;
+
+      &:hover {
+        border-color: var(--color-brand-001);
+        color: var(--color-brand-001);
       }
     }
   }
@@ -175,5 +160,55 @@
     box-shadow: none !important;
     margin: 0 !important;
     padding: 0 !important;
+
+    .major-section,
+    .respond {
+      margin-block-start: 0 !important;
+    }
+
+    .solution-form-section,
+    .solution-form-header {
+      border-color: var(--border-color-default) !important;
+    }
   }
+
+  /* Feedback Tab */
+  #tab-feedback {
+    body:has(#assignment-repl-layout, #book-repl-layout, #book-exercise-repl-layout, #exercise-repl-layout) & {
+      /* Feedback textarea override */
+      .feedback-form-inline form {
+        textarea.form-control {
+          border: 1px solid var(--border-color-default) !important;
+          padding: 12px 16px !important;
+          font-size: 0.9375rem !important;
+
+          &:focus {
+            border-color: transparent !important;
+            box-shadow: var(--input-box-shadow) !important;
+          }
+        }
+      }
+    }
+  }
+}
+/* Override */
+body.internal #discussion-thread .discussion-comments .discussion-comment + .discussion-comment,
+body.internal #discussion-thread .discussion-comments .discussion-solution + .discussion-solution,
+body.internal #discussion-thread .assessment-comments .discussion-comment + .discussion-comment,
+body.internal #discussion-thread .assessment-comments .discussion-solution + .discussion-solution,
+body.internal #discussion-thread .discussion-solutions .discussion-comment + .discussion-comment,
+body.internal #discussion-thread .discussion-solutions .discussion-solution + .discussion-solution,
+body.internal #assessment-thread .discussion-comments .discussion-comment + .discussion-comment,
+body.internal #assessment-thread .discussion-comments .discussion-solution + .discussion-solution,
+body.internal #assessment-thread .assessment-comments .discussion-comment + .discussion-comment,
+body.internal #assessment-thread .assessment-comments .discussion-solution + .discussion-solution,
+body.internal #assessment-thread .discussion-solutions .discussion-comment + .discussion-comment,
+body.internal #assessment-thread .discussion-solutions .discussion-solution + .discussion-solution,
+body.internal #personal-discussion-thread .discussion-comments .discussion-comment + .discussion-comment,
+body.internal #personal-discussion-thread .discussion-comments .discussion-solution + .discussion-solution,
+body.internal #personal-discussion-thread .assessment-comments .discussion-comment + .discussion-comment,
+body.internal #personal-discussion-thread .assessment-comments .discussion-solution + .discussion-solution,
+body.internal #personal-discussion-thread .discussion-solutions .discussion-comment + .discussion-comment,
+body.internal #personal-discussion-thread .discussion-solutions .discussion-solution + .discussion-solution {
+  border-color: var(--border-color-dark) !important;
 }
