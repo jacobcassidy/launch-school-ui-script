@@ -47,7 +47,7 @@
 
           .line-numbers-rows {
             inset-inline-start: -48px !important;
-            border-color: var(--border-color-001) !important;
+            border-color: var(--border-color-default) !important;
 
             > span::before {
               color: var(--color-grayscale-074) !important;
@@ -59,9 +59,12 @@
   }
 }
 
-.lsbot-input-area,
+.lsbot-input-area {
+  border-color: var(--border-color-dark) !important;
+}
+
 .lsbot-question-input {
-  border-color: var(--border-color-001) !important;
+  border-color: var(--border-color-default) !important;
 }
 
 .lsbot-input-area {

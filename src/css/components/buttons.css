@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   background-color: var(--background-color-003) !important;
-  border-radius: var(--border-radius-001) !important;
+  border-radius: var(--border-radius-default) !important;
   color: var(--color-grayscale-050);
   block-size: 32px !important;
   inline-size: 32px !important;

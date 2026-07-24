@@ -6,7 +6,7 @@
 .resize-handle {
   pointer-events: none;
   display: block;
-  background-color: var(--border-color-001) !important;
+  background-color: var(--border-color-dark) !important;
   inline-size: 4px !important;
 
   body:has(.tabs-panel.panel-collapsed) & {

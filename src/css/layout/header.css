@@ -26,7 +26,7 @@ body:not(:has(.nav-drawer)) {
   justify-content: space-between;
   gap: var(--inline-spacing);
   background: var(--background-color-002);
-  border-block-end: 1px solid var(--border-color-001);
+  border-block-end: 1px solid var(--border-color-dark);
   block-size: var(--header-height);
   padding: 4px 12px;
   transition: var(--transition-long);
@@ -140,7 +140,7 @@ body:not(:has(.nav-drawer)) {
 
   .gretel-breadcrumbs {
     position: static !important;
-    border-block-end: 1px solid var(--border-color-001) !important;
+    border-block-end: 1px solid var(--border-color-default) !important;
 
     :is(li, li a) {
       color: var(--color-grayscale-071) !important;

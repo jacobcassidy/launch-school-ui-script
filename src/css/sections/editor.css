@@ -5,7 +5,7 @@
 :is(.editor-panel, #tab-code-editor) {
   .editor-mode-bar {
     background-color: var(--background-color-001) !important;
-    border-block-end: 1px solid var(--border-color-001) !important;
+    border-block-end: 1px solid var(--border-color-dark) !important;
     block-size: var(--header-height) !important;
     inline-size: 100% !important;
     max-inline-size: 100% !important;
@@ -30,8 +30,8 @@
     }
 
     .code-editor-wrapper {
-      border: 1px solid var(--border-color-001);
-      border-radius: var(--border-radius-001);
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
       margin-block-start: 24px;
       padding: 12px !important;
 
@@ -61,7 +61,7 @@
       }
 
       .CodeMirror-gutters {
-        border-color: var(--border-color-001);
+        border-color: var(--border-color-default);
         padding: 0;
       }
     }

@@ -16,8 +16,8 @@ input:where(:not([type="submit"])),
 select,
 textarea {
   background-color: var(--color-grayscale-100);
-  border: 1px solid var(--border-color-001) !important;
-  border-radius: var(--border-radius-001) !important;
+  border: 1px solid var(--border-color-default) !important;
+  border-radius: var(--border-radius-default) !important;
   box-shadow: none !important;
   color: var(--color-grayscale-050) !important;
   min-block-size: 40px;
@@ -30,6 +30,6 @@ textarea {
 
   &:focus {
     border-color: transparent !important;
-    box-shadow: 0 0 0 3px var(--color-blue-092) !important;
+    box-shadow: var(--input-box-shadow) !important;
   }
 }

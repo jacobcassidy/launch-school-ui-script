@@ -16,7 +16,7 @@
 .toast {
   transform: translateY(-10px);
   background: var(--color-grayscale-035);
-  border-radius: var(--border-radius-001);
+  border-radius: var(--border-radius-default);
   color: #fff;
   opacity: 0;
   padding: 16px 20px;
