@@ -7,7 +7,7 @@
   pointer-events: none;
   display: block;
   background-color: var(--border-color-dark) !important;
-  inline-size: 4px !important;
+  inline-size: 2px !important;
 
   body:has(.tabs-panel.panel-collapsed) & {
     display: none;
