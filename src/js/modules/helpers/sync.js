@@ -11,6 +11,7 @@ import {
   setElementEditorPanel,
   setElementHeader,
   setElementInstructionsPanel,
+  setElementNextExerciseButton,
   setElementScratchpad,
   setElementSettingsMenu,
   setElementSettingsToggleBtn,
@@ -50,7 +51,7 @@ export function syncAvailableHotkeys() {
   // Native elements
   const copyCodeBtnExists = document.querySelector(".btn-copy-code");
   const editorExists = elements.native.editorPanel;
-  const instructionsPanelExists = elements.native.instructionsPanel;
+  const nextExerciseBtnExists = elements.native.nextExerciseButton;
   const markExerciseBtnExists = document.querySelector(".edit_exercise_submission .button");
   const scratchpadExists = elements.native.scratchpad;
   const sidebarExists = elements.native.sidebar;
@@ -58,14 +59,6 @@ export function syncAvailableHotkeys() {
   const tabNavExists = elements.native.tabNav;
   const tabsPanelExists = elements.native.tabsPanel;
   const tocButtonExists = elements.native.tocButton;
-  let nextExerciseLinkExists, nextExerciseLink;
-
-  if (instructionsPanelExists) {
-    nextExerciseLink = [...document.querySelectorAll("a")].find((a) =>
-      a.textContent.includes("Go to the next exercise"),
-    );
-    if (nextExerciseLink) nextExerciseLinkExists = true;
-  }
 
   const handleEditorHotkey = (modifier) => {
     const editorPanel = elements.native.editorPanel;
@@ -134,7 +127,7 @@ export function syncAvailableHotkeys() {
 
     const handleNextExerciseHotkey = () => {
       showToast("Going to next exercise");
-      nextExerciseLink.click();
+      elements.native.nextExerciseButton.click();
     };
 
     const handleSubmitReviewHotkey = () => {
@@ -181,7 +174,7 @@ export function syncAvailableHotkeys() {
     if (editorExists || scratchpadExists) handleEditorHotkey("cmdCtrl");
     if (markExerciseBtnExists)
       setAvailableHotkey("cmdCtrl", "KeyM", "M", "Toggle Exercise Status", toggleExerciseStatus);
-    if (nextExerciseLinkExists)
+    if (nextExerciseBtnExists)
       setAvailableHotkey("cmdCtrl", "KeyN", "N", "Go to next exercise", handleNextExerciseHotkey);
     if (submitReviewBtnExists) setAvailableHotkey("cmdCtrl", "KeyR", "R", "Submit Review", handleSubmitReviewHotkey);
     if (tocButtonExists) setAvailableHotkey("cmdCtrl", "KeyT", "T", "Toggle Table of Content", toggleTocMenu);
@@ -227,10 +220,18 @@ export function syncNativeElementsState() {
   const tabNav = document.querySelector(".tab-nav");
   const tabsPanel = document.querySelector(".tabs-panel");
   const tocButton = document.querySelector(".toc-toggle-button");
+  let nextExerciseButton = null;
+
+  if (instructionsPanel) {
+    nextExerciseButton = [...document.querySelectorAll("a")].find((a) =>
+      a.textContent.includes("Go to the next exercise"),
+    );
+  }
 
   setElementContentPanel(contentPanel);
   setElementEditorPanel(editorPanel);
   setElementInstructionsPanel(instructionsPanel);
+  setElementNextExerciseButton(nextExerciseButton);
   setElementScratchpad(scratchpad);
   setElementSidebar(sidebar);
   setElementTabNav(tabNav);

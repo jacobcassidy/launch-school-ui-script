@@ -17,10 +17,6 @@
   margin: 0;
   padding: 6px;
 
-  svg {
-    block-size: 20px;
-  }
-
   &:hover {
     background-color: var(--color-brand-001) !important;
     color: var(--color-grayscale-100);
@@ -54,5 +50,126 @@
       background-color: var(--color-brand-001-alpha) !important;
       color: var(--color-brand-002) !important;
     }
+  }
+}
+
+.btn-copy-code {
+  color: var(--color-grayscale-050) !important;
+  block-size: initial !important;
+  inline-size: initial !important;
+  padding: 8px !important;
+
+  &.copied {
+    svg.lucide {
+      display: none;
+    }
+  }
+}
+
+svg.lucide {
+  block-size: 1.125rem;
+  inline-size: 1.125rem;
+}
+
+.tab-button {
+  position: initial;
+}
+
+.has-new-icon {
+  i,
+  svg:not(.new-icon) {
+    display: none !important;
+  }
+}
+
+.markup-copy-block {
+  display: flex;
+  align-items: center;
+  min-block-size: 32px;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-grayscale-080) !important;
+    padding: 4px 12px !important;
+    font-size: 0.875rem !important;
+
+    svg {
+      block-size: 0.875rem;
+      inline-size: 0.875rem;
+    }
+
+    &:hover {
+      color: var(--color-grayscale-092) !important;
+    }
+
+    &:active {
+      color: var(--color-grayscale-098) !important;
+    }
+  }
+
+  &:has(.fa-check) {
+    .lucide-copy-icon {
+      display: none;
+    }
+  }
+
+  &:has(.fa-copy) {
+    .lucide-check-icon {
+      display: none;
+    }
+  }
+}
+
+button[data-target="#solution-analysis-collapse"] {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--background-color-003);
+  border: 1px solid var(--border-color-dark);
+  border-radius: var(--border-radius-default);
+  color: var(--color-grayscale-035) !important;
+  padding: 16px 24px !important;
+  transition: var(--transition-short);
+
+  .markup-collapse.open & {
+    .lucide-eye-icon {
+      display: none;
+    }
+  }
+
+  .markup-collapse:not(.open) & {
+    .lucide-eye-off-icon {
+      display: none;
+    }
+  }
+
+  &:hover {
+    background-color: var(--color-brand-001-alpha);
+    border-color: var(--color-brand-001);
+    color: var(--color-brand-001) !important;
+  }
+}
+
+.tooltip {
+  pointer-events: none;
+  position: fixed;
+  z-index: 9999;
+  visibility: hidden;
+  display: inline-block;
+  background: var(--color-grayscale-035);
+  border-radius: 4px;
+  color: #fff;
+  opacity: 0;
+  inline-size: auto;
+  padding: 6px 8px;
+  font-size: 0.875rem;
+  font-weight: 400;
+  transition: opacity var(--duration-short) ease;
+
+  &.active {
+    visibility: visible;
+    opacity: 1;
   }
 }

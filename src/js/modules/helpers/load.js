@@ -17,12 +17,13 @@ import {
   watchQuestionBoxes,
   watchSettingMenuToggleBtn,
   watchShowSidebarBtn,
-  watchTabBtnClick,
+  watchTabBtns,
   watchTabsPanelToggleBtn,
 } from "./watch.js";
 import { hideHeader, hideTabsPanel } from "./hide.js";
 import { showTabsPanel } from "./show.js";
 import { injectHotkeysMenu } from "../hotkeys-menu.js";
+import { replaceButtonTextAndIcons } from "../buttons.js";
 
 /**
  * LOAD UI
@@ -34,6 +35,7 @@ export function loadUI() {
   injectHeader();
   injectToaster();
   syncInjectedElementsState();
+  replaceButtonTextAndIcons();
   syncAvailableHotkeys();
   injectHotkeysMenu();
 
@@ -55,7 +57,7 @@ export function loadUI() {
   watchPromptSubmission();
   watchQuestionBoxes();
   watchShowSidebarBtn();
-  watchTabBtnClick();
+  watchTabBtns();
   watchTabsPanelToggleBtn();
   watchSettingMenuToggleBtn();
 }

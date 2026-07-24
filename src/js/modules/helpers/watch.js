@@ -345,3 +345,70 @@ export function watchTabsPanelToggleBtn() {
 
   tabsPanelToggleBtn.addEventListener("click", () => toggleTabsPanel());
 }
+
+/**
+ * WATCH MARK TOGGLE BUTTON
+ */
+export function watchMarkToggleBtn(markCompleteIcon, markIncompleteIcon) {
+  // colorLog.run("Running watchMarkToggleBtn");
+  const instructionsTab = document.querySelector("#tab-instructions");
+  if (!instructionsTab) return;
+
+  let markForm = instructionsTab.querySelector(".edit_exercise_submission");
+
+  const handleNewMarkForm = (markForm) => {
+    const markBtn = markForm.querySelector("button");
+    if (markBtn) {
+      const hasDeleteInput = markForm.querySelector("input[value=delete]");
+      hasDeleteInput
+        ? markBtn.prepend(markIncompleteIcon.cloneNode(true))
+        : markBtn.prepend(markCompleteIcon.cloneNode(true));
+      markBtn.classList.add("has-new-icon");
+    }
+  };
+
+  const observer = new MutationObserver(() => {
+    const newMarkForm = instructionsTab.querySelector(".edit_exercise_submission");
+
+    if (newMarkForm && newMarkForm !== markForm) {
+      markForm = newMarkForm;
+      handleNewMarkForm(markForm);
+    }
+  });
+
+  observer.observe(instructionsTab, {
+    childList: true,
+    subtree: true,
+  });
+}
+
+export function watchViewSolutionBtn(btn, svgIcons) {
+  const parent = document.querySelector("#exercise_analysis .markup-collapse");
+  if (!parent) return;
+
+  let previousState = parent.classList.contains("open") ? "open" : "closed";
+  console.log(previousState);
+
+  const handleUpdatedSolutionBtn = () => {
+    svgIcons.forEach((svg) => {
+      btn.prepend(svg);
+    });
+  };
+
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.attributeName !== "class") continue;
+
+      const state = parent.classList.contains("open") ? "open" : "closed";
+      if (state && state !== previousState) {
+        previousState = state;
+        handleUpdatedSolutionBtn();
+      }
+    }
+  });
+
+  observer.observe(parent, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+}
