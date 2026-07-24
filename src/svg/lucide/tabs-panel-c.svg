@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+  class="lucide lucide-columns2-icon lucide-columns-2 modified-for-tabs-panel">
+  <path
+    d="M18.2222 4H5.77778C4.79594 4 4 4.79594 4 5.77778V18.2222C4 19.2041 4.79594 20 5.77778 20H18.2222C19.2041 20 20 19.2041 20 18.2222V5.77778C20 4.79594 19.2041 4 18.2222 4Z" />
+  <path d="M12 4V20" />
+  <path d="M12 8H16M20 8H16M16 8V4" />
+</svg>
