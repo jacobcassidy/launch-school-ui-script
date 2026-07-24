@@ -36,8 +36,8 @@ export function toggleExerciseStatus() {
 
   let toastMsg;
 
-  if (markIncomplete) toastMsg = "Exercise marked incomplete.";
-  else toastMsg = "Exercise marked complete.";
+  if (markIncomplete) toastMsg = "Exercise marked incomplete";
+  else toastMsg = "Exercise marked complete";
 
   statusToggleButton.dispatchEvent(
     new MouseEvent("mousedown", {
