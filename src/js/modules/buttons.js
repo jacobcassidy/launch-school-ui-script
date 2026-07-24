@@ -2,7 +2,7 @@
  * BUTTONS
  * @module buttons
  */
-// import runCodeIcon from "../../svg/lucide/play.svg";
+
 import checkIcon from "../../svg/lucide/check.svg";
 import showViewIcon from "../../svg/lucide/eye.svg";
 import hideViewIcon from "../../svg/lucide/eye-off.svg";
