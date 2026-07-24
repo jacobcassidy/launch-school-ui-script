@@ -16,6 +16,7 @@ export const elements = {
     contentPanel: null,
     editorPanel: null,
     instructionsPanel: null,
+    nextExerciseButton: null,
     scratchpad: null,
     sidebar: null,
     tabNav: null,
@@ -82,6 +83,11 @@ export function setElementEditorPanel(el) {
 // SET NATIVE INSTRUCTIONS PANEL
 export function setElementInstructionsPanel(el) {
   elements.native.instructionsPanel = el;
+}
+
+// SET NATIVE NEXT EXERCISE BUTTON
+export function setElementNextExerciseButton(el) {
+  elements.native.nextExerciseButton = el;
 }
 
 // SET NATIVE SCRATCHPAD
