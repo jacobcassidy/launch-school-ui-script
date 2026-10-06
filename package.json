@@ -35,6 +35,11 @@
     "stylelint-declaration-block-no-ignored-properties": "^3.0.0",
     "stylelint-plugin-logical-css": "^2.1.0"
   },
+  "overrides": {
+    "markdownlint-cli2": {
+      "smol-toml": "1.9.0"
+    }
+  },
   "scripts": {
     "check": "npx prettier . --check",
     "format": "npx prettier . --write",
