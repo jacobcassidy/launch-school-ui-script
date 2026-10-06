@@ -80,6 +80,7 @@ export function createNewSetting(settingDesc, settingTogglerId) {
 
   const settingTextEl = document.createElement("span");
   settingTextEl.className = "setting-desc";
+  settingTextEl.id = `${settingTogglerId}--description`;
   settingTextEl.innerText = settingDesc;
 
   const settingTogglerEl = createNewSettingToggler(settingTogglerId);
@@ -103,6 +104,7 @@ export function createNewSettingToggler(id) {
   togglerInputEl.name = id;
   togglerInputEl.type = "checkbox";
   togglerInputEl.value = 1;
+  togglerInputEl.setAttribute("aria-labelledby", `${id}--description`);
 
   togglerLabelEl.htmlFor = id;
   togglerLabelEl.innerHTML = `

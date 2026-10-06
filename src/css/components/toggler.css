@@ -4,8 +4,21 @@
  */
 
 .toggler {
+  position: relative;
+
   input {
-    display: none;
+    position: absolute;
+    overflow: hidden;
+    clip-path: inset(50%);
+    block-size: 1px;
+    inline-size: 1px;
+    margin: -1px;
+    white-space: nowrap;
+
+    &:focus-visible + label {
+      outline: 3px solid var(--color--brand-400);
+      outline-offset: 3px;
+    }
 
     &:checked + label .toggler-off,
     &:not(:checked) + label .toggler-on {
