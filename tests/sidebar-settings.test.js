@@ -31,3 +31,41 @@ for (const [setter, stateKey, className] of [
     assert.equal(saved[stateKey], false);
   });
 }
+
+test("tabs panel visibility setter tolerates missing native and injected panels", () => {
+  const ui = { tabsPanel: {} };
+  const saved = {};
+  const context = sourceContext("../src/js/modules/utils/state/setters/ui.js", {
+    elements: { native: { tabsPanel: null, contentPanel: null }, injected: { tabsPanelToggleButton: null } },
+    ui,
+    sessionStorage: {
+      setItem(key, value) {
+        saved[key] = value;
+      },
+    },
+  });
+
+  assert.doesNotThrow(() => context.setIsTabsPanelHidden(true));
+  assert.equal(ui.tabsPanel.isHidden, true);
+  assert.equal(saved.isTabsPanelHidden, true);
+  assert.doesNotThrow(() => context.setIsTabsPanelHidden(false));
+  assert.equal(ui.tabsPanel.isHidden, false);
+  assert.equal(saved.isTabsPanelHidden, false);
+});
+
+test("sidebar collapse setter keeps the active state when the matching native control is missing", () => {
+  const ui = { sidebar: {} };
+  const context = sourceContext("../src/js/modules/utils/state/setters/ui.js", {
+    document: {
+      querySelector(selector) {
+        if (selector === "#navbar-collapsor") return { checked: false };
+        return null;
+      },
+    },
+    elements: { native: {}, injected: {} },
+    ui,
+  });
+
+  assert.doesNotThrow(() => context.setIsSidebarCollapsed(true));
+  assert.equal(ui.sidebar.isCollapsed, true);
+});

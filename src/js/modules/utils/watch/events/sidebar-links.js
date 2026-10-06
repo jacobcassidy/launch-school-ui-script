@@ -16,25 +16,23 @@ export function watchSidebarLinks() {
     return;
   }
 
-  if (sidebar.dataset.sidebarLinksEventBound) {
-    // colorLog.detail("Sidebar Links watch already exist. Exited watchSidebarLinks().");
-    return;
-  }
-  sidebar.dataset.sidebarLinksEventBound = "true";
-
   const toggleSidebarListSection = () => {
     const listHeaderBtns = document.querySelectorAll(".sidebar-list-toggle-btn");
 
     listHeaderBtns.forEach((btn) => {
+      if (btn.dataset.sidebarListToggleEventBound) return;
       btn.addEventListener("click", () => {
         btn.classList.toggle("is-closed");
       });
+      btn.dataset.sidebarListToggleEventBound = "true";
     });
   };
 
   const toggleSidebarPagesDropdown = () => {
     const pagesLink = document.querySelector(".sidebar-list__item .pages");
     const pagesDropdown = document.querySelector(".sidebar-list__item .pages + .dropdown");
+
+    if (!pagesLink?.addEventListener || !pagesDropdown || pagesLink.dataset.pagesDropdownEventBound) return;
 
     pagesLink.addEventListener("click", (event) => {
       event.preventDefault();
@@ -43,18 +41,20 @@ export function watchSidebarLinks() {
 
       pagesDropdown.classList.toggle("expanded");
     });
+    pagesLink.dataset.pagesDropdownEventBound = "true";
   };
 
   const toggleSidebarTooltip = () => {
     const sidebarToggle = document.querySelector("#navbar-collapsor");
     const sidebarLinks = document.querySelectorAll(".sidebar-lists a");
-    if (sidebarLinks.length < 1) return;
+    if (sidebarLinks.length < 1 || !sidebarToggle) return;
 
     const handleTooltip = (link) => {
       if (!sidebarToggle.checked) return;
 
       const linkDataTooltip = link.getAttribute("data-tooltip");
       const linkTooltip = document.querySelector(`.sidebar-tooltip-${linkDataTooltip}`);
+      if (!linkTooltip) return;
 
       const handleTooltipRemoval = () => linkTooltip.classList.remove("active");
 
@@ -70,9 +70,9 @@ export function watchSidebarLinks() {
 
     sidebarLinks.forEach((link) => {
       if (link.dataset.sidebarLinkEventBound) return;
-      link.dataset.sidebarLinkEventBound = "true";
 
       link.addEventListener("mouseenter", () => handleTooltip(link));
+      link.dataset.sidebarLinkEventBound = "true";
     });
   };
 

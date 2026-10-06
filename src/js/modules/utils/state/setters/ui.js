@@ -32,7 +32,6 @@ export function setIsReloadScheduled(value) {
  */
 export function setIsSidebarCollapsed(value) {
   const sidebarCollapseCheckbox = document.querySelector("#navbar-collapsor");
-  const sidebarCollapseBtn = document.querySelector("#navbar-collapse");
 
   // If no sidebar found, set value to null.
   if (!sidebarCollapseCheckbox) {
@@ -41,31 +40,21 @@ export function setIsSidebarCollapsed(value) {
   }
 
   const isActiveSidebar = !sidebarCollapseCheckbox.checked;
-  if (value === true) {
-    if (isActiveSidebar) {
-      sidebarCollapseBtn.dispatchEvent(
-        new MouseEvent("mousedown", {
-          bubbles: true,
-          cancelable: true,
-          button: 0,
-        }),
-      );
-
-      sidebarCollapseBtn.click();
+  if (isActiveSidebar !== value) {
+    const sidebarButton = document.querySelector(value ? "#navbar-collapse" : "#navbar-expand");
+    if (!sidebarButton) {
+      ui.sidebar.isCollapsed = isActiveSidebar;
+      return;
     }
-  } else {
-    const nativeSidebarShowBtn = document.querySelector("#navbar-expand");
-    if (!isActiveSidebar) {
-      nativeSidebarShowBtn.dispatchEvent(
-        new MouseEvent("mousedown", {
-          bubbles: true,
-          cancelable: true,
-          button: 0,
-        }),
-      );
 
-      nativeSidebarShowBtn.click();
-    }
+    sidebarButton.dispatchEvent(
+      new MouseEvent("mousedown", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+      }),
+    );
+    sidebarButton.click();
   }
 
   ui.sidebar.isCollapsed = value;
@@ -108,15 +97,15 @@ export function setIsTabsPanelHidden(value) {
   const tabsPanelToggleButton = elements.injected.tabsPanelToggleButton;
 
   if (value === true) {
-    tabsPanel.classList.add("hidden", "panel-collapsed");
-    contentPanel.classList.remove("half-width");
-    tabsPanel.classList.remove("is-active", "half-width");
-    tabsPanelToggleButton.classList.remove("active");
+    tabsPanel?.classList.add("hidden", "panel-collapsed");
+    contentPanel?.classList.remove("half-width");
+    tabsPanel?.classList.remove("is-active", "half-width");
+    tabsPanelToggleButton?.classList.remove("active");
   } else {
-    tabsPanel.classList.remove("hidden", "panel-collapsed");
-    contentPanel.classList.add("half-width");
-    tabsPanel.classList.add("is-active", "half-width");
-    tabsPanelToggleButton.classList.add("active");
+    tabsPanel?.classList.remove("hidden", "panel-collapsed");
+    contentPanel?.classList.add("half-width");
+    tabsPanel?.classList.add("is-active", "half-width");
+    tabsPanelToggleButton?.classList.add("active");
   }
 
   ui.tabsPanel.isHidden = value;
