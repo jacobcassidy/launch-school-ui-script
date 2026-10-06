@@ -4,11 +4,12 @@
  */
 
 // Import components
-import { icons } from "../../../components";
+import { icons, injectHotkeysSection } from "../../../components";
 
 // Import utils
 import { setButtonProperties } from "../../../utils/state";
 import { watchExerciseCompletionToggleBtn } from "../../../utils/watch";
+import { syncAvailableHotkeys } from "../../../utils/sync/available-hotkeys";
 
 /**
  * Updates the exercise completion button styles and icons.
@@ -20,7 +21,11 @@ export function updateExerciseCompletionButton() {
   const exerciseCompletionForm = instructionsPanel.querySelector(".gray-links form");
   handleNewExerciseCompletionForm(exerciseCompletionForm);
 
-  watchExerciseCompletionToggleBtn(handleNewExerciseCompletionForm);
+  watchExerciseCompletionToggleBtn((form) => {
+    handleNewExerciseCompletionForm(form);
+    syncAvailableHotkeys();
+    injectHotkeysSection();
+  });
 }
 
 /**
