@@ -4,7 +4,8 @@
  */
 
 /**
- * Updates the view solution button icon based on the current status the button holds.
+ * Preserves the solution icon pair when native code updates the button.
+ * CSS selects the visible icon based on the collapse state.
  */
 export function watchViewSolutionBtn(btn, svgIcons) {
   const parent = document.querySelector("#exercise_analysis .markup-collapse");
@@ -16,28 +17,33 @@ export function watchViewSolutionBtn(btn, svgIcons) {
   if (btn.dataset.viewSolutionBtnEventBound) return;
   btn.dataset.viewSolutionBtnEventBound = "true";
 
-  let previousState = parent.classList.contains("open") ? "open" : "closed";
+  let currentIcons = [];
 
-  const handleUpdatedSolutionBtn = () => {
-    svgIcons.forEach((icon) => {
-      btn.prepend(icon());
+  const syncIcons = () => {
+    const injectedIcons = [...btn.querySelectorAll(":scope > .is-new-icon")];
+    if (
+      currentIcons.length === svgIcons.length &&
+      injectedIcons.length === currentIcons.length &&
+      currentIcons.every((icon) => injectedIcons.includes(icon))
+    )
+      return;
+
+    injectedIcons.forEach((icon) => icon.remove());
+    currentIcons = svgIcons.map((createIcon) => {
+      const icon = createIcon();
+      icon.classList.add("is-new-icon");
+      return icon;
     });
+    currentIcons.forEach((icon) => btn.prepend(icon));
   };
 
-  const observer = new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-      if (mutation.attributeName !== "class") continue;
+  syncIcons();
 
-      const state = parent.classList.contains("open") ? "open" : "closed";
-      if (state && state !== previousState) {
-        previousState = state;
-        handleUpdatedSolutionBtn();
-      }
-    }
-  });
+  const observer = new MutationObserver(syncIcons);
 
   observer.observe(parent, {
     attributes: true,
     attributeFilter: ["class"],
   });
+  observer.observe(btn, { childList: true });
 }

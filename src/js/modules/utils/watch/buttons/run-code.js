@@ -7,8 +7,8 @@
  * Updates the run code button icon based on the current status the button holds.
  *
  * @param {HTMLButtonElement} btn The run code button element.
- * @param {SVGElement} runIcon The run code SVG icon element
- * @param {SVGElement} stopIcon The stop code SVG icon element.
+ * @param {function(): SVGElement} runIcon Creates the run code SVG icon.
+ * @param {function(): SVGElement} stopIcon Creates the stop code SVG icon.
  */
 export function watchRunCodeBtn(btn, runIcon, stopIcon) {
   // colorLog.alert("Running watchRunCodeBtn");
@@ -17,20 +17,28 @@ export function watchRunCodeBtn(btn, runIcon, stopIcon) {
   if (btn.dataset.runCodeBtnEventBound) return;
   btn.dataset.runCodeBtnEventBound = "true";
 
-  const observer = new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-      if (mutation.type === "attributes" && mutation.attributeName === "class") {
-        if (btn.classList.contains("stop-button")) {
-          btn.prepend(stopIcon());
-        } else {
-          btn.prepend(runIcon());
-        }
-      }
-    }
-  });
+  let currentIcon;
+  let previousIsStopped;
+
+  const syncIcon = () => {
+    const isStopped = btn.classList.contains("stop-button");
+    const injectedIcons = [...btn.querySelectorAll(":scope > .is-new-icon")];
+    if (isStopped === previousIsStopped && injectedIcons.length === 1 && injectedIcons[0] === currentIcon) return;
+
+    injectedIcons.forEach((icon) => icon.remove());
+    currentIcon = isStopped ? stopIcon() : runIcon();
+    currentIcon.classList.add("is-new-icon");
+    btn.prepend(currentIcon);
+    previousIsStopped = isStopped;
+  };
+
+  syncIcon();
+
+  const observer = new MutationObserver(syncIcon);
 
   observer.observe(btn, {
     attributes: true,
     attributeFilter: ["class"],
+    childList: true,
   });
 }
