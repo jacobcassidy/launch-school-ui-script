@@ -4,10 +4,13 @@
  */
 
 // Import components
-import { updateNextExerciseButton } from "../../../components";
+import { injectHotkeysSection, updateNextExerciseButton } from "../../../components";
+import { syncAvailableHotkeys } from "../../sync/available-hotkeys";
 
 // Import utils
 import { elements } from "../../state";
+
+const observedInstructionsTabs = new WeakSet();
 
 /**
  * Updates the "Go to next exercise" button when the dom element changes.
@@ -15,26 +18,21 @@ import { elements } from "../../state";
 export function watchNextExerciseBtn() {
   const instructionsTab = document.querySelector("#tab-instructions");
   if (!instructionsTab) return;
-
-  let nextExerciseBtn = elements.native.nextExerciseButton;
-  if (!nextExerciseBtn) return;
-
-  if (nextExerciseBtn.dataset.nextButtonEventBound) return;
-  nextExerciseBtn.dataset.nextButtonEventBound = "true";
+  if (observedInstructionsTabs.has(instructionsTab)) return;
 
   const observer = new MutationObserver(() => {
-    const newNextExerciseBtn = [...document.querySelectorAll("a")].find((a) =>
-      a.textContent.includes("Go to the next exercise"),
-    );
+    const previousButton = elements.native.nextExerciseButton;
+    updateNextExerciseButton();
+    const nextButton = elements.native.nextExerciseButton;
+    if (previousButton === nextButton) return;
 
-    if (newNextExerciseBtn && newNextExerciseBtn !== nextExerciseBtn) {
-      nextExerciseBtn = newNextExerciseBtn;
-      updateNextExerciseButton();
-    }
+    syncAvailableHotkeys();
+    injectHotkeysSection();
   });
 
   observer.observe(instructionsTab, {
     childList: true,
     subtree: true,
   });
+  observedInstructionsTabs.add(instructionsTab);
 }
