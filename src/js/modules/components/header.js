@@ -12,29 +12,24 @@ import {
   moveTocBtnToHeader,
 } from "../components";
 
+import { elements, setElementTocButton } from "../utils/state";
+
+const headerElementSources = new WeakMap();
+
 /**
  * INJECT SITE HEADER
- * Injects a new .site-header element in the DOM
+ * Creates the header once and refreshes its page-specific contents.
  */
 export function injectHeader() {
-  // colorLog.run("Running injectHeader()");
-  const currentDomHeader = document.querySelector(".site-header");
-  if (currentDomHeader) return;
+  let header = document.querySelector(".site-header");
+  if (!header) {
+    header = document.createElement("header");
+    header.className = "site-header";
+    injectHeaderContainers(header);
+    document.body.insertBefore(header, document.body.firstChild);
+  }
 
-  const createHeader = () => {
-    // colorLog.run("Running createHeader()");
-    const siteHeaderEl = document.createElement("header");
-    siteHeaderEl.className = "site-header";
-
-    injectHeaderContainers(siteHeaderEl);
-    moveLoggedOutNavToHeader(siteHeaderEl.querySelector(".container-1"));
-
-    return siteHeaderEl;
-  };
-
-  // Inject the site header as the first child of the body element.
-  document.body.insertBefore(createHeader(), document.body.firstChild);
-  // colorLog.detail(".site-header has been injected.");
+  refreshHeader(header);
 }
 
 /**
@@ -50,7 +45,10 @@ function injectHeaderContainers(headerEl) {
       const containerNum = i + 1;
       containerEl.classList.add("site-header__container", `container-${containerNum}`);
 
-      injectContainerElements(containerEl, containerNum);
+      if (containerNum === 3) {
+        injectSettingsToggleButton(containerEl);
+        injectSettingsMenu(containerEl);
+      }
 
       return containerEl;
     };
@@ -60,46 +58,99 @@ function injectHeaderContainers(headerEl) {
 }
 
 /**
- * INJECT CONTAINER ELEMENTS
- * Injects elements to each .site-header__container
- *
- * @param {HTMLDivElement} containerEl The container to which the elements will be appended..
- * @param {number} containerNum The number of the container to which the elements will be appended.
+ * REFRESH HEADER
+ * Reconciles page controls without replacing settings or their event handlers.
  */
-function injectContainerElements(containerEl, containerNum) {
-  if (containerNum === 1) {
-    injectSidebarToggleButton(containerEl);
+function refreshHeader(header) {
+  const left = header.querySelector(".container-1");
+  const center = header.querySelector(".container-2");
+  const right = header.querySelector(".container-3");
+  const hasSidebar = !!document.querySelector(".nav-drawer");
+  const loggedOutNav = refreshNativeElement(".columns:has(> #logo + .nav)", left, {
+    keepAcrossPages: true,
+    available: !hasSidebar,
+  });
+  if (loggedOutNav) {
+    loggedOutNav.classList.remove("clearfix");
+    loggedOutNav.classList.add("logged-out-nav");
   }
 
-  if (containerNum === 2) {
-    // If breadcrumbs exist, move them inside the container, otherwise add the title there.
-    const breadcrumbs = document.querySelector(".gretel-breadcrumbs");
+  const sidebarToggle = refreshToggle(left, ".btn--toggle-sidebar", hasSidebar, injectSidebarToggleButton);
+  if (sidebarToggle && left.firstChild !== sidebarToggle) left.insertBefore(sidebarToggle, left.firstChild);
 
-    if (breadcrumbs) {
-      containerEl.appendChild(breadcrumbs);
-    } else {
-      injectTitleToHeaderWithNoBreadcrumbs(containerEl);
-    }
-  }
+  const breadcrumbs = refreshNativeElement(".gretel-breadcrumbs", center);
+  refreshTitle(center, !!breadcrumbs || !!loggedOutNav);
 
-  if (containerNum === 3) {
-    injectTabsPanelToggleButton(containerEl);
-    moveTocBtnToHeader(containerEl);
-    injectSettingsToggleButton(containerEl);
-    injectSettingsMenu(containerEl);
-  }
+  const tabsToggle = refreshToggle(
+    right,
+    ".btn--toggle-tabs-panel",
+    !!elements.native.tabsPanel,
+    injectTabsPanelToggleButton,
+  );
+  const tocButton = refreshNativeElement(".toc-toggle-button", right, {
+    onMove: (button) => moveTocBtnToHeader(right, button),
+  });
+  setElementTocButton(tocButton);
+
+  const settingsToggle = right.querySelector(".btn--toggle-settings");
+  if (tocButton && tocButton.nextSibling !== settingsToggle) right.insertBefore(tocButton, settingsToggle);
+  const nextControl = tocButton || settingsToggle;
+  if (tabsToggle && tabsToggle.nextSibling !== nextControl) right.insertBefore(tabsToggle, nextControl);
 }
 
 /**
- * INJECT TITLE TO HEADER WITH NO BREADCRUMBS
- * If breadcrumbs don't exist, injects the non-default HTML title to the .site-header__container
- *
- * @param {HTMLDivElement} containerEl The container to which the title will be appended.
+ * REFRESH NATIVE ELEMENT
+ * A source marker distinguishes a retained native control from stale header content
+ * when the page changes or native markup is replaced at the same URL.
  */
-function injectTitleToHeaderWithNoBreadcrumbs(containerEl) {
-  // Don't add title when the logged-out nav exists.
-  const loggedOutNav = document.querySelector(".columns:has(> #logo + .nav)");
-  if (loggedOutNav) return;
+function refreshNativeElement(selector, containerEl, { keepAcrossPages = false, available = true, onMove } = {}) {
+  const header = containerEl.closest(".site-header");
+  const currentElement = containerEl.querySelector(selector);
+  const nextElement = available
+    ? [...document.querySelectorAll(selector)].find((element) => !header.contains(element))
+    : null;
+  const pageUrl = `${window.location.pathname}${window.location.search || ""}`;
+
+  if (currentElement) {
+    const source = headerElementSources.get(currentElement);
+    if (!nextElement && available && source?.marker.isConnected && (keepAcrossPages || source.pageUrl === pageUrl)) {
+      return currentElement;
+    }
+    currentElement.remove();
+    source?.marker.remove();
+    headerElementSources.delete(currentElement);
+  }
+
+  if (!nextElement) return null;
+
+  const marker = document.createComment("Launch School UX Kit header source");
+  nextElement.before(marker);
+  headerElementSources.set(nextElement, { marker, pageUrl });
+  if (onMove) onMove(nextElement);
+  else containerEl.appendChild(nextElement);
+  return nextElement;
+}
+
+function refreshToggle(containerEl, selector, available, injectButton) {
+  const button = containerEl.querySelector(selector);
+  if (!available) {
+    button?.remove();
+    return null;
+  }
+  if (!button) injectButton(containerEl);
+  return containerEl.querySelector(selector);
+}
+
+/**
+ * REFRESH TITLE
+ * Uses the current page title when no breadcrumbs or logged-out navigation exist.
+ */
+function refreshTitle(containerEl, hasNativeHeading) {
+  let headerTitle = containerEl.querySelector(".title-text");
+  if (hasNativeHeading) {
+    headerTitle?.remove();
+    return;
+  }
 
   const currentUrl = window.location.pathname;
   let titleEl;
@@ -111,36 +162,17 @@ function injectTitleToHeaderWithNoBreadcrumbs(containerEl) {
     titleEl = document.querySelector("title");
   }
 
-  const titleText = titleEl?.innerText;
-  if (!titleText) return;
+  const titleText = titleEl?.textContent.trim();
   const defaultTitle = "Launch School - an online school for Software Engineers";
 
-  // Don't add the title if it's the default one.
-  if (titleText === defaultTitle) return;
-
-  const createHeaderTitle = () => {
-    const headerTitleEl = document.createElement("div");
-    headerTitleEl.classList.add("title-text");
-    headerTitleEl.textContent = titleText;
-
-    return headerTitleEl;
-  };
-
-  containerEl.appendChild(createHeaderTitle());
-}
-
-/**
- * ADD LOGGED-OUT NAV TO HEADER
- * Moves the logged out nav to the .site-header when the user is logged out
- *
- * @param {HTMLDivElement} containerEl The container to which the logged-out nav will be appended.
- */
-function moveLoggedOutNavToHeader(containerEl) {
-  const loggedOutNav = document.querySelector(".columns:has(> #logo + .nav)");
-  if (!loggedOutNav) return;
-
-  loggedOutNav.classList.remove("clearfix");
-  loggedOutNav.classList.add("logged-out-nav");
-
-  containerEl.appendChild(loggedOutNav);
+  if (!titleText || titleText === defaultTitle) {
+    headerTitle?.remove();
+    return;
+  }
+  if (!headerTitle) {
+    headerTitle = document.createElement("div");
+    headerTitle.classList.add("title-text");
+    containerEl.appendChild(headerTitle);
+  }
+  if (headerTitle.textContent !== titleText) headerTitle.textContent = titleText;
 }

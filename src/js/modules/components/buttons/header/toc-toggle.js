@@ -14,9 +14,9 @@ import { setButtonProperties } from "../../../utils/state";
  * Moves the book Table of Contents toggle button to the header
  *
  * @param {HTMLElement} containerEl The container to which the TOC button will be appended.
+ * @param {HTMLElement} bookTocBtn The current native TOC button, defaulting to the first match in the document.
  */
-export function moveTocBtnToHeader(containerEl) {
-  const bookTocBtn = document.querySelector(".toc-toggle-button");
+export function moveTocBtnToHeader(containerEl, bookTocBtn = document.querySelector(".toc-toggle-button")) {
   if (!bookTocBtn) return;
 
   bookTocBtn.classList.add("site-header__button", ".btn--toggle-toc", "has-dropdown");
