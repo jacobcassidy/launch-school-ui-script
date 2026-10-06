@@ -5,7 +5,6 @@
 
 export const sidebarLists = {
   mainList: {
-    listElements: [],
     listOrder: {
       courses: 1,
       bookshelf: 2,
@@ -15,7 +14,6 @@ export const sidebarLists = {
   },
 
   communityList: {
-    listElements: [],
     listOrder: {
       chat: 1,
       events: 2,
@@ -25,7 +23,6 @@ export const sidebarLists = {
   },
 
   extrasList: {
-    listElements: [],
     listOrder: {
       archives: 1,
       pages: 2,
@@ -37,7 +34,6 @@ export const sidebarLists = {
   },
 
   accountList: {
-    listElements: [],
     listOrder: {
       "my-account": 1,
       "my-assessments": 2,

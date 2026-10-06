@@ -8,7 +8,6 @@ import { icons } from "../components";
 
 // Import utils
 import { sidebarLists } from "../utils/configs";
-import { setSidebarListsElement } from "../utils/state";
 import { syncActiveSidebarItem } from "../utils/sync";
 
 const observedUnreadCounts = new WeakSet();
@@ -20,17 +19,17 @@ export function updateSidebar() {
   const nativeSidebar = document.querySelector(".nav-drawer");
   if (!nativeSidebar) return;
 
-  const sidebarItemLinks = document.querySelectorAll(".nav-drawer > ul > li > a");
-  const sidebar = document.querySelector(".sidebar.nav-drawer");
-
   // If sidebar already exists, sync active item and exit early.
-  if (sidebar) {
+  if (nativeSidebar.classList.contains("sidebar")) {
     syncActiveSidebarItem();
     return;
   }
 
   addSidebarLinkClasses();
   removeCountParentheses();
+
+  const sidebarItemLinks = nativeSidebar.querySelectorAll(":scope > ul > li > a");
+  const sidebarItems = new Map();
 
   sidebarItemLinks.forEach((link) => {
     if (!link) return;
@@ -145,8 +144,8 @@ export function updateSidebar() {
       const tooltipText = link.innerText.replace(/\([^)]*\)/g, "").trim() || tooltipFallback;
       createSidebarLinkTooltip(link, tooltipText);
 
-      // Set the item in the sidebarLists object if it exists
-      if (linkLabel && linkParentElement) setSidebarListsElement(linkParentElement, linkLabel);
+      // Keep DOM references local to this sidebar build.
+      if (linkLabel && linkParentElement) sidebarItems.set(linkLabel, linkParentElement);
 
       // Replace link icon with custom icon if it exists
       if (linkIconEl) link.prepend(linkIconEl);
@@ -185,7 +184,7 @@ export function updateSidebar() {
     }
   });
 
-  reorderSidebarLists();
+  reorderSidebarLists(nativeSidebar, sidebarItems);
   injectSidebarHeader();
   syncActiveSidebarItem();
 }
@@ -280,49 +279,40 @@ function removeCountParentheses() {
 /**
  * REORDER SIDEBAR LISTS
  */
-function reorderSidebarLists() {
-  const sidebar = document.querySelector(".nav-drawer");
+function reorderSidebarLists(sidebar, sidebarItems) {
   sidebar.classList.add("sidebar");
   const updatedListsWrapperEl = document.createElement("div");
   updatedListsWrapperEl.className = "sidebar-lists";
-  const sidebarListsNames = Object.keys(sidebarLists);
-
-  sidebarListsNames.forEach((listName) => {
+  Object.entries(sidebarLists).forEach(([listName, { listOrder, listTitle }]) => {
     const listClassName = listName.replace(/([A-Z])/g, "-$1").toLowerCase();
     const listWrapperEl = document.createElement("div");
     listWrapperEl.className = `sidebar-list-wrapper ${listClassName}-wrapper`;
     const listEl = document.createElement("ul");
     listEl.className = `sidebar-list ${listClassName}`;
 
-    for (const [listKey, listProperties] of Object.entries(sidebarLists)) {
-      if (listKey === listName) {
-        for (const [propertyKey, propertyValue] of Object.entries(listProperties)) {
-          if (propertyKey === "listElements") {
-            propertyValue.forEach((item) => {
-              const itemLinks = item.querySelectorAll("a");
-              itemLinks.forEach((link) => link?.classList.add("item-link"));
-              const itemBtns = item.querySelectorAll("button");
-              itemBtns.forEach((btn) => btn?.classList.add("item-btn"));
-              item.className = "sidebar-list__item";
-              listEl.appendChild(item);
-            });
-          }
-          if (propertyKey === "listTitle") {
-            const listHeaderEl = document.createElement("button");
-            listHeaderEl.className = "sidebar-list-toggle-btn btn--plain";
-            const listHeaderTitleEl = document.createElement("span");
-            listHeaderTitleEl.className = "list-title";
-            listHeaderTitleEl.innerText = propertyValue;
-            listHeaderEl.appendChild(listHeaderTitleEl);
-            listHeaderEl.appendChild(icons.sidebarIcons.toggle());
-            listWrapperEl.appendChild(listHeaderEl);
-          }
-        }
-      }
-    }
+    const listHeaderEl = document.createElement("button");
+    listHeaderEl.className = "sidebar-list-toggle-btn btn--plain";
+    const listHeaderTitleEl = document.createElement("span");
+    listHeaderTitleEl.className = "list-title";
+    listHeaderTitleEl.innerText = listTitle;
+    listHeaderEl.appendChild(listHeaderTitleEl);
+    listHeaderEl.appendChild(icons.sidebarIcons.toggle());
+    listWrapperEl.appendChild(listHeaderEl);
+
+    Object.entries(listOrder)
+      .sort(([, firstOrder], [, secondOrder]) => firstOrder - secondOrder)
+      .forEach(([linkLabel]) => {
+        const item = sidebarItems.get(linkLabel);
+        if (!item) return;
+
+        item.querySelectorAll("a").forEach((link) => link.classList.add("item-link"));
+        item.querySelectorAll("button").forEach((btn) => btn.classList.add("item-btn"));
+        item.className = "sidebar-list__item";
+        listEl.appendChild(item);
+      });
     listWrapperEl.appendChild(listEl);
     updatedListsWrapperEl.appendChild(listWrapperEl);
   });
 
-  if (sidebar) sidebar.appendChild(updatedListsWrapperEl);
+  sidebar.appendChild(updatedListsWrapperEl);
 }

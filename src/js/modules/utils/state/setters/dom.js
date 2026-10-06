@@ -4,7 +4,6 @@
  */
 
 // Import utils
-import { sidebarLists } from "../../configs";
 import { elements } from "../../state";
 
 // SET INJECTED ELEMENTS
@@ -101,30 +100,4 @@ export function setButtonProperties(btnEls, newIcons, btnClasses = [], append = 
       }
     });
   });
-}
-
-/**
- * SET SIDEBAR LISTS LINK
- *
- * @param {HTMLElement} parentElement The sidebar list link's parent li element to be set.
- * @param {string} linkLabel The name of the sidebar list link item to be set.
- */
-export function setSidebarListsElement(parentElement, linkLabel) {
-  let listElements;
-
-  for (const listProperties of Object.values(sidebarLists)) {
-    for (const [propertyName, propertyValue] of Object.entries(listProperties)) {
-      if (propertyName === "listElements") {
-        listElements = propertyValue;
-      }
-
-      if (propertyName === "listOrder") {
-        for (const [linkName, linkOrder] of Object.entries(propertyValue)) {
-          if (linkName === linkLabel) {
-            if (listElements) listElements[linkOrder - 1] = parentElement;
-          }
-        }
-      }
-    }
-  }
 }
