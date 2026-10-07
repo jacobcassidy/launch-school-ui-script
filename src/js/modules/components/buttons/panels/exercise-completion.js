@@ -10,7 +10,7 @@ import { injectHotkeysSection } from "../../hotkeys-menu.js";
 // Import utils
 import { setButtonProperties } from "../../../utils/dom/buttons.js";
 import { watchExerciseCompletionToggleBtn } from "../../../utils/watch/buttons/exercise-completion-toggle.js";
-import { syncAvailableHotkeys } from "../../../utils/sync/available-hotkeys";
+import { syncAvailableHotkeys } from "../../../utils/sync/available-hotkeys.js";
 
 /**
  * Updates the exercise completion button styles and icons.

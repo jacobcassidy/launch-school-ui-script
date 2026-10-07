@@ -1,8 +1,8 @@
 /**
  * SCRIPT INITIALIZATION
  */
-import { setLastUrl } from "./modules/utils/state";
-import { loadUI } from "./modules/utils/helpers";
+import { setLastUrl } from "./modules/utils/state/index.js";
+import { loadUI } from "./modules/utils/helpers/index.js";
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", init, { once: true });

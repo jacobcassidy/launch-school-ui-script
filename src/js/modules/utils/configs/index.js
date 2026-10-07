@@ -3,4 +3,4 @@
  * @module configs/index
  */
 
-export * from "./sidebar-lists";
+export * from "./sidebar-lists.js";
