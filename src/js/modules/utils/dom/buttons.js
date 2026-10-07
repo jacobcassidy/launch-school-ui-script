@@ -15,7 +15,12 @@ export function setButtonProperties(btnEls, newIcons, btnClasses = [], append = 
   if (btnEls.length < 1 || newIcons.length < 1) return;
 
   btnEls.forEach((btn) => {
-    if (!btn || btn.classList.contains("has-new-icon")) return;
+    if (!btn) return;
+
+    const existingIcons = [...btn.querySelectorAll(":scope > .is-new-icon")];
+    if (btn.classList.contains("has-new-icon") && existingIcons.length === newIcons.length) return;
+
+    existingIcons.forEach((icon) => icon.remove());
 
     btn.classList.add(...btnClasses, "has-new-icon");
 
