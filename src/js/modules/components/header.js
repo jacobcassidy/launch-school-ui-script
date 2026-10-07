@@ -55,7 +55,7 @@ function watchHeaderBeforeCache() {
     });
 
     document
-      .querySelectorAll("#ls-ui-script-styles, .toast-container, .tab-tooltip, .sidebar-tooltip")
+      .querySelectorAll("#ls-ui-script-styles, .toast-container, .tab-tooltip")
       .forEach((element) => element.remove());
   });
 }

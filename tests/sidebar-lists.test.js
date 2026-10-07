@@ -21,6 +21,10 @@ function node(tagName) {
       add: (...names) => names.forEach((name) => classes.add(name)),
       remove: (name) => classes.delete(name),
       contains: (name) => classes.has(name),
+      toggle(name, force) {
+        if (force ?? !classes.has(name)) classes.add(name);
+        else classes.delete(name);
+      },
     },
     get innerText() {
       return this.textContent;
@@ -92,6 +96,7 @@ function fixture() {
   const initialConfig = structuredClone(config);
   let sidebar = null;
   let activeSyncs = 0;
+  const watchedSidebars = [];
   const document = {
     body,
     createElement: node,
@@ -102,6 +107,9 @@ function fixture() {
     },
     querySelectorAll(selector) {
       if (selector === ".nav-drawer > ul > li > a") return sidebar.querySelectorAll(":scope > ul > li > a");
+      if (selector === ".sidebar-tooltip") {
+        return body.children.filter((child) => child.classList.contains("sidebar-tooltip"));
+      }
       return [];
     },
   };
@@ -125,7 +133,10 @@ function fixture() {
     syncActiveSidebarItem: () => activeSyncs++,
     reorderSidebarLists: listRenderer.reorderSidebarLists,
     injectSidebarHeader: headerRenderer.injectSidebarHeader,
-    watchUnreadCounts: unreadCountWatcher.watchUnreadCounts,
+    watchUnreadCounts(sidebar) {
+      watchedSidebars.push(sidebar);
+      unreadCountWatcher.watchUnreadCounts(sidebar);
+    },
   });
   const replaceSidebar = (names) => {
     sidebar?.remove();
@@ -147,7 +158,21 @@ function fixture() {
     body.appendChild(sidebar);
     return { sidebar, items };
   };
-  return { context, replaceSidebar, body, config, initialConfig, activeSyncs: () => activeSyncs };
+  const restoreSidebar = (restoredSidebar, ...tooltips) => {
+    sidebar = restoredSidebar;
+    body.appendChild(restoredSidebar);
+    tooltips.forEach((tooltip) => body.appendChild(tooltip));
+  };
+  return {
+    context,
+    replaceSidebar,
+    restoreSidebar,
+    body,
+    config,
+    initialConfig,
+    activeSyncs: () => activeSyncs,
+    watchedSidebars,
+  };
 }
 
 test("replacement sidebar uses only current items and retains configured ordering", () => {
@@ -215,6 +240,26 @@ test("replacing the sidebar removes tooltips from the old sidebar", () => {
 
   assert.equal(currentTooltips.length, 1);
   assert.ok(!currentTooltips.some((tooltip) => oldTooltips.includes(tooltip)));
+  assert.ok(first.sidebar.classList.contains("sidebar"));
+});
+
+test("reused sidebar refreshes its unread count observer and tooltip ownership", () => {
+  const f = fixture();
+  const first = f.replaceSidebar(["courses"]);
+  f.context.updateSidebar();
+  const firstTooltip = f.body.children.find((el) => el.classList.contains("sidebar-tooltip"));
+
+  f.replaceSidebar(["forum"]);
+  f.context.updateSidebar();
+  const secondTooltip = f.body.children.find((el) => el.classList.contains("sidebar-tooltip"));
+  assert.ok(!f.body.children.includes(firstTooltip));
+
+  f.restoreSidebar(first.sidebar, firstTooltip);
+  f.context.updateSidebar();
+
+  assert.equal(f.watchedSidebars.at(-1), first.sidebar);
+  assert.ok(f.body.children.includes(firstTooltip));
+  assert.ok(!f.body.children.includes(secondTooltip));
   assert.ok(first.sidebar.classList.contains("sidebar"));
 });
 

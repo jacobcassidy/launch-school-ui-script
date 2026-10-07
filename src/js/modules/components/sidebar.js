@@ -25,16 +25,21 @@ export function updateSidebar() {
     sidebarTooltips = [];
     activeSidebar = nativeSidebar;
   }
-  if (!nativeSidebar) return;
+  if (!nativeSidebar) {
+    watchUnreadCounts(null);
+    return;
+  }
+
+  watchUnreadCounts(nativeSidebar);
 
   // If sidebar already exists, sync active item and exit early.
   if (nativeSidebar.classList.contains("sidebar")) {
+    sidebarTooltips = [...document.querySelectorAll(".sidebar-tooltip")];
     syncActiveSidebarItem();
     return;
   }
 
   addSidebarLinkClasses();
-  watchUnreadCounts(nativeSidebar);
 
   const sidebarItemLinks = nativeSidebar.querySelectorAll(":scope > ul > li > a");
   const sidebarItems = new Map();

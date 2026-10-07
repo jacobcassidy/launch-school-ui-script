@@ -10,7 +10,12 @@ let sidebarObserver = null;
  * WATCH SIDEBAR UNREAD COUNTS
  */
 export function watchUnreadCounts(sidebar = document.querySelector(".nav-drawer")) {
-  if (!sidebar) return;
+  if (!sidebar) {
+    sidebarObserver?.disconnect();
+    sidebarObserver = null;
+    watchedSidebar = null;
+    return;
+  }
 
   if (sidebar !== watchedSidebar) {
     sidebarObserver?.disconnect();
