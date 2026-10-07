@@ -1,6 +1,6 @@
 # Development dependency advisories
 
-Reviewed on 2026-10-07. These dependencies belong to the development tooling and are not included in the distributed userscript.
+Reviewed on 2026-10-08. These dependencies belong to the development tooling and are not included in the distributed userscript.
 
 ## Resolved
 
