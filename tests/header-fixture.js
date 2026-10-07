@@ -120,11 +120,16 @@ export function headerFixture(options = {}) {
   head.appendChild(pageTitle);
   const document = {
     body,
+    documentElement: html,
     createElement: node,
     createComment: () => node("comment"),
     querySelector: (selector) => html.querySelector(selector),
     querySelectorAll: (selector) => html.querySelectorAll(selector),
+    addEventListener(event, callback) {
+      documentListeners.set(event, callback);
+    },
   };
+  const documentListeners = new Map();
   const window = { location: { pathname: "/course_catalog/example", search: "" } };
   const elements = { native: {} };
   const setters = sourceContext("../src/js/modules/utils/state/setters/dom.js", { elements });
@@ -216,5 +221,17 @@ export function headerFixture(options = {}) {
   };
   const native = render(options);
   const header = refresh();
-  return { header, native, render, refresh, document, body, elements, window };
+  return {
+    header,
+    native,
+    render,
+    refresh,
+    document,
+    body,
+    elements,
+    window,
+    beforeCache() {
+      documentListeners.get("turbo:before-cache")?.();
+    },
+  };
 }

@@ -106,6 +106,24 @@ test("same-URL native rendering discards moved elements whose source was removed
   assert.equal(f.header.querySelector(".title-text").textContent, "Updated page");
 });
 
+test("header controls return to their native positions before a Turbo snapshot", () => {
+  const f = fixture({
+    loggedOut: false,
+    pathname: "/books/first",
+    breadcrumbs: true,
+    sidebar: true,
+    tabs: true,
+    toc: true,
+  });
+
+  f.beforeCache();
+
+  assert.equal(f.body.querySelector(".site-header"), null);
+  assert.ok(f.native.breadcrumbs.isConnected);
+  assert.ok(f.native.toc.isConnected);
+  assert.equal(f.native.breadcrumbs.parentElement, f.native.toc.parentElement);
+});
+
 test("logged-out navigation persists across URL changes and is removed when a sidebar appears", () => {
   const f = fixture();
   f.window.location.pathname = "/another-public-page";

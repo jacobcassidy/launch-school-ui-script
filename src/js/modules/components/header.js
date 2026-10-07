@@ -20,6 +20,7 @@ const headerElementSources = new WeakMap();
  * Creates the header once and refreshes its page-specific contents.
  */
 export function injectHeader() {
+  watchHeaderBeforeCache();
   let header = document.querySelector(".site-header");
   if (!header) {
     header = document.createElement("header");
@@ -29,6 +30,34 @@ export function injectHeader() {
   }
 
   refreshHeader(header);
+}
+
+function watchHeaderBeforeCache() {
+  if (document.documentElement.dataset.headerBeforeCacheBound) return;
+  document.documentElement.dataset.headerBeforeCacheBound = "true";
+
+  document.addEventListener("turbo:before-cache", () => {
+    document.querySelectorAll(".site-header").forEach((header) => {
+      const movedElements = [
+        ...header.querySelectorAll(".gretel-breadcrumbs"),
+        ...header.querySelectorAll(".toc-toggle-button"),
+        ...header.querySelectorAll(".logged-out-nav"),
+      ];
+
+      movedElements.forEach((element) => {
+        const source = headerElementSources.get(element);
+        if (source?.marker.isConnected) source.marker.before(element);
+        source?.marker.remove();
+        headerElementSources.delete(element);
+      });
+
+      header.remove();
+    });
+
+    document
+      .querySelectorAll("#ls-ui-script-styles, .toast-container, .tab-tooltip, .sidebar-tooltip")
+      .forEach((element) => element.remove());
+  });
 }
 
 /**
