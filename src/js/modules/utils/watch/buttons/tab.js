@@ -5,8 +5,10 @@
 
 // Import utils
 import { handleFocus } from "../../helpers/focus.js";
+import { updateTabButtons } from "../../../components/buttons/panels/tab.js";
 
 const watchedTabButtons = new WeakSet();
+const watchedTabNavigations = new WeakSet();
 
 /**
  * Run handleFocus() on each tab button click.
@@ -48,4 +50,17 @@ export function watchTabBtns() {
       handleTooltip(tabBtn);
     });
   });
+
+  const tabNav = tabButtons[0].closest(".tab-nav");
+  if (!tabNav || watchedTabNavigations.has(tabNav)) return;
+  watchedTabNavigations.add(tabNav);
+
+  const observer = new MutationObserver(() => {
+    const hasVisibleUnstyledTab = [...tabNav.querySelectorAll(".tab-button")].some(
+      (tabBtn) => tabBtn.classList.contains("is-hidden") && getComputedStyle(tabBtn).display !== "none",
+    );
+    if (hasVisibleUnstyledTab) updateTabButtons();
+  });
+
+  observer.observe(tabNav, { attributes: true, subtree: true, attributeFilter: ["class", "style"] });
 }

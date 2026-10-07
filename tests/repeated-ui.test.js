@@ -35,6 +35,7 @@ test("repeated tab updates reuse tooltips and preserve the original label", () =
   const tooltips = [];
   const attributes = { "data-tab": "instructions" };
   const btn = {
+    classList: { add() {}, remove() {} },
     innerText: "Custom Instructions",
     removeAttribute() {},
     getAttribute: (key) => attributes[key],
@@ -70,6 +71,7 @@ test("unknown tab types keep their native label and content", () => {
   const attributes = { "data-tab": "new-feature" };
   let replaceChildrenCalls = 0;
   const btn = {
+    classList: { add() {}, remove() {} },
     innerText: "New Feature",
     removeAttribute() {},
     getAttribute: (key) => attributes[key],
