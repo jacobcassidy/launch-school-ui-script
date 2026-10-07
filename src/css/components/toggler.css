@@ -76,8 +76,8 @@
       display: block;
       background: var(--color--grayscale-500);
       border-radius: 100%;
-      animation-direction: forwards;
       animation-duration: 0.15s;
+      animation-fill-mode: forwards;
       animation-iteration-count: 1;
       animation-name: toggler-size;
       animation-play-state: running;
