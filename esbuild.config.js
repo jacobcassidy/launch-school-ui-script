@@ -3,7 +3,7 @@ import * as esbuild from "esbuild";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { watchUserscriptHeader } from "./scripts/watch-userscript-header.js";
+import { watchUserscriptMetadata } from "./scripts/watch-userscript-header.js";
 
 const releaseBundlePath = "./dist/js/index.min.js";
 const watchBundlePath = "./.dev-dist/js/index.js";
@@ -81,8 +81,8 @@ let ctx = await createContext();
 if (isWatchMode) {
   await ctx.watch();
 
-  watchUserscriptHeader(headerFile, async () => {
-    console.log(`Build started (change: "${headerFile}")`);
+  watchUserscriptMetadata([headerFile, licenseFile, thirdPartyNoticesFile], async () => {
+    console.log("Build started (change: userscript metadata)");
     await ctx.dispose();
     ctx = await createContext();
     await ctx.watch();
