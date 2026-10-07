@@ -24,7 +24,7 @@ npm run lint:docs
 npm run build
 ```
 
-`npm test` builds the userscript and runs the test suite. `npm run build` writes the installable bundle to `dist/js/index.min.js`. Use `npm run watch` during development to rebuild as source files change.
+`npm test` builds the userscript and runs the test suite. `npm run build` writes the installable bundle to `dist/js/index.min.js` after a successful build. Use `npm run watch` during development; it writes an unminified bundle to `.dev-dist/js/index.js` and leaves the installable bundle untouched.
 
 ## Contribute changes
 

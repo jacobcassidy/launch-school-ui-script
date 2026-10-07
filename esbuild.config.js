@@ -1,9 +1,12 @@
 import { readFile } from "node:fs/promises";
 import * as esbuild from "esbuild";
 import fs from "node:fs";
+import path from "node:path";
 import process from "node:process";
 
-const distDir = "./dist/";
+const releaseBundlePath = "./dist/js/index.min.js";
+const watchBundlePath = "./.dev-dist/js/index.js";
+const stagingBundlePath = "./.build-tmp/js/index.min.js";
 const headerFile = "./src/userscript/header.txt";
 const licenseFile = "./LICENSE";
 const thirdPartyNoticesFile = "./THIRD-PARTY-NOTICES.txt";
@@ -51,7 +54,7 @@ async function createContext() {
   return esbuild.context({
     entryPoints: ["src/js/index.js"],
     bundle: true,
-    outfile: `${distDir}/js/index.min.js`,
+    outfile: isWatchMode ? watchBundlePath : stagingBundlePath,
     minify: !isWatchMode,
     logLevel: "info",
     plugins: [cssTextPlugin],
@@ -67,9 +70,10 @@ async function createContext() {
   });
 }
 
-if (fs.existsSync(distDir)) {
-  fs.rmSync(distDir, { recursive: true, force: true });
-}
+const outputBundlePath = isWatchMode ? watchBundlePath : stagingBundlePath;
+const outputDirectory = path.dirname(outputBundlePath);
+fs.rmSync(outputDirectory, { recursive: true, force: true });
+fs.mkdirSync(outputDirectory, { recursive: true });
 
 let ctx = await createContext();
 
@@ -98,4 +102,7 @@ if (isWatchMode) {
 } else {
   await ctx.rebuild();
   await ctx.dispose();
+  fs.mkdirSync(path.dirname(releaseBundlePath), { recursive: true });
+  fs.renameSync(stagingBundlePath, releaseBundlePath);
+  fs.rmSync("./.build-tmp", { recursive: true, force: true });
 }
