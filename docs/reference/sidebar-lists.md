@@ -1,20 +1,25 @@
-# Lists
+# Sidebar Lists
 
-## Main
+The sidebar groups and item order are configured in [`sidebar-lists.js`](../../src/js/modules/utils/configs/sidebar-lists.js).
+
+## Study
 
 - Courses
-- Exercises
 - Bookshelf
-- Forum
+- Exercises
+
+## Community
+
+- Chat Room
 - Events
+- Forum
 
 ## Extras
 
 - Archives
-- Chat Room
 - Pages
 - Resources
-- Sharing
+- Sharing (`social` in the configuration)
 - Videos
 
 ## Account
