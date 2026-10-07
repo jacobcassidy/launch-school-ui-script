@@ -10,9 +10,12 @@ test("a revealed tab gets its tooltip and no longer has the hidden marker", () =
   const observers = [];
   let isHidden = true;
   const tooltip = {
+    dataset: {},
+    classes,
     classList: { add: (...names) => names.forEach((name) => classes.add(name)) },
     offsetWidth: 40,
     style: {},
+    textContent: "",
   };
   const tabNav = {
     querySelectorAll: () => [tabButton],
@@ -41,8 +44,8 @@ test("a revealed tab gets its tooltip and no longer has the hidden marker", () =
       },
     },
     createElement: () => tooltip,
-    querySelector: () => tooltips[0] || null,
-    querySelectorAll: () => [tabButton],
+    querySelector: (selector) => tooltips.find((item) => item.classes.has(selector.slice(1))) || null,
+    querySelectorAll: (selector) => (selector === ".tab-tooltip" ? [...tooltips] : [tabButton]),
   };
   const getComputedStyle = () => ({ display: isHidden ? "none" : "flex" });
   const tabContext = sourceContext("../src/js/modules/components/buttons/panels/tab.js", {

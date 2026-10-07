@@ -11,8 +11,12 @@ import { icons } from "../../icons.js";
  */
 export function updateTabButtons() {
   const tabBtns = document.querySelectorAll(".tab-button");
+  const currentTabIds = new Set([...tabBtns].map((btn) => btn.getAttribute("data-tab")));
 
   tabBtns.forEach(updateTabButton);
+  document.querySelectorAll(".tab-tooltip").forEach((tooltip) => {
+    if (!currentTabIds.has(tooltip.dataset.tabTooltipId)) tooltip.remove();
+  });
 }
 
 function updateTabButton(btn) {
@@ -72,6 +76,7 @@ function updateTabButton(btn) {
 function createTabTooltip(tooltipText, btnDataTab) {
   const tooltipEl = document.querySelector(`.tab-tooltip-${btnDataTab}`) || document.createElement("div");
   tooltipEl.classList.add("tooltip", "tab-tooltip", `tab-tooltip-${btnDataTab}`);
+  tooltipEl.dataset.tabTooltipId = btnDataTab;
   tooltipEl.textContent = tooltipText;
   document.body.appendChild(tooltipEl);
 }
