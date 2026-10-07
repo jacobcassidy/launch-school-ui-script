@@ -155,8 +155,12 @@ export function updateSidebar() {
       }
 
       // Regex removes any (#) text from the tooltipText
-      const tooltipText = link.innerText.replace(/\([^)]*\)/g, "").trim() || tooltipFallback;
-      createSidebarLinkTooltip(link, tooltipText);
+      const tooltipText =
+        link.innerText.replace(/\([^)]*\)/g, "").trim() ||
+        link.getAttribute("aria-label") ||
+        link.getAttribute("title") ||
+        tooltipFallback;
+      if (tooltipText) createSidebarLinkTooltip(link, tooltipText);
 
       // Keep DOM references local to this sidebar build.
       if (linkLabel && linkParentElement) sidebarItems.set(linkLabel, linkParentElement);

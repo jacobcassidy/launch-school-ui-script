@@ -283,3 +283,16 @@ test("sidebar grouping preserves Pages buttons and dropdown links", () => {
   assert.equal(link.parentElement, dropdown);
   assert.deepEqual(f.config, f.initialConfig);
 });
+
+test("icon-only sidebar links without a known type retain their native content", () => {
+  const f = fixture();
+  const current = f.replaceSidebar(["new-feature"]);
+  const link = current.sidebar.querySelector("a");
+  const icon = node("svg");
+  link.textContent = "";
+  link.appendChild(icon);
+
+  assert.doesNotThrow(() => f.context.updateSidebar());
+  assert.equal(link.parentElement, current.items.get("new-feature"));
+  assert.equal(link.querySelector("svg"), icon);
+});
