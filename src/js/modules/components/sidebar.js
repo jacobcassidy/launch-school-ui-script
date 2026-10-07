@@ -26,7 +26,7 @@ export function updateSidebar() {
   }
 
   addSidebarLinkClasses();
-  watchUnreadCounts();
+  watchUnreadCounts(nativeSidebar);
 
   const sidebarItemLinks = nativeSidebar.querySelectorAll(":scope > ul > li > a");
   const sidebarItems = new Map();

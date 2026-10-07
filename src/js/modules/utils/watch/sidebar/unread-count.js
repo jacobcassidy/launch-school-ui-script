@@ -3,43 +3,56 @@
  * @module utils/watch/sidebar/unread-count
  */
 
-const observedUnreadCounts = new WeakSet();
+let watchedSidebar = null;
+let sidebarObserver = null;
 
 /**
  * WATCH SIDEBAR UNREAD COUNTS
  */
-export function watchUnreadCounts() {
-  const counts = document.querySelectorAll('.nav-drawer [class*="_unread_count"]');
-  if (counts.length < 1) return;
+export function watchUnreadCounts(sidebar = document.querySelector(".nav-drawer")) {
+  if (!sidebar) return;
 
-  counts.forEach((count) => {
-    if (observedUnreadCounts.has(count)) return;
-    observedUnreadCounts.add(count);
-
-    let badge = null;
-    const syncCount = () => {
-      const countText = count.textContent.replace(/[()]/g, "").trim();
-      if (!countText) {
-        badge?.remove();
-        badge = null;
-        return;
-      }
-
-      if (!badge) {
-        badge = document.createElement("span");
-        badge.className = "unread-count";
-        count.after(badge);
-      }
-      badge.textContent = countText;
-      badge.classList.toggle("hide-single-count", countText === "1");
-    };
-
-    const observer = new MutationObserver(syncCount);
-    observer.observe(count, {
+  if (sidebar !== watchedSidebar) {
+    sidebarObserver?.disconnect();
+    watchedSidebar?.querySelectorAll(".unread-count").forEach((badge) => badge.remove());
+    watchedSidebar = sidebar;
+    sidebarObserver = new MutationObserver(() => syncUnreadCounts(sidebar));
+    sidebarObserver.observe(sidebar, {
       childList: true,
       characterData: true,
       subtree: true,
     });
-    syncCount();
+  }
+
+  syncUnreadCounts(sidebar);
+}
+
+function syncUnreadCounts(sidebar) {
+  const counts = sidebar.querySelectorAll('[class*="_unread_count"]');
+  const currentCounts = new Set(counts);
+
+  sidebar.querySelectorAll(".unread-count").forEach((badge) => {
+    if (!currentCounts.has(badge.unreadCountSource)) badge.remove();
+  });
+
+  counts.forEach((count) => {
+    const countText = count.textContent.replace(/[()]/g, "").trim();
+    let badge = count.nextElementSibling;
+    if (badge?.classList.contains("unread-count") && badge.unreadCountSource !== count) badge = null;
+
+    if (!countText) {
+      badge?.remove();
+      return;
+    }
+
+    if (!badge) {
+      badge = document.createElement("span");
+      badge.className = "unread-count";
+      badge.unreadCountSource = count;
+      count.after(badge);
+    }
+
+    if (badge.textContent !== countText) badge.textContent = countText;
+    badge.classList.toggle("hide-single-count", countText === "1");
   });
 }
