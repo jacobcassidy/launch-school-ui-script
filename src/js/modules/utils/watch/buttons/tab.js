@@ -6,6 +6,8 @@
 // Import utils
 import { handleFocus } from "../../helpers/focus.js";
 
+const watchedTabButtons = new WeakSet();
+
 /**
  * Run handleFocus() on each tab button click.
  */
@@ -35,10 +37,8 @@ export function watchTabBtns() {
   };
 
   tabButtons.forEach((tabBtn) => {
-    if (tabBtn.dataset.tabBtnEventBound) {
-      return;
-    }
-    tabBtn.dataset.tabBtnEventBound = "true";
+    if (watchedTabButtons.has(tabBtn)) return;
+    watchedTabButtons.add(tabBtn);
 
     tabBtn.addEventListener("click", () => {
       handleFocus(tabBtn);

@@ -13,8 +13,8 @@ export function watchViewSolutionBtn(btn, svgIcons) {
     return;
   }
 
-  if (btn.dataset.viewSolutionBtnEventBound) return;
-  btn.dataset.viewSolutionBtnEventBound = "true";
+  if (watchedSolutionButtons.has(btn)) return;
+  watchedSolutionButtons.add(btn);
 
   let currentIcons = [];
 
@@ -46,3 +46,4 @@ export function watchViewSolutionBtn(btn, svgIcons) {
   });
   observer.observe(btn, { childList: true });
 }
+const watchedSolutionButtons = new WeakSet();

@@ -7,6 +7,8 @@
 import { elements } from "../../state/dom.js";
 import { toggleSidebar } from "../../helpers/toggle.js";
 
+const watchedSidebarToggleButtons = new WeakSet();
+
 /**
  * Toggles the sidebar when the sidebar toggle button is clicked.
  */
@@ -16,10 +18,8 @@ export function watchSidebarToggleBtn() {
     return;
   }
 
-  if (sidebarToggleBtn.dataset.sidebarToggleBtnEventBound) {
-    return;
-  }
-  sidebarToggleBtn.dataset.sidebarToggleBtnEventBound = "true";
+  if (watchedSidebarToggleButtons.has(sidebarToggleBtn)) return;
+  watchedSidebarToggleButtons.add(sidebarToggleBtn);
 
   sidebarToggleBtn.addEventListener("click", () => toggleSidebar());
 }

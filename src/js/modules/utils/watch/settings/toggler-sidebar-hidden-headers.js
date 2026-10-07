@@ -6,6 +6,8 @@
 // Import utils
 import { setSettingSidebarHiddenHeaders } from "../../state/setters/ui.js";
 
+const watchedHiddenHeadersTogglers = new WeakSet();
+
 /**
  * Toggles the Sidebar's Hidden Section Headers setting.
  */
@@ -15,10 +17,8 @@ export function watchSettingSidebarHiddenHeadersToggler() {
     return;
   }
 
-  if (settingSidebarHiddenHeadersToggler.dataset.sidebarHiddenHeadersTogglerEventBound) {
-    return;
-  }
-  settingSidebarHiddenHeadersToggler.dataset.sidebarHiddenHeadersTogglerEventBound = "true";
+  if (watchedHiddenHeadersTogglers.has(settingSidebarHiddenHeadersToggler)) return;
+  watchedHiddenHeadersTogglers.add(settingSidebarHiddenHeadersToggler);
 
   settingSidebarHiddenHeadersToggler.addEventListener("change", () => {
     if (settingSidebarHiddenHeadersToggler.checked) {

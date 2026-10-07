@@ -13,8 +13,8 @@
 export function watchRunCodeBtn(btn, runIcon, stopIcon) {
   if (!btn) return;
 
-  if (btn.dataset.runCodeBtnEventBound) return;
-  btn.dataset.runCodeBtnEventBound = "true";
+  if (watchedRunCodeButtons.has(btn)) return;
+  watchedRunCodeButtons.add(btn);
 
   let currentIcon;
   let previousIsStopped;
@@ -41,3 +41,4 @@ export function watchRunCodeBtn(btn, runIcon, stopIcon) {
     childList: true,
   });
 }
+const watchedRunCodeButtons = new WeakSet();

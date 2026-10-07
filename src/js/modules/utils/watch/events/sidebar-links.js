@@ -17,11 +17,11 @@ export function watchSidebarLinks() {
     const listHeaderBtns = document.querySelectorAll(".sidebar-list-toggle-btn");
 
     listHeaderBtns.forEach((btn) => {
-      if (btn.dataset.sidebarListToggleEventBound) return;
+      if (watchedSidebarListButtons.has(btn)) return;
       btn.addEventListener("click", () => {
         btn.classList.toggle("is-closed");
       });
-      btn.dataset.sidebarListToggleEventBound = "true";
+      watchedSidebarListButtons.add(btn);
     });
   };
 
@@ -29,7 +29,7 @@ export function watchSidebarLinks() {
     const pagesLink = document.querySelector(".sidebar-list__item .pages");
     const pagesDropdown = document.querySelector(".sidebar-list__item .pages + .dropdown");
 
-    if (!pagesLink?.addEventListener || !pagesDropdown || pagesLink.dataset.pagesDropdownEventBound) return;
+    if (!pagesLink?.addEventListener || !pagesDropdown || watchedPagesLinks.has(pagesLink)) return;
 
     pagesLink.addEventListener("click", (event) => {
       event.preventDefault();
@@ -38,7 +38,7 @@ export function watchSidebarLinks() {
 
       pagesDropdown.classList.toggle("expanded");
     });
-    pagesLink.dataset.pagesDropdownEventBound = "true";
+    watchedPagesLinks.add(pagesLink);
   };
 
   const toggleSidebarTooltip = () => {
@@ -66,10 +66,10 @@ export function watchSidebarLinks() {
     };
 
     sidebarLinks.forEach((link) => {
-      if (link.dataset.sidebarLinkEventBound) return;
+      if (watchedSidebarLinks.has(link)) return;
 
       link.addEventListener("mouseenter", () => handleTooltip(link));
-      link.dataset.sidebarLinkEventBound = "true";
+      watchedSidebarLinks.add(link);
     });
   };
 
@@ -77,3 +77,6 @@ export function watchSidebarLinks() {
   toggleSidebarPagesDropdown();
   toggleSidebarTooltip();
 }
+const watchedSidebarListButtons = new WeakSet();
+const watchedPagesLinks = new WeakSet();
+const watchedSidebarLinks = new WeakSet();

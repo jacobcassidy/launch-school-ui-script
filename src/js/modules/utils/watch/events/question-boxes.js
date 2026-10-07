@@ -7,6 +7,8 @@
 import { elements } from "../../state/dom.js";
 import { handleFocus } from "../../helpers/focus.js";
 
+const watchedQuestionBoxes = new WeakSet();
+
 /**
  * Opens the Tabs Panel with the LSBOT tab active when a content panel question box submission is made.
  */
@@ -39,8 +41,8 @@ export function watchQuestionBoxes() {
   };
 
   questionBoxes.forEach((box) => {
-    if (box.dataset.questionBoxEventsBound) return;
-    box.dataset.questionBoxEventsBound = "true";
+    if (watchedQuestionBoxes.has(box)) return;
+    watchedQuestionBoxes.add(box);
 
     box.addEventListener("click", (event) => {
       const submitter = event.target.closest?.(".lsbot-question-link, .lsbot-question-box-send-answer-button");

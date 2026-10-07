@@ -13,10 +13,8 @@ export function watchPromptSubmission() {
   }
 
   lsbotPromptInputs.forEach((prompt) => {
-    if (prompt.dataset.focusObserverBound) {
-      return;
-    }
-    prompt.dataset.focusObserverBound = "true";
+    if (watchedPromptInputs.has(prompt)) return;
+    watchedPromptInputs.add(prompt);
 
     let observer = null;
     let stopWatchingFocus = () => {};
@@ -52,3 +50,4 @@ export function watchPromptSubmission() {
     });
   });
 }
+const watchedPromptInputs = new WeakSet();

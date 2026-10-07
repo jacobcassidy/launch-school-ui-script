@@ -7,6 +7,8 @@
 import { elements } from "../../state/dom.js";
 import { toggleSettings } from "../../helpers/toggle.js";
 
+const watchedSettingsToggleButtons = new WeakSet();
+
 /**
  * Toggles the Settings Menu visibility when the settings toggle button is clicked.
  */
@@ -16,10 +18,8 @@ export function watchSettingsToggleBtn() {
     return;
   }
 
-  if (settingsToggleBtn.dataset.settingsToggleBtnEventBound) {
-    return;
-  }
-  settingsToggleBtn.dataset.settingsToggleBtnEventBound = "true";
+  if (watchedSettingsToggleButtons.has(settingsToggleBtn)) return;
+  watchedSettingsToggleButtons.add(settingsToggleBtn);
 
   settingsToggleBtn.addEventListener("click", () => toggleSettings());
 }

@@ -6,6 +6,8 @@
 // Import components
 import { updateCopyMarkupButton } from "../../../components/buttons/panels/copy-markup.js";
 
+const watchedTabContents = new WeakSet();
+
 /**
  * Adds the copy markup button classes when new copy markup buttons are added to .tab-content in the DOM
  */
@@ -13,8 +15,8 @@ export function watchForNewCopyMarkupBtns() {
   const tabContent = document.querySelector(".tab-content");
   if (!tabContent) return;
 
-  if (tabContent.dataset.newCopyMarkupBtnsWatchBound) return;
-  tabContent.dataset.newCopyMarkupBtnsWatchBound = "true";
+  if (watchedTabContents.has(tabContent)) return;
+  watchedTabContents.add(tabContent);
 
   const observer = new MutationObserver((mutationList) => {
     const btns = [];

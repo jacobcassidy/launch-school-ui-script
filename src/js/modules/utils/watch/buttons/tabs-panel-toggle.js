@@ -7,6 +7,8 @@
 import { elements } from "../../state/dom.js";
 import { toggleTabsPanel } from "../../helpers/toggle.js";
 
+const watchedTabsPanelToggleButtons = new WeakSet();
+
 /**
  * Toggles the Tabs Panel visibility on button click.
  */
@@ -16,10 +18,8 @@ export function watchTabsPanelToggleBtn() {
     return;
   }
 
-  if (tabsPanelToggleBtn.dataset.tabsPanelToggleBtnEventBound) {
-    return;
-  }
-  tabsPanelToggleBtn.dataset.tabsPanelToggleBtnEventBound = "true";
+  if (watchedTabsPanelToggleButtons.has(tabsPanelToggleBtn)) return;
+  watchedTabsPanelToggleButtons.add(tabsPanelToggleBtn);
 
   tabsPanelToggleBtn.addEventListener("click", () => toggleTabsPanel());
 }

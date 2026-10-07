@@ -6,6 +6,8 @@
 // Import utils
 import { setSettingSidebarShrink } from "../../state/setters/ui.js";
 
+const watchedSidebarShrinkTogglers = new WeakSet();
+
 /**
  * Toggles the Sidebar's collapsed sizing (hidden or shrunken).
  */
@@ -15,10 +17,8 @@ export function watchSettingSidebarShrinkToggler() {
     return;
   }
 
-  if (settingSidebarShrinkToggler.dataset.sidebarShrinkTogglerEventBound) {
-    return;
-  }
-  settingSidebarShrinkToggler.dataset.sidebarShrinkTogglerEventBound = "true";
+  if (watchedSidebarShrinkTogglers.has(settingSidebarShrinkToggler)) return;
+  watchedSidebarShrinkTogglers.add(settingSidebarShrinkToggler);
 
   settingSidebarShrinkToggler.addEventListener("change", () => {
     if (settingSidebarShrinkToggler.checked) {

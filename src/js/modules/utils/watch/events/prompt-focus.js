@@ -9,6 +9,7 @@
 export function watchPromptFocus() {
   if (document.documentElement.dataset.promptFocusBound) return;
   document.documentElement.dataset.promptFocusBound = "true";
+  const watchedChatInputs = new WeakSet();
 
   const inputSelector = ".lsbot-question-input, .lsbot-question-box-answer-input";
 
@@ -44,8 +45,8 @@ export function watchPromptFocus() {
   };
 
   const bindInput = (chatInput) => {
-    if (!chatInput?.matches(inputSelector) || chatInput.dataset.promptEnterBound) return;
-    chatInput.dataset.promptEnterBound = "true";
+    if (!chatInput?.matches(inputSelector) || watchedChatInputs.has(chatInput)) return;
+    watchedChatInputs.add(chatInput);
     chatInput.addEventListener("keydown", handleKeydown, true);
   };
 
