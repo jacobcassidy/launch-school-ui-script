@@ -16,14 +16,14 @@ export function watchQuestionBoxes() {
     return;
   }
 
-  const lsbotTabBtn = document.querySelector(".tab-button[data-tab='lsbot-help']");
-  if (!lsbotTabBtn) return;
-
   const handleSubmitClick = () => {
-    handleFocus(lsbotTabBtn);
+    const lsbotTabBtn = document.querySelector(".tab-button[data-tab='lsbot-help']");
+    if (lsbotTabBtn) handleFocus(lsbotTabBtn);
   };
 
   const handleSubmitHotkey = (event) => {
+    const boxTextarea = event.target;
+    if (!boxTextarea.matches?.(".lsbot-question-box-answer-input") || document.activeElement !== boxTextarea) return;
     if (event.isComposing || event.keyCode === 229) return;
     const keyAlt = event.altKey;
     const keyCmd = event.metaKey;
@@ -35,26 +35,19 @@ export function watchQuestionBoxes() {
     const isCtrlEnterSubmit = keyCtrl && keyEnter && !keyAlt && !keyCmd && !keyShift;
     const shouldSubmit = isEnterOnlySubmit || isCmdEnterSubmit || isCtrlEnterSubmit;
     if (!shouldSubmit) return;
-    handleFocus(lsbotTabBtn);
+    handleSubmitClick();
   };
 
   questionBoxes.forEach((box) => {
-    const boxSendLink = box.querySelector(".lsbot-question-link");
-    const boxSubmitButton = box.querySelector(".lsbot-question-box-send-answer-button");
-    if (!box.dataset.questionLinkEventBound && boxSendLink?.addEventListener) {
-      boxSendLink.addEventListener("click", handleSubmitClick);
-      box.dataset.questionLinkEventBound = "true";
-    }
-    if (!box.dataset.questionButtonEventBound && boxSubmitButton?.addEventListener) {
-      boxSubmitButton.addEventListener("click", handleSubmitClick);
-      box.dataset.questionButtonEventBound = "true";
-    }
+    if (box.dataset.questionBoxEventsBound) return;
+    box.dataset.questionBoxEventsBound = "true";
 
-    const boxTextarea = box.querySelector(".lsbot-question-box-answer-input");
-    if (!box.dataset.questionInputEventBound && boxTextarea?.addEventListener) {
-      boxTextarea.addEventListener("focus", () => boxTextarea.addEventListener("keydown", handleSubmitHotkey));
-      boxTextarea.addEventListener("blur", () => boxTextarea.removeEventListener("keydown", handleSubmitHotkey));
-      box.dataset.questionInputEventBound = "true";
-    }
+    box.addEventListener("click", (event) => {
+      const submitter = event.target.closest?.(".lsbot-question-link, .lsbot-question-box-send-answer-button");
+      if (!submitter || !box.contains(submitter)) return;
+      handleSubmitClick();
+    });
+
+    box.addEventListener("keydown", handleSubmitHotkey);
   });
 }

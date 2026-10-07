@@ -4,83 +4,83 @@ import { sourceContext } from "./source-context.js";
 
 function fixture() {
   const listeners = {};
-  let focusCalls = 0;
+  const focusedTabs = [];
+  let button = {};
+  let tab = null;
   const input = {
+    matches: (selector) => selector === ".lsbot-question-box-answer-input",
+  };
+  const box = {
+    dataset: {},
     addEventListener(event, callback) {
       listeners[event] = callback;
     },
-    removeEventListener(event) {
-      delete listeners[event];
-    },
-  };
-  const button = { addEventListener() {} };
-  const box = {
-    dataset: {},
+    contains: (target) => target === button,
     querySelector: (selector) => (selector === ".lsbot-question-box-answer-input" ? input : button),
   };
   const context = sourceContext("../src/js/modules/utils/watch/events/question-boxes.js", {
-    document: { querySelectorAll: () => [box], querySelector: () => ({}) },
-    elements: { native: { tabsPanel: {} } },
-    handleFocus() {
-      focusCalls++;
+    document: {
+      activeElement: input,
+      querySelectorAll: () => [box],
+      querySelector: () => tab,
     },
+    elements: { native: { tabsPanel: {} } },
+    handleFocus: (target) => focusedTabs.push(target),
   });
   context.watchQuestionBoxes();
-  listeners.focus();
-  return { send: (event) => listeners.keydown(event), calls: () => focusCalls };
+
+  return {
+    send(event) {
+      listeners.keydown({ target: input, ...event });
+    },
+    click() {
+      listeners.click({ target: { closest: () => button } });
+    },
+    replaceButton() {
+      button = {};
+    },
+    replaceTab(nextTab) {
+      tab = nextTab;
+    },
+    focusedTabs,
+  };
 }
 
 test("composition confirmation leaves focus alone for modern and legacy IME events", () => {
   const f = fixture();
   f.send({ key: "Enter", isComposing: true });
   f.send({ key: "Enter", keyCode: 229 });
-  assert.equal(f.calls(), 0);
+  assert.equal(f.focusedTabs.length, 0);
 });
 
 test("normal Enter submission shortcuts still focus LSBot", () => {
   const f = fixture();
+  f.replaceTab({ id: "current-tab" });
   for (const modifiers of [{}, { metaKey: true }, { ctrlKey: true }]) f.send({ key: "Enter", ...modifiers });
-  assert.equal(f.calls(), 3);
+  assert.equal(f.focusedTabs.length, 3);
   f.send({ key: "Enter", shiftKey: true });
-  assert.equal(f.calls(), 3);
+  assert.equal(f.focusedTabs.length, 3);
 });
 
-test("missing question-box controls stay unbound and can be picked up on a later pass", () => {
-  const inputListeners = {};
-  let sendLink = null;
-  const input = {
-    addEventListener(event, callback) {
-      inputListeners[event] = callback;
-    },
-    removeEventListener(event) {
-      delete inputListeners[event];
-    },
-  };
-  const box = {
-    dataset: {},
-    querySelector(selector) {
-      if (selector === ".lsbot-question-box-answer-input") return input;
-      if (selector === ".lsbot-question-link") return sendLink;
-      return null;
-    },
-  };
-  const context = sourceContext("../src/js/modules/utils/watch/events/question-boxes.js", {
-    document: {
-      querySelectorAll: () => [box],
-      querySelector: () => ({}),
-    },
-    elements: { native: { tabsPanel: {} } },
-    handleFocus() {},
-  });
+test("delegated events handle replaced question controls and find the current LSBot tab", () => {
+  const f = fixture();
+  f.replaceTab({ id: "current-tab" });
+  f.replaceButton();
+  f.click();
 
-  assert.doesNotThrow(() => context.watchQuestionBoxes());
-  assert.equal(box.dataset.questionInputEventBound, "true");
-  assert.equal(box.dataset.questionLinkEventBound, undefined);
+  assert.deepEqual(f.focusedTabs, [{ id: "current-tab" }]);
+});
 
-  let linkListeners = 0;
-  sendLink = { addEventListener: () => linkListeners++ };
-  context.watchQuestionBoxes();
-  context.watchQuestionBoxes();
-  assert.equal(box.dataset.questionLinkEventBound, "true");
-  assert.equal(linkListeners, 1);
+test("delegated question controls can be added after setup", () => {
+  const f = fixture();
+  f.replaceButton();
+  f.send({ key: "Enter" });
+  f.click();
+  assert.equal(f.focusedTabs.length, 0);
+
+  f.replaceTab({ id: "late-tab" });
+  f.send({ key: "Enter" });
+  f.click();
+
+  assert.deepEqual(f.focusedTabs, [{ id: "late-tab" }, { id: "late-tab" }]);
 });
