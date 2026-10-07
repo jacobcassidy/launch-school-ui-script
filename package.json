@@ -49,6 +49,7 @@
     "lint:scripts:fix": "npx eslint --fix",
     "lint:styles": "npx stylelint \"**/*.css\" --ignore-path .gitignore",
     "lint:styles:fix": "npx stylelint \"**/*.css\" --ignore-path .gitignore --fix",
+    "test": "npm run build && node --test tests/*.test.js",
     "build": "node ./esbuild.config.js",
     "watch": "node ./esbuild.config.js --watch"
   }
