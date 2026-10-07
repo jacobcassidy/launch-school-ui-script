@@ -26,7 +26,7 @@ export function scheduleReload() {
   requestAnimationFrame(() => {
     try {
       loadUI();
-      setLastUrl(`${location.origin}${location.pathname}`);
+      setLastUrl(`${location.origin}${location.pathname}${location.search}`);
     } finally {
       setIsReloadScheduled(false);
     }

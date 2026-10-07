@@ -28,7 +28,7 @@ export function watchForUrlChange() {
       return;
     }
 
-    const currentUrl = `${location.origin}${location.pathname}`;
+    const currentUrl = `${location.origin}${location.pathname}${location.search}`;
     const isChangedUrl = currentUrl !== ui.load.lastUrl;
 
     if (!isChangedUrl) {

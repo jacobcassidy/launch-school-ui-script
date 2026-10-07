@@ -11,6 +11,6 @@ if (document.readyState === "loading") {
 }
 
 function init() {
-  setLastUrl(`${location.origin}${location.pathname}`);
+  setLastUrl(`${location.origin}${location.pathname}${location.search}`);
   loadUI();
 }

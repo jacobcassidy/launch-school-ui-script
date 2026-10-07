@@ -8,7 +8,7 @@ function fixture() {
   let loads = 0;
   const context = sourceContext("../src/js/modules/utils/helpers/reload.js", {
     ui,
-    location: { origin: "https://launchschool.com", pathname: "/new" },
+    location: { origin: "https://launchschool.com", pathname: "/new", search: "?track=python" },
     document: { body: ui.load.previousBody },
     requestAnimationFrame(callback) {
       frames.push(callback);
@@ -33,7 +33,7 @@ test("same-body navigation reloads on the next frame and coalesces pending calls
   assert.equal(frames.length, 1);
   frames.shift()();
   assert.equal(loads(), 1);
-  assert.equal(ui.load.lastUrl, "https://launchschool.com/new");
+  assert.equal(ui.load.lastUrl, "https://launchschool.com/new?track=python");
   assert.equal(ui.load.isReloadScheduled, false);
 });
 
@@ -76,4 +76,33 @@ test("Turbo rendering after a history reload schedules a fresh pass at the same 
   assert.equal(frames.length, 1);
   frames.shift()();
   assert.equal(loads(), 2);
+});
+
+test("query-only history navigation reloads page-specific UI state", () => {
+  const { context, frames, ui, loads } = fixture();
+  ui.load.lastUrl = "https://launchschool.com/new?track=python";
+  const history = {
+    pushState(_state, _title, nextSearch) {
+      context.location.search = nextSearch;
+    },
+    replaceState(_state, _title, nextSearch) {
+      context.location.search = nextSearch;
+    },
+  };
+  const watcher = sourceContext("../src/js/modules/utils/watch/events/url-change.js", {
+    ui,
+    location: context.location,
+    scheduleReload: context.scheduleReload,
+    history,
+    window: { addEventListener() {} },
+    document: { documentElement: { dataset: {} }, addEventListener() {} },
+  });
+
+  watcher.watchForUrlChange();
+  watcher.history.replaceState({}, "", "?track=javascript");
+
+  assert.equal(frames.length, 1);
+  frames.shift()();
+  assert.equal(loads(), 1);
+  assert.equal(ui.load.lastUrl, "https://launchschool.com/new?track=javascript");
 });
