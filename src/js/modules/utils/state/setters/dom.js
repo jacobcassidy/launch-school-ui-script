@@ -20,7 +20,7 @@ export function setElementSettingsToggleBtn(el) {
 }
 
 export function setElementSidebarHiddenHeadersToggler(el) {
-  elements.injected.sidebarHiddenHeaderToggler = el;
+  elements.injected.sidebarHiddenHeadersToggler = el;
 }
 
 export function setElementSidebarShrinkToggler(el) {
