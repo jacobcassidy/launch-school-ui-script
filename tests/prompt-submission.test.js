@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { sourceContext } from "./source-context.js";
 
-function fixture() {
+function fixture({ promptInitiallyFocused = false } = {}) {
   let onFocus;
   let observer;
   let refocuses = 0;
@@ -21,7 +21,7 @@ function fixture() {
   const body = {};
   const document = {
     body,
-    activeElement: body,
+    activeElement: promptInitiallyFocused ? prompt : body,
     querySelectorAll: () => [prompt],
     addEventListener(event, fn) {
       listeners.add(fn);
@@ -46,7 +46,7 @@ function fixture() {
     },
   });
   context.watchPromptSubmission();
-  onFocus();
+  if (!promptInitiallyFocused) onFocus();
   return {
     prompt,
     document,
@@ -70,6 +70,15 @@ test("refocuses a re-enabled prompt when disabling it left focus on the body", (
   f.mutate();
   assert.equal(f.refocuses(), 1);
   assert.equal(f.listeners.size, 0);
+});
+
+test("a prompt already focused during setup is observed for submission", () => {
+  const f = fixture({ promptInitiallyFocused: true });
+  f.prompt.disabled = true;
+  f.mutate();
+  f.prompt.disabled = false;
+  f.mutate();
+  assert.equal(f.refocuses(), 1);
 });
 
 test("switching controls cancels refocus even if that control later blurs", () => {

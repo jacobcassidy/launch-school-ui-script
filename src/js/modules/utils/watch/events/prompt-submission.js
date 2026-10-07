@@ -19,7 +19,7 @@ export function watchPromptSubmission() {
     let observer = null;
     let stopWatchingFocus = () => {};
 
-    prompt.addEventListener("focus", () => {
+    const watchSubmissionFocus = () => {
       observer?.disconnect();
       stopWatchingFocus();
 
@@ -47,7 +47,10 @@ export function watchPromptSubmission() {
         attributes: true,
         attributeFilter: ["disabled"],
       });
-    });
+    };
+
+    prompt.addEventListener("focus", watchSubmissionFocus);
+    if (document.activeElement === prompt) watchSubmissionFocus();
   });
 }
 const watchedPromptInputs = new WeakSet();
