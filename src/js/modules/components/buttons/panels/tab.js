@@ -56,7 +56,8 @@ export function updateTabButtons() {
         break;
     }
 
-    const tabTooltipText = btn.innerText.trim() || btn.getAttribute("aria-label") || tooltipFallback || btnDataTab || "Tab";
+    const tabTooltipText =
+      btn.innerText.trim() || btn.getAttribute("aria-label") || tooltipFallback || btnDataTab || "Tab";
     btn.setAttribute("aria-label", tabTooltipText);
     if (tabIconEl) btn.replaceChildren(tabIconEl);
 

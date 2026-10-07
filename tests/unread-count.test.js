@@ -38,8 +38,7 @@ test("unread badges handle delayed counts, updates, clearing, and replacement co
           remove() {
             const index = badges.indexOf(badge);
             if (index !== -1) badges.splice(index, 1);
-            if (badge.unreadCountSource.nextElementSibling === badge)
-              badge.unreadCountSource.nextElementSibling = null;
+            if (badge.unreadCountSource.nextElementSibling === badge) badge.unreadCountSource.nextElementSibling = null;
           },
           textContent: "",
         };
