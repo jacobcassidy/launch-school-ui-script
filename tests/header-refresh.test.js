@@ -32,6 +32,8 @@ test("same-body navigation replaces native header elements and updates TOC state
   assert.equal(f.header.querySelector(".gretel-breadcrumbs"), native.breadcrumbs);
   assert.equal(f.elements.native.tocButton, native.toc);
   assert.equal(f.header.querySelector(".toc-toggle-button"), native.toc);
+  assert.ok(native.toc.classList.contains("btn--toggle-toc"));
+  assert.ok(!native.toc.classList.contains(".btn--toggle-toc"));
   assert.equal(f.native.toc.isConnected, false);
   assert.equal(f.native.breadcrumbs.isConnected, false);
   assert.equal(f.header.querySelector(".settings-container"), menu);

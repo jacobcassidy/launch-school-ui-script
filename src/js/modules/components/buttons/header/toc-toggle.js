@@ -19,7 +19,7 @@ import { setButtonProperties } from "../../../utils/dom/buttons.js";
 export function moveTocBtnToHeader(containerEl, bookTocBtn = document.querySelector(".toc-toggle-button")) {
   if (!bookTocBtn) return;
 
-  bookTocBtn.classList.add("site-header__button", ".btn--toggle-toc", "has-dropdown");
+  bookTocBtn.classList.add("site-header__button", "btn--toggle-toc", "has-dropdown");
   bookTocBtn.title = "Toggle Table of Contents Visibility";
 
   updateTocButton(bookTocBtn);
