@@ -27,7 +27,7 @@ body:has(#assignment-repl-layout, #book-repl-layout, #book-exercise-repl-layout,
     }
 
     body:not(:has(.nav-drawer)) &,
-    body:has(#navbar-collapsor:checked ~ .nav-drawer) & {
+    body:has(#navbar-collapsor:checked ~ .nav-drawer:not(.shrink)) & {
       inset-inline-start: 0 !important;
       padding: 0 !important;
     }
