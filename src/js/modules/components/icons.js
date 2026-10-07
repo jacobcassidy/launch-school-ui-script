@@ -5,7 +5,6 @@
 
 // Import Header Icons
 import settings from "../../../svg/lucide/settings.svg";
-import sidebar from "../../../svg/lucide/panel-left.svg";
 import sidebarClose from "../../../svg/lucide/panel-left-close.svg";
 import sidebarOpen from "../../../svg/lucide/panel-left-open.svg";
 import tabsPanel from "../../../svg/lucide/modified/tabs-panel.svg";
@@ -60,7 +59,6 @@ const createIconEl = (icon) => parser.parseFromString(icon.trim(), "image/svg+xm
 export const icons = {
   headerIcons: {
     settings: createIcon(settings),
-    sidebar: createIcon(sidebar),
     sidebarClose: createIcon(sidebarClose),
     sidebarOpen: createIcon(sidebarOpen),
     tabsPanel: createIcon(tabsPanel),
