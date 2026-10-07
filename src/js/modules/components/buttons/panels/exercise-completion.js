@@ -8,7 +8,7 @@ import { icons } from "../../icons.js";
 import { injectHotkeysSection } from "../../hotkeys-menu.js";
 
 // Import utils
-import { setButtonProperties } from "../../../utils/state/setters/dom.js";
+import { setButtonProperties } from "../../../utils/dom/buttons.js";
 import { watchExerciseCompletionToggleBtn } from "../../../utils/watch/buttons/exercise-completion-toggle.js";
 import { syncAvailableHotkeys } from "../../../utils/sync/available-hotkeys";
 

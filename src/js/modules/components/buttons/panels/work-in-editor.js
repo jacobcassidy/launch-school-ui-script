@@ -7,7 +7,7 @@
 import { icons } from "../../icons.js";
 
 // Import utils
-import { setButtonProperties } from "../../../utils/state/setters/dom.js";
+import { setButtonProperties } from "../../../utils/dom/buttons.js";
 
 /**
  * Updates the work-in-editor button styles and icon.

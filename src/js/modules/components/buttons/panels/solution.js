@@ -7,7 +7,7 @@
 import { icons } from "../../icons.js";
 
 // Import utils
-import { setButtonProperties } from "../../../utils/state/setters/dom.js";
+import { setButtonProperties } from "../../../utils/dom/buttons.js";
 import { watchViewSolutionBtn } from "../../../utils/watch/buttons/solution.js";
 
 /**

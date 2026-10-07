@@ -7,7 +7,8 @@
 import { icons } from "../../icons.js";
 
 // Import utils
-import { setElementNextExerciseButton, setButtonProperties } from "../../../utils/state/setters/dom.js";
+import { setElementNextExerciseButton } from "../../../utils/state/setters/dom.js";
+import { setButtonProperties } from "../../../utils/dom/buttons.js";
 
 /**
  * Updates the "Go to next exercise" button styles and icon.

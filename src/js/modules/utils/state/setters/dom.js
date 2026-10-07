@@ -71,33 +71,3 @@ export function setElementTabNav(el) {
 export function setElementTocButton(el) {
   elements.native.tocButton = el;
 }
-
-/**
- * SET BUTTON PROPERTIES
- *
- * @param {Array} btnEls An array of all nodes of this button type.
- * @param {Array} newIcons An array of icons that will be added to the button.
- * @param {Array} btnClasses An array of classes that will be added to this button.
- * @param {Boolean} append If set to true, icon will be appended to the button instead of prepended.
- */
-export function setButtonProperties(btnEls, newIcons, btnClasses = [], append = false) {
-  if (btnEls.length < 1 || newIcons.length < 1) return;
-
-  btnEls.forEach((btn) => {
-    if (!btn || btn.classList.contains("has-new-icon")) return;
-
-    if (btnClasses.length > 0) {
-      btn.classList.add(...btnClasses, "has-new-icon");
-    }
-
-    newIcons.forEach((icon) => {
-      const iconEl = icon();
-      iconEl.classList.add("is-new-icon");
-      if (append) {
-        btn.append(iconEl);
-      } else {
-        btn.prepend(iconEl);
-      }
-    });
-  });
-}

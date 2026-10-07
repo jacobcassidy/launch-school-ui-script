@@ -128,6 +128,7 @@ export function headerFixture(options = {}) {
   const window = { location: { pathname: "/course_catalog/example", search: "" } };
   const elements = { native: {} };
   const setters = sourceContext("../src/js/modules/utils/state/setters/dom.js", { elements });
+  const buttonHelpers = sourceContext("../src/js/modules/utils/dom/buttons.js");
   const sync = sourceContext("../src/js/modules/utils/sync/native-elements-state.js", { document, ...setters });
   const icons = { headerIcons: new Proxy({}, { get: () => () => node("svg") }) };
   const component = (name) =>
@@ -135,7 +136,7 @@ export function headerFixture(options = {}) {
       document,
       elements,
       icons,
-      setButtonProperties: setters.setButtonProperties,
+      setButtonProperties: buttonHelpers.setButtonProperties,
     });
   const context = sourceContext("../src/js/modules/components/header.js", {
     document,
