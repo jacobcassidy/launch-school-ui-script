@@ -2,6 +2,9 @@
   "name": "ls-script-ui",
   "version": "1.0.0",
   "description": "Build tools for Launch School UX Kit",
+  "engines": {
+    "node": ">=24"
+  },
   "author": {
     "name": "Jacob Cassidy",
     "email": "jacob@jacobcassidy.com",
