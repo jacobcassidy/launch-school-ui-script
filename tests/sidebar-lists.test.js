@@ -148,7 +148,8 @@ function fixture() {
       const item = node("li");
       item.name = name;
       const link = node("a");
-      link.className = name === "sign-out" ? "exit" : name;
+      link.className = name === "sign-out" ? "exit" : name === "my-exercises" ? "exercises" : name;
+      link.setAttribute("title", name === "my-exercises" ? "My Exercises" : name);
       link.innerText = name;
       item.appendChild(link);
       nativeList.appendChild(item);
@@ -295,4 +296,21 @@ test("icon-only sidebar links without a known type retain their native content",
   assert.doesNotThrow(() => f.context.updateSidebar());
   assert.equal(link.parentElement, current.items.get("new-feature"));
   assert.equal(link.querySelector("svg"), icon);
+});
+
+test("my exercises stays under Account when the assessment link is absent", () => {
+  const f = fixture();
+  const current = f.replaceSidebar(["courses", "exercises", "my-exercises"]);
+
+  f.context.updateSidebar();
+
+  assert.deepEqual(
+    current.sidebar.querySelector(".sidebar-list.main-list").children.map((item) => item.name),
+    ["courses", "exercises"],
+  );
+  assert.deepEqual(
+    current.sidebar.querySelector(".sidebar-list.account-list").children.map((item) => item.name),
+    ["my-exercises"],
+  );
+  assert.equal(current.sidebar.querySelectorAll(".sidebar-list__item").length, 3);
 });

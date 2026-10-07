@@ -215,9 +215,8 @@ function addSidebarLinkClasses() {
   const assessmentLink = sidebar.querySelector(".assessments");
   const exercisesLinks = sidebar.querySelectorAll(".exercises");
 
-  if (!assessmentLink || exercisesLinks.length < 1) return;
-
-  assessmentLink ? assessmentLink.classList.add("my-assessments") : null;
+  if (assessmentLink) assessmentLink.classList.add("my-assessments");
+  if (exercisesLinks.length < 1) return;
 
   exercisesLinks.forEach((link) => {
     const linkTitleStr = link.getAttribute("title");
