@@ -2,6 +2,8 @@
 
 Use Node.js 24 or later and npm. The supported Node version is declared in `package.json`, and `.nvmrc` selects the current major version.
 
+The npm package metadata identifies the local build tooling. Its version is independent of the userscript release documented in `CHANGELOG.md`; the userscript install version is declared in `src/userscript/header.txt`.
+
 ## Set up the project
 
 ```sh
