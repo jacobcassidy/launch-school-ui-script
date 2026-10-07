@@ -39,7 +39,7 @@ An unofficial UX kit that modifies the LaunchSchool.com UI with a minimal design
 2. Open the Tampermonkey extension's dashboard.
 3. Click on the dashboard's `+` tab to create a new script.
 4. Copy the code from [/dist/js/index.min.js](https://github.com/jacobcassidy/launch-school-ux-kit/blob/main/dist/js/index.min.js), then paste it into the Tampermonkey editor and save it (`CMD + S`).
-5. Go to [launchschool.com](https://launchschoo.com) or refresh the page if you're already there and the script should now be active (if not, check your Tampermonkey extension settings to make sure it's active on launchschool.com).
+5. Go to [launchschool.com](https://launchschool.com) or refresh the page if you're already there and the script should now be active (if not, check your Tampermonkey extension settings to make sure it's active on launchschool.com).
 
 > [!TIP]
 > If you want the clean look from the screenshots (no URL bar, tabs, browser nav, etc), do the following:
