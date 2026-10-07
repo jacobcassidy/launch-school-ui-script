@@ -26,3 +26,4 @@ export * from "./events/url-change.js";
 // Settings
 export * from "./settings/toggler-sidebar-hidden-headers.js";
 export * from "./settings/toggler-sidebar-shrink.js";
+export * from "./sidebar/unread-count.js";

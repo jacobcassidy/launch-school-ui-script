@@ -10,7 +10,7 @@ import { icons } from "./icons.js";
 import { syncActiveSidebarItem } from "../utils/sync/active-sidebar-item.js";
 import { injectSidebarHeader } from "./sidebar/header.js";
 import { reorderSidebarLists } from "./sidebar/lists.js";
-import { watchUnreadCounts } from "../utils/watch/sidebar/unread-count.js";
+import { watchUnreadCounts } from "../utils/watch/index.js";
 
 /**
  * UPDATE SIDEBAR

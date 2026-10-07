@@ -4,7 +4,7 @@
  */
 
 import { icons } from "../icons.js";
-import { sidebarLists } from "../../utils/configs/sidebar-lists.js";
+import { sidebarLists } from "../../utils/configs/index.js";
 
 /**
  * REORDER SIDEBAR LISTS
