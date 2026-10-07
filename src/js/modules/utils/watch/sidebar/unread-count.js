@@ -38,7 +38,7 @@ function syncUnreadCounts(sidebar) {
   counts.forEach((count) => {
     const countText = count.textContent.replace(/[()]/g, "").trim();
     let badge = count.nextElementSibling;
-    if (badge?.classList.contains("unread-count") && badge.unreadCountSource !== count) badge = null;
+    if (!badge?.classList.contains("unread-count") || badge.unreadCountSource !== count) badge = null;
 
     if (!countText) {
       badge?.remove();
