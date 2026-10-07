@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.2] - 2026-10-08
+
+### Fixed
+
+- Fixed custom button icons disappearing when the page resets their contents.
+- Fixed unread count badges becoming stale when the sidebar is replaced.
+- Fixed question-box controls inserted after initialization not handling submissions.
+- Preserved native labels and content for unrecognized tab types.
+- Kept userscript watch mode current after atomic metadata file replacements.
+- Refreshed the UI after query-only navigation.
+- Removed stale sidebar tooltips after sidebar replacement.
+- Fixed the next pagination selector.
+
+### Removed
+
+- Removed unused sidebar and native DOM state and an unused sidebar icon.
+
 ## [1.8.1] - 2026-09-22 (Codex Fixes Edition)
 
 ### Fixed
