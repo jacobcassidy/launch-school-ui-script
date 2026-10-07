@@ -11,11 +11,8 @@ import { handleFocus } from "../../helpers";
  * Opens the Tabs Panel with the LSBOT tab active when a content panel question box submission is made.
  */
 export function watchQuestionBoxes() {
-  // colorLog.run("Running watchQuestionBoxes()");
-
   const questionBoxes = document.querySelectorAll(".lsbot-question-box");
   if (questionBoxes.length < 1 || !elements.native.tabsPanel) {
-    // colorLog.detail("No question boxes found on this page.");
     return;
   }
 
@@ -23,13 +20,11 @@ export function watchQuestionBoxes() {
   if (!lsbotTabBtn) return;
 
   const handleSubmitClick = () => {
-    // colorLog.run("Running handleSubmitClick()");
     handleFocus(lsbotTabBtn);
   };
 
   const handleSubmitHotkey = (event) => {
     if (event.isComposing || event.keyCode === 229) return;
-    // colorLog.run("Running handleSubmitHotkey()");
     const keyAlt = event.altKey;
     const keyCmd = event.metaKey;
     const keyCtrl = event.ctrlKey;

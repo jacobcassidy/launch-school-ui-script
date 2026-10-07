@@ -7,7 +7,6 @@
  * Applies the .current-page class to the active sidebar item.
  */
 export function syncActiveSidebarItem() {
-  // colorLog.run("Running syncActiveSidebarItem()");
   const currentUrl = window.location.pathname;
 
   document.querySelectorAll(".sidebar-list__item a").forEach((link) => {

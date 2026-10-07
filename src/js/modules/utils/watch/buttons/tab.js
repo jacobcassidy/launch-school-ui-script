@@ -10,11 +10,8 @@ import { handleFocus } from "../../helpers";
  * Run handleFocus() on each tab button click.
  */
 export function watchTabBtns() {
-  // colorLog.run("Running watchTabBtns()");
-
   const tabButtons = document.querySelectorAll(".tab-button");
   if (tabButtons.length < 1) {
-    // colorLog.detail("No tab buttons found on this page.");
     return;
   }
 
@@ -23,7 +20,6 @@ export function watchTabBtns() {
     const tabTooltip = document.querySelector(`.tab-tooltip-${btnDataTabStr}`);
 
     const handleTooltipRemoval = () => {
-      // colorLog.detail("Running removeTooltip()");
       tabTooltip.classList.remove("active");
     };
 
@@ -40,7 +36,6 @@ export function watchTabBtns() {
 
   tabButtons.forEach((tabBtn) => {
     if (tabBtn.dataset.tabBtnEventBound) {
-      // colorLog.detail("Tab Button watch already exist. Exited watchTabBtns() for this tab button.");
       return;
     }
     tabBtn.dataset.tabBtnEventBound = "true";

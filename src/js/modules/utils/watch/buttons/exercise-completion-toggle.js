@@ -10,7 +10,6 @@ const observedPanels = new WeakSet();
  * @param {function} handleCompletionControlsChange The callback for changed completion controls.
  */
 export function watchExerciseCompletionToggleBtn(handleCompletionControlsChange) {
-  // colorLog.run("Running watchExerciseCompletionToggleBtn");
   const instructionsPanel = document.querySelector(".instructions-panel");
   if (!instructionsPanel || observedPanels.has(instructionsPanel)) return;
   observedPanels.add(instructionsPanel);

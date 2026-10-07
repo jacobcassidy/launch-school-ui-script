@@ -7,17 +7,13 @@
  * Refocuses the LSBOT prompt textarea after a prompt is submitted.
  */
 export function watchPromptSubmission() {
-  // colorLog.run("Running watchPromptSubmission()");
-
   const lsbotPromptInputs = document.querySelectorAll(".lsbot-question-input");
   if (lsbotPromptInputs.length < 1) {
-    // colorLog.detail("No lsbot prompt inputs found on this page.");
     return;
   }
 
   lsbotPromptInputs.forEach((prompt) => {
     if (prompt.dataset.focusObserverBound) {
-      // colorLog.detail("Prompt watch already exist. Exited watchPromptSubmission() for this prompt.");
       return;
     }
     prompt.dataset.focusObserverBound = "true";
@@ -37,9 +33,6 @@ export function watchPromptSubmission() {
       stopWatchingFocus = () => document.removeEventListener("focusin", onFocusElsewhere);
 
       observer = new MutationObserver(() => {
-        // colorLog.run("Running prompt observer()");
-        // if (prompt.disabled)  colorLog.info("Prompt is disabled.");
-
         if (prompt.disabled) {
           document.addEventListener("focusin", onFocusElsewhere);
           return;

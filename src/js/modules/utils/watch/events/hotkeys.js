@@ -11,10 +11,7 @@ import { hotkeys } from "../../state";
  * Activates the triggered hotkey.
  */
 export function watchHotkeys() {
-  // colorLog.run("Running watchHotkeys()");
-
   if (document.documentElement.dataset.hotkeysBound) {
-    // colorLog.detail("Hotkeys already exist. Exited watchHotkeys().");
     return;
   }
   document.documentElement.dataset.hotkeysBound = "true";

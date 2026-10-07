@@ -239,8 +239,6 @@ function injectSidebarHeader() {
  * ADD COUNT WITHOUT PARENTHESES
  */
 function removeCountParentheses() {
-  // colorLog.run("Running removeCountParentheses()");
-
   const counts = document.querySelectorAll('.nav-drawer [class*="_unread_count"]');
   if (counts.length < 1) return;
 

@@ -10,18 +10,12 @@ import { setSettingSidebarHiddenHeaders } from "../../state";
  * Toggles the Sidebar's Hidden Section Headers setting.
  */
 export function watchSettingSidebarHiddenHeadersToggler() {
-  // colorLog.run("Running watchSettingSidebarHiddenHeadersToggler()");
-
   const settingSidebarHiddenHeadersToggler = document.querySelector("#setting--sidebar-hidden-headers");
   if (!settingSidebarHiddenHeadersToggler) {
-    // colorLog.detail("No sidebar hidden headers setting toggler found.");
     return;
   }
 
   if (settingSidebarHiddenHeadersToggler.dataset.sidebarHiddenHeadersTogglerEventBound) {
-    // colorLog.detail(
-    // "Sidebar Hidden Headers setting watch already exist. Exited watchSettingSidebarHiddenHeadersToggler().",
-    // );
     return;
   }
   settingSidebarHiddenHeadersToggler.dataset.sidebarHiddenHeadersTogglerEventBound = "true";

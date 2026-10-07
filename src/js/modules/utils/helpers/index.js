@@ -8,7 +8,6 @@ export * from "./flash.js";
 export * from "./focus.js";
 export * from "./hide.js";
 export * from "./load.js";
-export * from "./log.js";
 export * from "./show.js";
 export * from "./style.js";
 export * from "./toggle.js";

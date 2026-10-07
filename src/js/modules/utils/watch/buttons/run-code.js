@@ -11,7 +11,6 @@
  * @param {function(): SVGElement} stopIcon Creates the stop code SVG icon.
  */
 export function watchRunCodeBtn(btn, runIcon, stopIcon) {
-  // colorLog.alert("Running watchRunCodeBtn");
   if (!btn) return;
 
   if (btn.dataset.runCodeBtnEventBound) return;

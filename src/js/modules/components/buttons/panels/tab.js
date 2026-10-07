@@ -10,8 +10,6 @@ import { icons } from "../../../components";
  * Replaces tab buttons native text and icons with new icons and tooltips.
  */
 export function updateTabButtons() {
-  // colorLog.run("Running updateTabButtons()")
-
   const tabBtns = document.querySelectorAll(".tab-button");
 
   tabBtns.forEach((btn) => {

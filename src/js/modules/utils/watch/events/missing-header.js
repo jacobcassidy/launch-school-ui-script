@@ -10,9 +10,7 @@ import { scheduleReload } from "../../helpers";
  * Reloads the UI when the header is removed from the DOM by the native code.
  */
 export function watchForMissingHeader() {
-  // colorLog.run("Running watchForMissingHeader()");
   if (document.documentElement.dataset.headerObserverBound) {
-    // colorLog.detail("Header watch already exist. Exited watchForMissingHeader().");
     return;
   }
   document.documentElement.dataset.headerObserverBound = "true";
@@ -21,8 +19,6 @@ export function watchForMissingHeader() {
 
   // Observe .site-header for mutations
   const observer = new MutationObserver(() => {
-    // colorLog.detail("Running contentChange observer");
-
     if (document.querySelector(".site-header")) {
       clearTimeout(headerMissingTimeoutId);
       headerMissingTimeoutId = undefined;
@@ -34,12 +30,7 @@ export function watchForMissingHeader() {
     headerMissingTimeoutId = setTimeout(() => {
       headerMissingTimeoutId = undefined;
       const siteHeader = document.querySelector(".site-header");
-      if (siteHeader) {
-        // colorLog.info("header exists again.");
-      } else {
-        // colorLog.notice(".site-header has been missing for over 300ms. Scheduling reload.");
-        scheduleReload();
-      }
+      if (!siteHeader) scheduleReload();
     }, 300);
   });
 

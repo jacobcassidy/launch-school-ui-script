@@ -36,7 +36,6 @@
   :where(section) {
     display: flex;
     flex-direction: column;
-    /* gap: 8px; */
   }
 
   .setting-container__title {

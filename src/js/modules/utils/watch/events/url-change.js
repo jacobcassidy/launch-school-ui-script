@@ -11,10 +11,7 @@ import { ui } from "../../state";
  * Reloads the custom UI when the URL changes.
  */
 export function watchForUrlChange() {
-  // colorLog.run("Running watchForUrlChange()");
-
   if (document.documentElement.dataset.watchPageBound) {
-    // colorLog.detail("URL watch already exist. Exited watchForUrlChange().");
     return;
   }
   document.documentElement.dataset.watchPageBound = "true";
@@ -28,7 +25,6 @@ export function watchForUrlChange() {
    */
   const checkForUrlChange = () => {
     if (ui.load.isReloadScheduled) {
-      // colorLog.detail("Reload already scheduled. Exited checkForUrlChange().");
       return;
     }
 
@@ -36,11 +32,9 @@ export function watchForUrlChange() {
     const isChangedUrl = currentUrl !== ui.load.lastUrl;
 
     if (!isChangedUrl) {
-      // colorLog.detail("No URL change detected. Exiting checkForUrlChange().");
       return;
     }
 
-    // colorLog.info("URL has changed.");
     scheduleReload();
   };
 

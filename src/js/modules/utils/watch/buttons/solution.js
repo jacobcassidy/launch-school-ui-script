@@ -10,7 +10,6 @@
 export function watchViewSolutionBtn(btn, svgIcons) {
   const parent = document.querySelector("#exercise_analysis .markup-collapse");
   if (!parent) {
-    // colorLog.detail("No view solution button found on this page.");
     return;
   }
 

@@ -7,12 +7,9 @@
  * Toggles the visibility of different elements based on interactive sidebar links.
  */
 export function watchSidebarLinks() {
-  // colorLog.run("Running watchSidebarLinks()");
-
   const sidebar = document.querySelector(".sidebar.nav-drawer");
 
   if (!sidebar) {
-    // colorLog.detail("No sidebar found.");
     return;
   }
 

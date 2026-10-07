@@ -99,9 +99,7 @@ export function loadUI() {
  * Reloads loadUI() after a DOM refresh from a page/url change.
  */
 export function scheduleReload() {
-  // colorLog.run("Running scheduleReload()");
   if (ui.load.isReloadScheduled) {
-    // colorLog.detail("Reload is already scheduled. Exited scheduleReload().");
     return;
   }
   setIsReloadScheduled(true);

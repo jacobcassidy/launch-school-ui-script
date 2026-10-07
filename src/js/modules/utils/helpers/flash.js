@@ -11,7 +11,6 @@
  * @param {HTMLElement} secondaryActiveEl The optional secondary active element to flash.
  */
 export function flashActiveElement(activeEl, secondaryActiveEl) {
-  // colorLog.run("Running flashActiveElement()");
   const isTabButton = activeEl.classList.contains("tab-button");
 
   if (isTabButton) {
@@ -29,8 +28,6 @@ export function flashActiveElement(activeEl, secondaryActiveEl) {
  * @param {HTMLElement} secondaryActiveEl The optional secondary active element to flash.
  */
 function flashWithClass(flashEl, secondaryFlashEl) {
-  // colorLog.run("Running flashWithClass();");
-
   const elementsToFlash = [flashEl];
   const flashDuration = 300;
 
