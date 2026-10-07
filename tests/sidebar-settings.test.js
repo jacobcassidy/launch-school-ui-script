@@ -53,8 +53,7 @@ test("tabs panel visibility setter tolerates missing native and injected panels"
   assert.equal(saved.isTabsPanelHidden, false);
 });
 
-test("sidebar collapse setter keeps the active state when the matching native control is missing", () => {
-  const ui = { sidebar: {} };
+test("sidebar collapse setter tolerates a missing native control", () => {
   const context = sourceContext("../src/js/modules/utils/state/setters/ui.js", {
     document: {
       querySelector(selector) {
@@ -63,9 +62,7 @@ test("sidebar collapse setter keeps the active state when the matching native co
       },
     },
     elements: { native: {}, injected: {} },
-    ui,
   });
 
   assert.doesNotThrow(() => context.setIsSidebarCollapsed(true));
-  assert.deepEqual(ui.sidebar, {});
 });

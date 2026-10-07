@@ -34,7 +34,7 @@ export function setIsReloadScheduled(value) {
 export function setIsSidebarCollapsed(value) {
   const sidebarCollapseCheckbox = document.querySelector("#navbar-collapsor");
 
-  // If no sidebar found, set value to null.
+  // This page does not include the native sidebar control.
   if (!sidebarCollapseCheckbox) {
     return;
   }

@@ -51,6 +51,7 @@ export function showTabsPanel() {
  * SHOW TOAST
  *
  * @param {string} message The text to display in the toast
+ * @param {string|null} styleClass Optional style class for the toast
  * @param {number} duration How long the toast should display
  */
 export function showToast(message, styleClass = null, duration = 2500) {
