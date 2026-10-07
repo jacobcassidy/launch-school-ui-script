@@ -112,7 +112,13 @@ function fixture() {
     icons,
   });
   const headerRenderer = sourceContext("../src/js/modules/components/sidebar/header.js", { document, icons });
-  const unreadCountWatcher = sourceContext("../src/js/modules/utils/watch/sidebar/unread-count.js", { document });
+  const unreadCountWatcher = sourceContext("../src/js/modules/utils/watch/sidebar/unread-count.js", {
+    document,
+    MutationObserver: class {
+      observe() {}
+      disconnect() {}
+    },
+  });
   const context = sourceContext("../src/js/modules/components/sidebar.js", {
     document,
     icons,
@@ -194,6 +200,22 @@ test("repeated sidebar updates preserve existing groups, icons, and tooltips", (
   assert.ok(toggle.classList.contains("is-closed"));
   assert.equal(f.activeSyncs(), 3);
   assert.deepEqual(f.config, f.initialConfig);
+});
+
+test("replacing the sidebar removes tooltips from the old sidebar", () => {
+  const f = fixture();
+  const first = f.replaceSidebar(["courses", "forum"]);
+  f.context.updateSidebar();
+  const oldTooltips = f.body.children.filter((el) => el.classList.contains("sidebar-tooltip"));
+  assert.equal(oldTooltips.length, 2);
+
+  f.replaceSidebar(["courses"]);
+  f.context.updateSidebar();
+  const currentTooltips = f.body.children.filter((el) => el.classList.contains("sidebar-tooltip"));
+
+  assert.equal(currentTooltips.length, 1);
+  assert.ok(!currentTooltips.some((tooltip) => oldTooltips.includes(tooltip)));
+  assert.ok(first.sidebar.classList.contains("sidebar"));
 });
 
 test("sidebar grouping preserves Pages buttons and dropdown links", () => {

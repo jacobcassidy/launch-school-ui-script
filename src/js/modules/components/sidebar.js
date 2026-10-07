@@ -12,11 +12,19 @@ import { injectSidebarHeader } from "./sidebar/header.js";
 import { reorderSidebarLists } from "./sidebar/lists.js";
 import { watchUnreadCounts } from "../utils/watch/index.js";
 
+let activeSidebar = null;
+let sidebarTooltips = [];
+
 /**
  * UPDATE SIDEBAR
  */
 export function updateSidebar() {
   const nativeSidebar = document.querySelector(".nav-drawer");
+  if (nativeSidebar !== activeSidebar) {
+    sidebarTooltips.forEach((tooltip) => tooltip.remove());
+    sidebarTooltips = [];
+    activeSidebar = nativeSidebar;
+  }
   if (!nativeSidebar) return;
 
   // If sidebar already exists, sync active item and exit early.
@@ -49,6 +57,7 @@ export function updateSidebar() {
       tooltipSpanEl.textContent = tooltipText;
       tooltipEl.append(tooltipSpanEl);
       document.body.appendChild(tooltipEl);
+      sidebarTooltips.push(tooltipEl);
 
       linkEl.setAttribute("aria-label", tooltipText);
       linkEl.setAttribute("data-tooltip", tooltipDataStr);
