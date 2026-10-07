@@ -47,6 +47,16 @@ test("sidebar link watcher tolerates missing Pages controls and binds them when 
   context.watchSidebarLinks();
   context.watchSidebarLinks();
   assert.equal(pagesClicks, 1);
-  assert.equal(pagesLink.dataset.pagesDropdownEventBound, "true");
+  assert.equal(pagesLink.dataset.pagesDropdownEventBound, undefined);
   assert.equal(typeof pagesLink.callback, "function");
+
+  pagesLink = {
+    dataset: { pagesDropdownEventBound: "true" },
+    addEventListener() {
+      pagesClicks++;
+    },
+  };
+  context.watchSidebarLinks();
+  context.watchSidebarLinks();
+  assert.equal(pagesClicks, 2);
 });
