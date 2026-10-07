@@ -17,9 +17,7 @@ export function setButtonProperties(btnEls, newIcons, btnClasses = [], append = 
   btnEls.forEach((btn) => {
     if (!btn || btn.classList.contains("has-new-icon")) return;
 
-    if (btnClasses.length > 0) {
-      btn.classList.add(...btnClasses, "has-new-icon");
-    }
+    btn.classList.add(...btnClasses, "has-new-icon");
 
     newIcons.forEach((icon) => {
       const iconEl = icon();
