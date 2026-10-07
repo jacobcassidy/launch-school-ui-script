@@ -3,6 +3,7 @@ import * as esbuild from "esbuild";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
+import { watchUserscriptHeader } from "./scripts/watch-userscript-header.js";
 
 const releaseBundlePath = "./dist/js/index.min.js";
 const watchBundlePath = "./.dev-dist/js/index.js";
@@ -80,22 +81,11 @@ let ctx = await createContext();
 if (isWatchMode) {
   await ctx.watch();
 
-  let headerMtimeMs = fs.statSync(headerFile).mtimeMs;
-  let headerChangeTimeout;
-
-  fs.watch(headerFile, () => {
-    clearTimeout(headerChangeTimeout);
-
-    headerChangeTimeout = setTimeout(async () => {
-      const nextMtimeMs = fs.statSync(headerFile).mtimeMs;
-      if (nextMtimeMs === headerMtimeMs) return;
-      headerMtimeMs = nextMtimeMs;
-
-      console.log(`Build started (change: "${headerFile}")`);
-      await ctx.dispose();
-      ctx = await createContext();
-      await ctx.watch();
-    }, 100);
+  watchUserscriptHeader(headerFile, async () => {
+    console.log(`Build started (change: "${headerFile}")`);
+    await ctx.dispose();
+    ctx = await createContext();
+    await ctx.watch();
   });
 
   console.log("Watching source files. Press Ctrl-C to stop.");
