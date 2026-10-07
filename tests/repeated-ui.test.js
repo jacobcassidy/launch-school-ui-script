@@ -65,3 +65,37 @@ test("repeated tab updates reuse tooltips and preserve the original label", () =
   assert.equal(tooltips[0].textContent, "Custom Instructions");
   assert.equal(attributes["aria-label"], "Custom Instructions");
 });
+
+test("unknown tab types keep their native label and content", () => {
+  const attributes = { "data-tab": "new-feature" };
+  let replaceChildrenCalls = 0;
+  const btn = {
+    innerText: "New Feature",
+    removeAttribute() {},
+    getAttribute: (key) => attributes[key],
+    setAttribute(key, value) {
+      attributes[key] = value;
+    },
+    replaceChildren() {
+      replaceChildrenCalls++;
+    },
+  };
+  const tooltips = [];
+  const context = sourceContext("../src/js/modules/components/buttons/panels/tab.js", {
+    icons: { tabIcons: {} },
+    getComputedStyle: () => ({ display: "block" }),
+    document: {
+      querySelectorAll: () => [btn],
+      querySelector: () => null,
+      createElement: () => ({ classList: { add() {} } }),
+      body: { appendChild: (el) => tooltips.push(el) },
+    },
+  });
+
+  context.updateTabButtons();
+
+  assert.equal(replaceChildrenCalls, 0);
+  assert.equal(btn.innerText, "New Feature");
+  assert.equal(attributes["aria-label"], "New Feature");
+  assert.equal(tooltips.length, 1);
+});

@@ -56,9 +56,9 @@ export function updateTabButtons() {
         break;
     }
 
-    const tabTooltipText = btn.innerText.trim() || btn.getAttribute("aria-label") || tooltipFallback;
+    const tabTooltipText = btn.innerText.trim() || btn.getAttribute("aria-label") || tooltipFallback || btnDataTab || "Tab";
     btn.setAttribute("aria-label", tabTooltipText);
-    btn.replaceChildren(tabIconEl);
+    if (tabIconEl) btn.replaceChildren(tabIconEl);
 
     createTabTooltip(tabTooltipText, btnDataTab);
   });
