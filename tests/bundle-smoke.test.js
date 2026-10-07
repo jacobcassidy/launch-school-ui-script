@@ -152,6 +152,9 @@ class Comment {
 
 test("built userscript initializes against a sparse page and registers its UI", () => {
   const source = readFileSync(new URL("../dist/js/index.min.js", import.meta.url), "utf8");
+  assert.match(source, /Copyright \(c\) 2026 Jacob Cassidy/);
+  assert.match(source, /Lucide License/);
+  assert.match(source, /Copyright \(c\) 2013-present Cole Bemis/);
   const listeners = {};
   const document = {
     readyState: "loading",

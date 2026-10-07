@@ -5,6 +5,8 @@ import process from "node:process";
 
 const distDir = "./dist/";
 const headerFile = "./src/userscript/header.txt";
+const licenseFile = "./LICENSE";
+const thirdPartyNoticesFile = "./THIRD-PARTY-NOTICES.txt";
 const isWatchMode = process.argv.includes("--watch");
 
 const cssTextPlugin = {
@@ -40,7 +42,11 @@ const cssTextPlugin = {
 };
 
 async function createContext() {
-  const userscriptHeader = await readFile(headerFile, "utf8");
+  const [userscriptHeader, projectLicense, thirdPartyNotices] = await Promise.all([
+    readFile(headerFile, "utf8"),
+    readFile(licenseFile, "utf8"),
+    readFile(thirdPartyNoticesFile, "utf8"),
+  ]);
 
   return esbuild.context({
     entryPoints: ["src/js/index.js"],
@@ -54,6 +60,9 @@ async function createContext() {
     },
     banner: {
       js: userscriptHeader,
+    },
+    footer: {
+      js: `\n/*\n${projectLicense}\n\n${thirdPartyNotices}\n*/`,
     },
   });
 }
