@@ -33,7 +33,7 @@ export function updatePaginationButton() {
 }
 
 function paginationNextBtns() {
-  const assignmentSelector = ".footer-nav a:has(.fa-chevron-right";
+  const assignmentSelector = ".footer-nav a:has(.fa-chevron-right)";
   const chapterSelector = ".next-chapter a";
   return paginationBtns(assignmentSelector, chapterSelector);
 }
