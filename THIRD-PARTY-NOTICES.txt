@@ -4,11 +4,12 @@ Third-party notices
 Lucide SVG icons
 ----------------
 
-This project vendors Lucide SVG icons under src/svg/lucide/, including modified
-variants under src/svg/lucide/modified/. The icons are embedded in the built
-userscript. The original vendored files do not record a Lucide release or
-commit, so their precise upstream revision is unknown. License text below was
-verified against https://lucide.dev/license on 2026-10-07.
+This project vendors Lucide SVG icons under src/svg/lucide/ and reference
+variants under src/svg/reference/lucide/, including modified variants. Some
+icons are embedded in the built userscript. The original vendored files do not
+record a Lucide release or commit, so their precise upstream revision is
+unknown. License text below was verified against https://lucide.dev/license on
+2026-10-07.
 
 Lucide License
 
