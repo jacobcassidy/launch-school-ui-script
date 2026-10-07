@@ -4,7 +4,7 @@
  */
 
 // Import components
-import { updateCopyMarkupButton } from "../../../components";
+import { updateCopyMarkupButton } from "../../../components/buttons/panels/copy-markup.js";
 
 /**
  * Adds the copy markup button classes when new copy markup buttons are added to .tab-content in the DOM

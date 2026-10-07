@@ -4,8 +4,8 @@
  */
 
 // Import utils
-import { elements } from "../../state";
-import { handleFocus } from "../../helpers";
+import { elements } from "../../state/dom.js";
+import { handleFocus } from "../../helpers/focus.js";
 
 /**
  * Opens the Tabs Panel with the LSBOT tab active when a content panel question box submission is made.

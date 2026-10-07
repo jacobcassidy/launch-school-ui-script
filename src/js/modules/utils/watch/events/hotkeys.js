@@ -4,8 +4,9 @@
  */
 
 // Import utils
-import { activateHotkey, showToast } from "../../helpers";
-import { hotkeys } from "../../state";
+import { activateHotkey } from "../../helpers/activate.js";
+import { showToast } from "../../helpers/show.js";
+import { hotkeys } from "../../state/hotkeys.js";
 
 /**
  * Activates the triggered hotkey.

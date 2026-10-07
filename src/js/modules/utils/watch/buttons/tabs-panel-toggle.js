@@ -4,8 +4,8 @@
  */
 
 // Import utils
-import { elements } from "../../state";
-import { toggleTabsPanel } from "../../helpers";
+import { elements } from "../../state/dom.js";
+import { toggleTabsPanel } from "../../helpers/toggle.js";
 
 /**
  * Toggles the Tabs Panel visibility on button click.

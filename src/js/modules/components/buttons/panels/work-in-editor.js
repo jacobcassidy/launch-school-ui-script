@@ -4,10 +4,10 @@
  */
 
 // Import components
-import { icons } from "../../../components";
+import { icons } from "../../icons.js";
 
 // Import utils
-import { setButtonProperties } from "../../../utils/state";
+import { setButtonProperties } from "../../../utils/state/setters/dom.js";
 
 /**
  * Updates the work-in-editor button styles and icon.

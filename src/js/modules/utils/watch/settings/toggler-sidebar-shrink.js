@@ -4,7 +4,7 @@
  */
 
 // Import utils
-import { setSettingSidebarShrink } from "../../state";
+import { setSettingSidebarShrink } from "../../state/setters/ui.js";
 
 /**
  * Toggles the Sidebar's collapsed sizing (hidden or shrunken).

@@ -4,7 +4,7 @@
  */
 
 // Import utils
-import { hotkeys } from "../state";
+import { hotkeys } from "../state/hotkeys.js";
 
 /**
  * ACTIVATE HOTKEY

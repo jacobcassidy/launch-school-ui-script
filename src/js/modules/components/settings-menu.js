@@ -4,8 +4,6 @@
  */
 
 // Import utils
-import { hideSettings } from "../utils/helpers";
-import { elements } from "../utils/state";
 
 /**
  * INJECT SETTINGS MENU
@@ -27,26 +25,6 @@ export function injectSettingsMenu(containerEl) {
   const settingsMenuEl = createSettingsMenu();
   injectUISettingsSection(settingsMenuEl);
   containerEl.appendChild(settingsMenuEl);
-}
-
-/**
- * HANDLE OUTSIDE SETTINGS MENU CLICK
- */
-export function handleOutsideSettingsMenuClick(e) {
-  const settingsMenu = elements.injected.settingsMenu;
-  const settingsMenuToggleBtn = elements.injected.settingsToggleButton;
-
-  if (settingsMenu.contains(e.target) || settingsMenuToggleBtn.contains(e.target)) return;
-  hideSettings();
-}
-
-/**
- * HANDLE ESCAPE KEY TO CLOSE SETTINGS
- */
-export function handleSettingsEsc(e) {
-  if (e.key === "Escape") {
-    hideSettings();
-  }
 }
 
 /**

@@ -4,8 +4,10 @@
  */
 
 // Import utils
-import { elements, ui } from "../state";
-import { hideHeader, hideTabsPanel, showTabsPanel } from "../helpers";
+import { elements } from "../state/dom.js";
+import { ui } from "../state/ui.js";
+import { hideHeader, hideTabsPanel } from "../helpers/hide.js";
+import { showTabsPanel } from "../helpers/show.js";
 
 /**
  * Gets and sets the last active states when loading the UI.

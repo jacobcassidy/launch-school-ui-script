@@ -4,8 +4,8 @@
  */
 
 // Import utils
-import { scheduleReload } from "../../helpers";
-import { ui } from "../../state";
+import { scheduleReload } from "../../helpers/reload.js";
+import { ui } from "../../state/ui.js";
 
 /**
  * Reloads the custom UI when the URL changes.

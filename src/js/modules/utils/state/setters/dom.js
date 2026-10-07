@@ -4,7 +4,7 @@
  */
 
 // Import utils
-import { elements } from "../../state";
+import { elements } from "../dom.js";
 
 // SET INJECTED ELEMENTS
 export function setElementHeader(el) {

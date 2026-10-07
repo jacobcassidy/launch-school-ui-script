@@ -13,7 +13,7 @@ import {
   setElementTabNav,
   setElementTabsPanel,
   setElementTocButton,
-} from "../state";
+} from "../state/setters/dom.js";
 
 /**
  * SYNC NATIVE ELEMENTS STATE

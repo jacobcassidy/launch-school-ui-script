@@ -4,11 +4,10 @@
  */
 
 // Import components
-import { handleOutsideSettingsMenuClick, handleSettingsEsc } from "../../components";
-
 // Import utils
-import { hideSettings } from "../helpers";
-import { elements, setIsHeaderHidden, setIsSidebarCollapsed, setIsTabsPanelHidden } from "../state";
+import { handleOutsideSettingsMenuClick, handleSettingsEsc, hideSettings } from "./hide.js";
+import { elements } from "../state/dom.js";
+import { setIsHeaderHidden, setIsSidebarCollapsed, setIsTabsPanelHidden } from "../state/setters/ui.js";
 
 /**
  * SHOW HEADER

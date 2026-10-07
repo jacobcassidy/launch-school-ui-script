@@ -4,11 +4,12 @@
  */
 
 // Import components
-import { injectHotkeysSection, updateNextExerciseButton } from "../../../components";
-import { syncAvailableHotkeys } from "../../sync/available-hotkeys";
+import { injectHotkeysSection } from "../../../components/hotkeys-menu.js";
+import { updateNextExerciseButton } from "../../../components/buttons/panels/next-exercise.js";
+import { syncAvailableHotkeys } from "../../sync/available-hotkeys.js";
 
 // Import utils
-import { elements } from "../../state";
+import { elements } from "../../state/dom.js";
 
 const observedInstructionsTabs = new WeakSet();
 

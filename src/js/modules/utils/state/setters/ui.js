@@ -4,7 +4,8 @@
  */
 
 // Import States
-import { elements, ui } from "../../state";
+import { elements } from "../dom.js";
+import { ui } from "../ui.js";
 
 /**
  * SET IS HEADER HIDDEN

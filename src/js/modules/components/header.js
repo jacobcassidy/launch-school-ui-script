@@ -4,15 +4,14 @@
  */
 
 // Import components
-import {
-  injectSettingsMenu,
-  injectSettingsToggleButton,
-  injectSidebarToggleButton,
-  injectTabsPanelToggleButton,
-  moveTocBtnToHeader,
-} from "../components";
+import { injectSettingsMenu } from "./settings-menu.js";
+import { injectSettingsToggleButton } from "./buttons/header/settings-toggle.js";
+import { injectSidebarToggleButton } from "./buttons/header/sidebar-toggle.js";
+import { injectTabsPanelToggleButton } from "./buttons/header/tabs-panel-toggle.js";
+import { moveTocBtnToHeader } from "./buttons/header/toc-toggle.js";
 
-import { elements, setElementTocButton } from "../utils/state";
+import { elements } from "../utils/state/dom.js";
+import { setElementTocButton } from "../utils/state/setters/dom.js";
 
 const headerElementSources = new WeakMap();
 

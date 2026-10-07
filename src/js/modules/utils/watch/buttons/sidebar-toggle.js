@@ -4,8 +4,8 @@
  */
 
 // Import utils
-import { elements } from "../../state";
-import { toggleSidebar } from "../../helpers";
+import { elements } from "../../state/dom.js";
+import { toggleSidebar } from "../../helpers/toggle.js";
 
 /**
  * Toggles the sidebar when the sidebar toggle button is clicked.

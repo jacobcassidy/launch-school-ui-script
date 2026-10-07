@@ -4,7 +4,7 @@
  */
 
 // Import utils
-import { setSettingSidebarHiddenHeaders } from "../../state";
+import { setSettingSidebarHiddenHeaders } from "../../state/setters/ui.js";
 
 /**
  * Toggles the Sidebar's Hidden Section Headers setting.

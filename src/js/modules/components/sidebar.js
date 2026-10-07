@@ -4,11 +4,11 @@
  */
 
 // Import components
-import { icons } from "../components";
+import { icons } from "./icons.js";
 
 // Import utils
-import { sidebarLists } from "../utils/configs";
-import { syncActiveSidebarItem } from "../utils/sync";
+import { sidebarLists } from "../utils/configs/sidebar-lists.js";
+import { syncActiveSidebarItem } from "../utils/sync/active-sidebar-item.js";
 
 const observedUnreadCounts = new WeakSet();
 

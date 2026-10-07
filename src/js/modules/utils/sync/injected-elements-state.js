@@ -12,8 +12,8 @@ import {
   setElementSidebarShrinkToggler,
   setElementSidebarToggleButton,
   setElementTabsPanelToggleButton,
-  ui,
-} from "../state";
+} from "../state/setters/dom.js";
+import { ui } from "../state/ui.js";
 
 /**
  * Sets the states properties for the script's injected DOM elements.

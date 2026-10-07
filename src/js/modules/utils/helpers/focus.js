@@ -4,8 +4,9 @@
  */
 
 // Import utils
-import { flashActiveElement, showTabsPanel } from "../helpers";
-import { ui } from "../state";
+import { flashActiveElement } from "./flash.js";
+import { showTabsPanel } from "./show.js";
+import { ui } from "../state/ui.js";
 
 /**
  * HANDLE FOCUS

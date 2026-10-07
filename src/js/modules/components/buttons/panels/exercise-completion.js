@@ -4,11 +4,12 @@
  */
 
 // Import components
-import { icons, injectHotkeysSection } from "../../../components";
+import { icons } from "../../icons.js";
+import { injectHotkeysSection } from "../../hotkeys-menu.js";
 
 // Import utils
-import { setButtonProperties } from "../../../utils/state";
-import { watchExerciseCompletionToggleBtn } from "../../../utils/watch";
+import { setButtonProperties } from "../../../utils/state/setters/dom.js";
+import { watchExerciseCompletionToggleBtn } from "../../../utils/watch/buttons/exercise-completion-toggle.js";
 import { syncAvailableHotkeys } from "../../../utils/sync/available-hotkeys";
 
 /**

@@ -4,7 +4,7 @@
  */
 
 // Import components
-import { icons } from "../../../components";
+import { icons } from "../../icons.js";
 
 /**
  * Replaces tab buttons native text and icons with new icons and tooltips.

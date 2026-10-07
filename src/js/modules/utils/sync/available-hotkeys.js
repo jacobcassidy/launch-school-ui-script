@@ -4,18 +4,20 @@
  */
 
 // Import utils
+import { activateTab } from "../helpers/activate.js";
+import { handleFocus } from "../helpers/focus.js";
+import { showToast } from "../helpers/show.js";
 import {
-  activateTab,
-  handleFocus,
-  showToast,
   toggleExerciseCompletionStatus,
   toggleHeader,
   toggleSettings,
   toggleSidebar,
   toggleTabsPanel,
   toggleTocMenu,
-} from "../helpers";
-import { elements, hotkeys, setAvailableHotkey } from "../state";
+} from "../helpers/toggle.js";
+import { elements } from "../state/dom.js";
+import { hotkeys } from "../state/hotkeys.js";
+import { setAvailableHotkey } from "../state/setters/hotkeys.js";
 
 /**
  * Syncs the hotkeys available on the current page.

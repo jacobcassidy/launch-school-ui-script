@@ -4,8 +4,8 @@
  */
 
 // Import utils
-import { elements } from "../../state";
-import { toggleSettings } from "../../helpers";
+import { elements } from "../../state/dom.js";
+import { toggleSettings } from "../../helpers/toggle.js";
 
 /**
  * Toggles the Settings Menu visibility when the settings toggle button is clicked.

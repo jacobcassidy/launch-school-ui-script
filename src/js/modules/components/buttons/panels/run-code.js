@@ -4,11 +4,11 @@
  */
 
 // Import components
-import { icons } from "../../../components";
+import { icons } from "../../icons.js";
 
 // Import utils
-import { setButtonProperties } from "../../../utils/state";
-import { watchRunCodeBtn } from "../../../utils/watch";
+import { setButtonProperties } from "../../../utils/state/setters/dom.js";
+import { watchRunCodeBtn } from "../../../utils/watch/buttons/run-code.js";
 
 /**
  * Updates the run code button styles and icons.

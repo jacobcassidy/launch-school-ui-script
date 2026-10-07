@@ -4,11 +4,11 @@
  */
 
 // Import components
-import { icons } from "../../../components";
+import { icons } from "../../icons.js";
 
 // Import utils
-import { setButtonProperties } from "../../../utils/state";
-import { watchViewSolutionBtn } from "../../../utils/watch";
+import { setButtonProperties } from "../../../utils/state/setters/dom.js";
+import { watchViewSolutionBtn } from "../../../utils/watch/buttons/solution.js";
 
 /**
  * Updates the view solution button styles and icons.

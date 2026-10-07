@@ -4,20 +4,10 @@
  */
 
 // Import utils
-import {
-  hideHeader,
-  hideSettings,
-  hideSidebar,
-  hideTabsPanel,
-  hideTocMenu,
-  showHeader,
-  showSettings,
-  showSidebar,
-  showTabsPanel,
-  showToast,
-  showTocMenu,
-} from "../helpers";
-import { elements, ui } from "../state";
+import { hideHeader, hideSettings, hideSidebar, hideTabsPanel, hideTocMenu } from "./hide.js";
+import { showHeader, showSettings, showSidebar, showTabsPanel, showTocMenu, showToast } from "./show.js";
+import { elements } from "../state/dom.js";
+import { ui } from "../state/ui.js";
 
 /**
  * TOGGLE EXERCISE COMPLETION STATUS

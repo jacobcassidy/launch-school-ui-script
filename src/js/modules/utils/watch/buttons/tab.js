@@ -4,7 +4,7 @@
  */
 
 // Import utils
-import { handleFocus } from "../../helpers";
+import { handleFocus } from "../../helpers/focus.js";
 
 /**
  * Run handleFocus() on each tab button click.

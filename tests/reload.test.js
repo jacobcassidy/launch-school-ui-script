@@ -6,7 +6,7 @@ function fixture() {
   const frames = [];
   const ui = { load: { isReloadScheduled: false, lastUrl: "/old", previousBody: {} } };
   let loads = 0;
-  const context = sourceContext("../src/js/modules/utils/helpers/load.js", {
+  const context = sourceContext("../src/js/modules/utils/helpers/reload.js", {
     ui,
     location: { origin: "https://launchschool.com", pathname: "/new" },
     document: { body: ui.load.previousBody },
@@ -20,9 +20,9 @@ function fixture() {
       ui.load.lastUrl = value;
     },
   });
-  context.loadUI = () => {
+  context.setLoadUIHandler(() => {
     loads++;
-  };
+  });
   return { context, frames, ui, loads: () => loads };
 }
 
@@ -39,9 +39,9 @@ test("same-body navigation reloads on the next frame and coalesces pending calls
 
 test("a failed reload does not block future navigation", () => {
   const { context, frames, ui } = fixture();
-  context.loadUI = () => {
+  context.setLoadUIHandler(() => {
     throw new Error("render failed");
-  };
+  });
   context.scheduleReload();
   assert.throws(() => frames.shift()(), /render failed/);
   assert.equal(ui.load.isReloadScheduled, false);

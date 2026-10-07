@@ -4,10 +4,9 @@
  */
 
 // Import components
-import { handleOutsideSettingsMenuClick, handleSettingsEsc } from "../../components";
-
 // Import utils
-import { elements, setIsHeaderHidden, setIsSidebarCollapsed, setIsTabsPanelHidden } from "../state";
+import { elements } from "../state/dom.js";
+import { setIsHeaderHidden, setIsSidebarCollapsed, setIsTabsPanelHidden } from "../state/setters/ui.js";
 
 /**
  * HIDE HEADER
@@ -27,6 +26,24 @@ export function hideSettings() {
 
   document.removeEventListener("pointerdown", handleOutsideSettingsMenuClick);
   document.removeEventListener("keydown", handleSettingsEsc);
+}
+
+/**
+ * HANDLE OUTSIDE SETTINGS MENU CLICK
+ */
+export function handleOutsideSettingsMenuClick(e) {
+  const settingsMenu = elements.injected.settingsMenu;
+  const settingsMenuToggleBtn = elements.injected.settingsToggleButton;
+
+  if (settingsMenu.contains(e.target) || settingsMenuToggleBtn.contains(e.target)) return;
+  hideSettings();
+}
+
+/**
+ * HANDLE ESCAPE KEY TO CLOSE SETTINGS
+ */
+export function handleSettingsEsc(e) {
+  if (e.key === "Escape") hideSettings();
 }
 
 /**

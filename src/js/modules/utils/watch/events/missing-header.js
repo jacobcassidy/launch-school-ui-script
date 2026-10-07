@@ -4,7 +4,7 @@
  */
 
 // Import utils
-import { scheduleReload } from "../../helpers";
+import { scheduleReload } from "../../helpers/reload.js";
 
 /**
  * Reloads the UI when the header is removed from the DOM by the native code.

@@ -4,7 +4,7 @@
  */
 
 // Import States
-import { hotkeys } from "../../state";
+import { hotkeys } from "../hotkeys.js";
 
 /**
  * SET AVAILABLE HOTKEY

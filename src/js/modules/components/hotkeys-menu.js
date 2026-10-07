@@ -4,10 +4,10 @@
  */
 
 // Import components
-import { createNewSettingsSection } from "../components";
+import { createNewSettingsSection } from "./settings-menu.js";
 
 // Import utils
-import { hotkeys } from "../utils/state";
+import { hotkeys } from "../utils/state/hotkeys.js";
 
 /**
  * INJECT HOTKEYS SECTION

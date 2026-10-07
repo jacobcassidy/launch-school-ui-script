@@ -4,10 +4,10 @@
  */
 
 // Import component
-import { icons } from "../../../components";
+import { icons } from "../../icons.js";
 
 // Import utils
-import { setElementNextExerciseButton, setButtonProperties } from "../../../utils/state";
+import { setElementNextExerciseButton, setButtonProperties } from "../../../utils/state/setters/dom.js";
 
 /**
  * Updates the "Go to next exercise" button styles and icon.

@@ -4,10 +4,10 @@
  */
 
 // Import components
-import { icons } from "../../../components";
+import { icons } from "../../icons.js";
 
 // Import utils
-import { elements } from "../../../utils/state";
+import { elements } from "../../../utils/state/dom.js";
 
 /**
  * INJECT TABS PANEL TOGGLE BUTTON

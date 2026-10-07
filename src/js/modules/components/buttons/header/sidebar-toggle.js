@@ -4,7 +4,7 @@
  */
 
 // Import components
-import { icons } from "../../../components";
+import { icons } from "../../icons.js";
 
 /**
  * INJECT SIDEBAR TOGGLE BUTTON
