@@ -151,3 +151,41 @@ test("Turbo cache event restores native controls and removes injected header", a
   assert.equal(document.querySelector("body > .toc-toggle-button")?.textContent.trim(), "Contents");
   window.close();
 });
+
+test("Command+B and the sidebar button both toggle the native sidebar", () => {
+  const { window, document, api } = createPage(`
+    <input id="navbar-collapsor" type="checkbox" checked>
+    <nav class="nav-drawer"></nav>
+    <button id="navbar-expand"></button>
+    <button id="navbar-collapse"></button>
+    <button class="btn--toggle-sidebar"></button>
+  `);
+  const sidebarCheckbox = document.querySelector("#navbar-collapsor");
+  document.querySelector("#navbar-expand").addEventListener("click", () => {
+    sidebarCheckbox.checked = false;
+  });
+  document.querySelector("#navbar-collapse").addEventListener("click", () => {
+    sidebarCheckbox.checked = true;
+  });
+  api.elements.native.sidebar = document.querySelector(".nav-drawer");
+  api.elements.injected.sidebarToggleButton = document.querySelector(".btn--toggle-sidebar");
+  api.syncAvailableHotkeys();
+  api.watchHotkeys();
+  api.watchSidebarToggleBtn();
+
+  const event = new window.KeyboardEvent("keydown", {
+    key: "b",
+    code: "KeyB",
+    metaKey: true,
+    bubbles: true,
+    cancelable: true,
+  });
+  document.dispatchEvent(event);
+
+  assert.equal(sidebarCheckbox.checked, false);
+  assert.equal(event.defaultPrevented, true);
+
+  document.querySelector(".btn--toggle-sidebar").click();
+  assert.equal(sidebarCheckbox.checked, true);
+  window.close();
+});

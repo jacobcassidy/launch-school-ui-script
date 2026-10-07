@@ -39,8 +39,8 @@ export function setIsSidebarCollapsed(value) {
     return;
   }
 
-  const isActiveSidebar = !sidebarCollapseCheckbox.checked;
-  if (isActiveSidebar !== value) {
+  const isSidebarCollapsed = sidebarCollapseCheckbox.checked;
+  if (isSidebarCollapsed !== value) {
     const sidebarButton = document.querySelector(value ? "#navbar-collapse" : "#navbar-expand");
     if (!sidebarButton) return;
 
