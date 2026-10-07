@@ -105,11 +105,21 @@ function fixture() {
       return [];
     },
   };
-  const context = sourceContext("../src/js/modules/components/sidebar.js", {
+  const icons = { sidebarIcons: new Proxy({}, { get: () => () => node("svg") }) };
+  const listRenderer = sourceContext("../src/js/modules/components/sidebar/lists.js", {
     document,
     sidebarLists: config,
-    icons: { sidebarIcons: new Proxy({}, { get: () => () => node("svg") }) },
+    icons,
+  });
+  const headerRenderer = sourceContext("../src/js/modules/components/sidebar/header.js", { document, icons });
+  const unreadCountWatcher = sourceContext("../src/js/modules/utils/watch/sidebar/unread-count.js", { document });
+  const context = sourceContext("../src/js/modules/components/sidebar.js", {
+    document,
+    icons,
     syncActiveSidebarItem: () => activeSyncs++,
+    reorderSidebarLists: listRenderer.reorderSidebarLists,
+    injectSidebarHeader: headerRenderer.injectSidebarHeader,
+    watchUnreadCounts: unreadCountWatcher.watchUnreadCounts,
   });
   const replaceSidebar = (names) => {
     sidebar?.remove();

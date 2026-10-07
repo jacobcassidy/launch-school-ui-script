@@ -6,7 +6,7 @@ test("unread badge handles delayed counts, updates, clearing, and single-count s
   const badges = [];
   const observers = [];
   const count = { textContent: "", after: (badge) => badges.push(badge) };
-  const context = sourceContext("../src/js/modules/components/sidebar.js", {
+  const context = sourceContext("../src/js/modules/utils/watch/sidebar/unread-count.js", {
     document: {
       querySelectorAll: () => [count],
       createElement() {
@@ -36,8 +36,8 @@ test("unread badge handles delayed counts, updates, clearing, and single-count s
       assert.fail("Unread counts must not expire on a timer");
     },
   });
-  context.removeCountParentheses();
-  context.removeCountParentheses();
+  context.watchUnreadCounts();
+  context.watchUnreadCounts();
   assert.equal(observers.length, 1);
   assert.equal(badges.length, 0);
   count.textContent = "(1)";

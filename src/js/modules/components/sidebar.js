@@ -7,10 +7,10 @@
 import { icons } from "./icons.js";
 
 // Import utils
-import { sidebarLists } from "../utils/configs/sidebar-lists.js";
 import { syncActiveSidebarItem } from "../utils/sync/active-sidebar-item.js";
-
-const observedUnreadCounts = new WeakSet();
+import { injectSidebarHeader } from "./sidebar/header.js";
+import { reorderSidebarLists } from "./sidebar/lists.js";
+import { watchUnreadCounts } from "../utils/watch/sidebar/unread-count.js";
 
 /**
  * UPDATE SIDEBAR
@@ -26,7 +26,7 @@ export function updateSidebar() {
   }
 
   addSidebarLinkClasses();
-  removeCountParentheses();
+  watchUnreadCounts();
 
   const sidebarItemLinks = nativeSidebar.querySelectorAll(":scope > ul > li > a");
   const sidebarItems = new Map();
@@ -208,109 +208,4 @@ function addSidebarLinkClasses() {
       link.classList.add("my-exercises");
     }
   });
-}
-
-/**
- * INJECT SIDEBAR HEADER
- */
-function injectSidebarHeader() {
-  const sidebar = document.querySelector(".nav-drawer");
-  const createSidebarHeader = () => {
-    const sidebarHeaderEl = document.createElement("header");
-    sidebarHeaderEl.className = "sidebar-header";
-    const sidebarHeaderLogoEl = document.createElement("a");
-    sidebarHeaderLogoEl.setAttribute("href", "/course_catalog");
-    sidebarHeaderLogoEl.className = "sidebar-header__logo";
-    const sidebarLogoTextEl = document.createElement("span");
-    sidebarLogoTextEl.className = "logo-title hidden-on-collapse";
-    sidebarLogoTextEl.textContent = "LaunchSchool";
-    const modifiedLogoIconEl = icons.sidebarIcons.modifiedLogo();
-    modifiedLogoIconEl.classList.add("logo-icon");
-    sidebarHeaderLogoEl.appendChild(modifiedLogoIconEl);
-    sidebarHeaderLogoEl.appendChild(sidebarLogoTextEl);
-    sidebarHeaderEl.appendChild(sidebarHeaderLogoEl);
-    return sidebarHeaderEl;
-  };
-
-  if (sidebar) sidebar.prepend(createSidebarHeader());
-}
-
-/**
- * ADD COUNT WITHOUT PARENTHESES
- */
-function removeCountParentheses() {
-  const counts = document.querySelectorAll('.nav-drawer [class*="_unread_count"]');
-  if (counts.length < 1) return;
-
-  counts.forEach((count) => {
-    if (observedUnreadCounts.has(count)) return;
-    observedUnreadCounts.add(count);
-
-    let badge = null;
-    const syncCount = () => {
-      const countText = count.textContent.replace(/[()]/g, "").trim();
-      if (!countText) {
-        badge?.remove();
-        badge = null;
-        return;
-      }
-
-      if (!badge) {
-        badge = document.createElement("span");
-        badge.className = "unread-count";
-        count.after(badge);
-      }
-      badge.textContent = countText;
-      badge.classList.toggle("hide-single-count", countText === "1");
-    };
-
-    const observer = new MutationObserver(syncCount);
-    observer.observe(count, {
-      childList: true,
-      characterData: true,
-      subtree: true,
-    });
-    syncCount();
-  });
-}
-
-/**
- * REORDER SIDEBAR LISTS
- */
-function reorderSidebarLists(sidebar, sidebarItems) {
-  sidebar.classList.add("sidebar");
-  const updatedListsWrapperEl = document.createElement("div");
-  updatedListsWrapperEl.className = "sidebar-lists";
-  Object.entries(sidebarLists).forEach(([listName, { listOrder, listTitle }]) => {
-    const listClassName = listName.replace(/([A-Z])/g, "-$1").toLowerCase();
-    const listWrapperEl = document.createElement("div");
-    listWrapperEl.className = `sidebar-list-wrapper ${listClassName}-wrapper`;
-    const listEl = document.createElement("ul");
-    listEl.className = `sidebar-list ${listClassName}`;
-
-    const listHeaderEl = document.createElement("button");
-    listHeaderEl.className = "sidebar-list-toggle-btn btn--plain";
-    const listHeaderTitleEl = document.createElement("span");
-    listHeaderTitleEl.className = "list-title";
-    listHeaderTitleEl.innerText = listTitle;
-    listHeaderEl.appendChild(listHeaderTitleEl);
-    listHeaderEl.appendChild(icons.sidebarIcons.toggle());
-    listWrapperEl.appendChild(listHeaderEl);
-
-    Object.entries(listOrder)
-      .sort(([, firstOrder], [, secondOrder]) => firstOrder - secondOrder)
-      .forEach(([linkLabel]) => {
-        const item = sidebarItems.get(linkLabel);
-        if (!item) return;
-
-        item.querySelectorAll("a").forEach((link) => link.classList.add("item-link"));
-        item.querySelectorAll("button").forEach((btn) => btn.classList.add("item-btn"));
-        item.className = "sidebar-list__item";
-        listEl.appendChild(item);
-      });
-    listWrapperEl.appendChild(listEl);
-    updatedListsWrapperEl.appendChild(listWrapperEl);
-  });
-
-  sidebar.appendChild(updatedListsWrapperEl);
 }
