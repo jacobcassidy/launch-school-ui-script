@@ -7,7 +7,6 @@
 import {
   setElementContentPanel,
   setElementEditorPanel,
-  setElementInstructionsPanel,
   setElementScratchpad,
   setElementSidebar,
   setElementTabNav,
@@ -24,7 +23,6 @@ export function syncNativeElementsState() {
     document.querySelector(".assignment-content-panel") || document.querySelector(".book-content-panel");
   const editorPanel = document.querySelector(".editor-panel");
   const scratchpad = document.querySelector("#tab-code-editor");
-  const instructionsPanel = document.querySelector(".instructions-panel");
   const sidebar = document.querySelector(".nav-drawer");
   const tabNav = document.querySelector(".tab-nav");
   const tabsPanel = document.querySelector(".tabs-panel");
@@ -32,7 +30,6 @@ export function syncNativeElementsState() {
 
   setElementContentPanel(contentPanel);
   setElementEditorPanel(editorPanel);
-  setElementInstructionsPanel(instructionsPanel);
   setElementScratchpad(scratchpad);
   setElementSidebar(sidebar);
   setElementTabNav(tabNav);

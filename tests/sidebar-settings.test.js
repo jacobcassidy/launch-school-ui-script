@@ -67,5 +67,5 @@ test("sidebar collapse setter keeps the active state when the matching native co
   });
 
   assert.doesNotThrow(() => context.setIsSidebarCollapsed(true));
-  assert.equal(ui.sidebar.isCollapsed, true);
+  assert.deepEqual(ui.sidebar, {});
 });

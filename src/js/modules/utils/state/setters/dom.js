@@ -19,14 +19,6 @@ export function setElementSettingsToggleBtn(el) {
   elements.injected.settingsToggleButton = el;
 }
 
-export function setElementSidebarHiddenHeadersToggler(el) {
-  elements.injected.sidebarHiddenHeadersToggler = el;
-}
-
-export function setElementSidebarShrinkToggler(el) {
-  elements.injected.sidebarShrinkToggler = el;
-}
-
 export function setElementSidebarToggleButton(el) {
   elements.injected.sidebarToggleButton = el;
 }
@@ -42,10 +34,6 @@ export function setElementContentPanel(el) {
 
 export function setElementEditorPanel(el) {
   elements.native.editorPanel = el;
-}
-
-export function setElementInstructionsPanel(el) {
-  elements.native.instructionsPanel = el;
 }
 
 export function setElementNextExerciseButton(el) {

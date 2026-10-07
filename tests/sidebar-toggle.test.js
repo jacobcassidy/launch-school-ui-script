@@ -6,7 +6,6 @@ for (const checked of [true, false]) {
   test(`sidebar toggle follows the checkbox (${checked}) despite stale state`, () => {
     const actions = [];
     const context = sourceContext("../src/js/modules/utils/helpers/toggle.js", {
-      ui: { sidebar: { isCollapsed: !checked } },
       document: { querySelector: () => ({ checked }) },
       showSidebar: () => actions.push("show"),
       hideSidebar: () => actions.push("hide"),

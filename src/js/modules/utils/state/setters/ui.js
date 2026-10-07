@@ -36,17 +36,13 @@ export function setIsSidebarCollapsed(value) {
 
   // If no sidebar found, set value to null.
   if (!sidebarCollapseCheckbox) {
-    ui.sidebar.isCollapsed = null;
     return;
   }
 
   const isActiveSidebar = !sidebarCollapseCheckbox.checked;
   if (isActiveSidebar !== value) {
     const sidebarButton = document.querySelector(value ? "#navbar-collapse" : "#navbar-expand");
-    if (!sidebarButton) {
-      ui.sidebar.isCollapsed = isActiveSidebar;
-      return;
-    }
+    if (!sidebarButton) return;
 
     sidebarButton.dispatchEvent(
       new MouseEvent("mousedown", {
@@ -57,8 +53,6 @@ export function setIsSidebarCollapsed(value) {
     );
     sidebarButton.click();
   }
-
-  ui.sidebar.isCollapsed = value;
 }
 
 /**

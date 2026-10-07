@@ -8,8 +8,6 @@ import {
   setElementHeader,
   setElementSettingsMenu,
   setElementSettingsToggleBtn,
-  setElementSidebarHiddenHeadersToggler,
-  setElementSidebarShrinkToggler,
   setElementSidebarToggleButton,
   setElementTabsPanelToggleButton,
 } from "../state/setters/dom.js";
@@ -22,23 +20,21 @@ export function syncInjectedElementsState() {
   const header = document.querySelector(".site-header");
   const settingsMenu = document.querySelector(".settings-container");
   const settingsToggleBtn = document.querySelector(".btn--toggle-settings");
-  const sidebarHiddenHeadersToggler = document.querySelector("#setting--sidebar-hidden-headers");
-  const sidebarShrinkToggler = document.querySelector("#setting--sidebar-shrink");
   const sidebarToggleBtn = document.querySelector(".btn--toggle-sidebar");
   const tabsPanelToggleBtn = document.querySelector(".btn--toggle-tabs-panel");
 
   setElementHeader(header);
   setElementSettingsMenu(settingsMenu);
   setElementSettingsToggleBtn(settingsToggleBtn);
-  setElementSidebarHiddenHeadersToggler(sidebarHiddenHeadersToggler);
-  setElementSidebarShrinkToggler(sidebarShrinkToggler);
   setElementSidebarToggleButton(sidebarToggleBtn);
   setElementTabsPanelToggleButton(tabsPanelToggleBtn);
 
   // Sync setting togglers
   const isSettingSidebarShrinkOn = ui.sidebar.isSettingSidebarShrinkOn;
-  if (isSettingSidebarShrinkOn) sidebarShrinkToggler.checked = true;
+  const sidebarShrinkToggler = document.querySelector("#setting--sidebar-shrink");
+  if (isSettingSidebarShrinkOn && sidebarShrinkToggler) sidebarShrinkToggler.checked = true;
 
   const isSettingSidebarHiddenHeadersOn = ui.sidebar.isSettingSidebarHiddenHeadersOn;
-  if (isSettingSidebarHiddenHeadersOn) sidebarHiddenHeadersToggler.checked = true;
+  const sidebarHiddenHeadersToggler = document.querySelector("#setting--sidebar-hidden-headers");
+  if (isSettingSidebarHiddenHeadersOn && sidebarHiddenHeadersToggler) sidebarHiddenHeadersToggler.checked = true;
 }
