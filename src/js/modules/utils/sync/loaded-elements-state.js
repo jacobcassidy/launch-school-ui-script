@@ -6,8 +6,8 @@
 // Import utils
 import { elements } from "../state/dom.js";
 import { ui } from "../state/ui.js";
-import { hideHeader, hideTabsPanel } from "../helpers/hide.js";
-import { showTabsPanel } from "../helpers/show.js";
+import { hideHeader } from "../helpers/hide.js";
+import { setIsTabsPanelHidden } from "../state/setters/ui.js";
 
 /**
  * Gets and sets the last active states when loading the UI.
@@ -25,11 +25,7 @@ export function syncLoadedElementsState() {
   if (header && isHeaderHidden) hideHeader();
 
   // Set tabs panel load state.
-  if (tabsPanel && isTabsPanelHidden) {
-    hideTabsPanel();
-  } else if (tabsPanel) {
-    showTabsPanel();
-  }
+  if (tabsPanel) setIsTabsPanelHidden(isTabsPanelHidden, { animate: false });
 
   // Set Sidebar Hidden Headers setting load state
   if (sidebar && isSettingSidebarHiddenHeadersOn) {

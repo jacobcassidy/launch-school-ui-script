@@ -7,6 +7,8 @@
 import { elements } from "../dom.js";
 import { ui } from "../ui.js";
 
+const tabsPanelClosings = new WeakMap();
+
 /**
  * SET IS HEADER HIDDEN
  */
@@ -86,25 +88,77 @@ export function setSettingSidebarShrink(value) {
 /**
  * SET IS TABS PANEL HIDDEN
  */
-export function setIsTabsPanelHidden(value) {
+export function setIsTabsPanelHidden(value, { animate = true } = {}) {
   const tabsPanel = elements.native.tabsPanel;
   const contentPanel = elements.native.contentPanel;
   const tabsPanelToggleButton = elements.injected.tabsPanelToggleButton;
 
-  if (value === true) {
-    tabsPanel?.classList.add("hidden", "panel-collapsed");
-    contentPanel?.classList.remove("half-width");
-    tabsPanel?.classList.remove("is-active", "half-width");
-    tabsPanelToggleButton?.classList.remove("active");
-  } else {
-    tabsPanel?.classList.remove("hidden", "panel-collapsed");
-    contentPanel?.classList.add("half-width");
-    tabsPanel?.classList.add("is-active", "half-width");
-    tabsPanelToggleButton?.classList.add("active");
-  }
-
   ui.tabsPanel.isHidden = value;
   sessionStorage.setItem("isTabsPanelHidden", value);
+  if (value) tabsPanelToggleButton?.classList.remove("active");
+  else tabsPanelToggleButton?.classList.add("active");
+
+  if (!tabsPanel) {
+    contentPanel?.classList.remove("half-width");
+    return;
+  }
+
+  const wasRendered = tabsPanel.classList.contains("is-active") && !tabsPanel.classList.contains("panel-collapsed");
+  tabsPanelClosings.delete(tabsPanel);
+  tabsPanel.inert = value;
+  tabsPanel.setAttribute("aria-hidden", String(value));
+
+  if (!value) {
+    // Resize text once before reopening; reversing a close keeps its current position.
+    contentPanel?.classList.add("half-width");
+    tabsPanel.classList.remove("hidden", "panel-collapsed", "is-closing", "is-opening");
+    tabsPanel.classList.add("is-active", "half-width");
+    if (animate && !wasRendered) tabsPanel.classList.add("is-opening");
+    prepareTabsPanelSlide(tabsPanel);
+    tabsPanel.classList.remove("is-opening");
+    return;
+  }
+
+  const closing = {};
+  tabsPanelClosings.set(tabsPanel, closing);
+  const finishClosing = () => {
+    if (tabsPanelClosings.get(tabsPanel) !== closing) return;
+    tabsPanelClosings.delete(tabsPanel);
+    if (elements.native.tabsPanel !== tabsPanel) return;
+    tabsPanel.classList.add("hidden", "panel-collapsed");
+    tabsPanel.classList.remove("is-active", "half-width", "is-closing", "is-opening");
+    // Expand only after the panel and divider have finished moving.
+    contentPanel?.classList.remove("half-width");
+  };
+
+  if (!animate || !wasRendered) {
+    finishClosing();
+    return;
+  }
+
+  // Keep the content's line length and the tabs panel's layout intact during the slide.
+  contentPanel?.classList.add("half-width");
+  const resizeHandle = prepareTabsPanelSlide(tabsPanel);
+  tabsPanel.classList.add("is-closing");
+  const animations = [...(tabsPanel.getAnimations?.() || []), ...(resizeHandle?.getAnimations?.() || [])].filter(
+    (animation) => animation.transitionProperty === "transform",
+  );
+  if (animations.length === 0) finishClosing();
+  else Promise.allSettled(animations.map((animation) => animation.finished)).then(finishClosing);
+}
+
+/**
+ * Measures the panel once so its divider can slide by the same distance.
+ * Reading layout also establishes the opening transition's initial offscreen state.
+ * @param {HTMLElement} tabsPanel
+ * @returns {HTMLElement|null} Native divider, if present.
+ */
+function prepareTabsPanelSlide(tabsPanel) {
+  const resizeHandle = tabsPanel.parentElement?.querySelector(":scope > .resize-handle") || null;
+  const width = tabsPanel.getBoundingClientRect().width;
+  resizeHandle?.style.setProperty("--tabs-panel-slide-offset", `${width}px`);
+  resizeHandle?.getBoundingClientRect();
+  return resizeHandle;
 }
 
 /**

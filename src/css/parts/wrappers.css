@@ -9,6 +9,11 @@ body:has(#assignment-repl-layout, #book-repl-layout, #book-exercise-repl-layout,
     padding: 0 !important;
     transition: none;
 
+    &:has(.tabs-panel) {
+      flex-wrap: nowrap;
+      overflow: hidden;
+    }
+
     body:has(.nav-drawer) & {
       inset-block-start: var(--size--header--height) !important;
     }
