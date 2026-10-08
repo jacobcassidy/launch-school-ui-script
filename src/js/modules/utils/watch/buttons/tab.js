@@ -6,6 +6,8 @@
 // Import utils
 import { handleFocus } from "../../helpers/focus.js";
 import { updateTabButtons } from "../../../components/buttons/panels/tab.js";
+import { injectHotkeysSection } from "../../../components/hotkeys-menu.js";
+import { syncAvailableHotkeys } from "../../sync/available-hotkeys.js";
 
 const watchedTabButtons = new WeakSet();
 const watchedTabNavigations = new WeakSet();
@@ -55,12 +57,22 @@ export function watchTabBtns() {
   if (!tabNav || watchedTabNavigations.has(tabNav)) return;
   watchedTabNavigations.add(tabNav);
 
+  const getVisibleTabs = () =>
+    [...tabNav.querySelectorAll(".tab-button")].filter((tabBtn) => getComputedStyle(tabBtn).display !== "none");
+  let visibleTabs = getVisibleTabs();
+
   const observer = new MutationObserver(() => {
-    const hasVisibleUnstyledTab = [...tabNav.querySelectorAll(".tab-button")].some(
-      (tabBtn) => tabBtn.classList.contains("is-hidden") && getComputedStyle(tabBtn).display !== "none",
-    );
-    if (hasVisibleUnstyledTab) updateTabButtons();
+    const nextVisibleTabs = getVisibleTabs();
+    const tabsChanged =
+      nextVisibleTabs.length !== visibleTabs.length ||
+      nextVisibleTabs.some((tabBtn, index) => tabBtn !== visibleTabs[index]);
+    if (!tabsChanged) return;
+    visibleTabs = nextVisibleTabs;
+    updateTabButtons();
+    syncAvailableHotkeys();
+    injectHotkeysSection();
+    watchTabBtns();
   });
 
-  observer.observe(tabNav, { attributes: true, subtree: true, attributeFilter: ["class", "style"] });
+  observer.observe(tabNav, { childList: true, attributes: true, subtree: true, attributeFilter: ["class", "style"] });
 }

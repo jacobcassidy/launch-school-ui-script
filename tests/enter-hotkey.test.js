@@ -21,6 +21,7 @@ for (const inputSelector of [".lsbot-question-input", ".lsbot-question-box-answe
         },
       },
       setAvailableHotkey: (...args) => registered.push(args),
+      syncHotkeyTooltips() {},
     });
     context.syncAvailableHotkeys();
     assert.equal(registered.length, inputSelector ? 1 : 0);

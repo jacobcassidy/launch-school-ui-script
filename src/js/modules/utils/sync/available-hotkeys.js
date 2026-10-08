@@ -18,6 +18,7 @@ import {
 import { elements } from "../state/dom.js";
 import { hotkeys } from "../state/hotkeys.js";
 import { setAvailableHotkey } from "../state/setters/hotkeys.js";
+import { syncHotkeyTooltips } from "./hotkey-tooltips.js";
 
 /**
  * Syncs the hotkeys available on the current page.
@@ -34,6 +35,7 @@ export function syncAvailableHotkeys() {
   syncCmdOnlyHotkeys();
   syncCmdShiftHotkeys();
   syncCmdCtrlHotkeys();
+  syncHotkeyTooltips();
 }
 
 /**
@@ -42,14 +44,18 @@ export function syncAvailableHotkeys() {
 function syncEnterOnlyHotkey() {
   const chatInputs = document.querySelectorAll(".lsbot-question-input, .lsbot-question-box-answer-input");
   if (chatInputs.length < 1) return;
-  setAvailableHotkey("enterOnly", "Enter", "Enter", "Submit focused chat prompt", null);
+  const submitButtons = [...document.querySelectorAll(".lsbot-submit-btn, .lsbot-question-box-send-answer-button")];
+  setAvailableHotkey("enterOnly", "Enter", "Enter", "Submit focused chat prompt", null, submitButtons);
 }
 
 /**
  * SYNC CMD ONLY HOTKEYS
  */
 function syncCmdOnlyHotkeys() {
-  if (elements.native.sidebar) setAvailableHotkey("cmdOnly", "KeyB", "B", "Toggle Sidebar Visibility", toggleSidebar);
+  if (elements.native.sidebar)
+    setAvailableHotkey("cmdOnly", "KeyB", "B", "Toggle Sidebar Visibility", toggleSidebar, [
+      elements.injected.sidebarToggleButton,
+    ]);
 }
 
 /**
@@ -58,7 +64,9 @@ function syncCmdOnlyHotkeys() {
 function syncCmdShiftHotkeys() {
   if (elements.injected.header) setAvailableHotkey("cmdShift", "Digit1", 1, "Toggle Header Visibility", toggleHeader);
   if (elements.native.tabsPanel)
-    setAvailableHotkey("cmdShift", "Digit2", 2, "Toggle Tabs Panel Visibility", toggleTabsPanel);
+    setAvailableHotkey("cmdShift", "Digit2", 2, "Toggle Tabs Panel Visibility", toggleTabsPanel, [
+      elements.injected.tabsPanelToggleButton,
+    ]);
 }
 
 /**
@@ -95,7 +103,7 @@ function syncCmdCtrlHotkeys() {
     if (elements.native.scratchpad) label = "Copy Scratchpad Code";
     else label = "Copy Editor Code";
 
-    setAvailableHotkey("cmdCtrl", "KeyC", "C", label, triggerCopyBtn);
+    setAvailableHotkey("cmdCtrl", "KeyC", "C", label, triggerCopyBtn, [copyCodeBtnExists]);
   };
 
   const handleEditorHotkey = (modifier) => {
@@ -121,7 +129,8 @@ function syncCmdCtrlHotkeys() {
       label = "Focus Scratchpad Editor";
     }
 
-    setAvailableHotkey(modifier, "KeyE", "E", label, focusEl);
+    const scratchpadButton = editorExists ? null : document.querySelector(".tab-button[data-tab='code-editor']");
+    setAvailableHotkey(modifier, "KeyE", "E", label, focusEl, [scratchpadButton]);
   };
 
   const handleNextExerciseHotkey = () => {
@@ -163,7 +172,7 @@ function syncCmdCtrlHotkeys() {
       const eventCode = `Digit${key}`;
       const triggerTab = () => activateTab(btnEl);
 
-      setAvailableHotkey("cmdCtrl", eventCode, key, btnLabel, triggerTab);
+      setAvailableHotkey("cmdCtrl", eventCode, key, btnLabel, triggerTab, [btnEl]);
     });
   };
 
@@ -171,12 +180,21 @@ function syncCmdCtrlHotkeys() {
   if (copyCodeBtnExists) handleCopyCodeHotkey();
   if (editorExists || elements.native.scratchpad) handleEditorHotkey("cmdCtrl");
   if (exerciseCompletionBtnExists)
-    setAvailableHotkey("cmdCtrl", "KeyM", "M", "Toggle Exercise Completion Status", toggleExerciseCompletionStatus);
+    setAvailableHotkey("cmdCtrl", "KeyM", "M", "Toggle Exercise Completion Status", toggleExerciseCompletionStatus, [
+      exerciseCompletionBtnExists,
+    ]);
   if (elements.native.nextExerciseButton)
-    setAvailableHotkey("cmdCtrl", "KeyN", "N", "Go to next exercise", handleNextExerciseHotkey);
-  if (submitReviewBtnExists) setAvailableHotkey("cmdCtrl", "KeyR", "R", "Submit Review", handleSubmitReviewHotkey);
+    setAvailableHotkey("cmdCtrl", "KeyN", "N", "Go to next exercise", handleNextExerciseHotkey, [
+      elements.native.nextExerciseButton,
+    ]);
+  if (submitReviewBtnExists)
+    setAvailableHotkey("cmdCtrl", "KeyR", "R", "Submit Review", handleSubmitReviewHotkey, [submitReviewBtnExists]);
   if (elements.native.tocButton)
-    setAvailableHotkey("cmdCtrl", "KeyT", "T", "Toggle Table of Content Visibility", toggleTocMenu);
+    setAvailableHotkey("cmdCtrl", "KeyT", "T", "Toggle Table of Content Visibility", toggleTocMenu, [
+      elements.native.tocButton,
+    ]);
   if (elements.injected.settingsMenu)
-    setAvailableHotkey("cmdCtrl", "Comma", ",", "Toggle Settings Visibility", toggleSettings);
+    setAvailableHotkey("cmdCtrl", "Comma", ",", "Toggle Settings Visibility", toggleSettings, [
+      elements.injected.settingsToggleButton,
+    ]);
 }

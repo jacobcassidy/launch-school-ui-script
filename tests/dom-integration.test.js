@@ -12,11 +12,147 @@ const bundle = await esbuild.build({
 });
 const integrationScript = bundle.outputFiles[0].text;
 
-function createPage(markup = "") {
+function createPage(markup = "", platform = "MacIntel") {
   const window = new Window({ url: "https://launchschool.com/courses/test" });
+  Object.defineProperty(window.navigator, "platform", { configurable: true, value: platform });
   window.document.body.innerHTML = markup;
   window.eval(integrationScript);
   return { window, document: window.document, api: window.integration };
+}
+
+for (const { name, platform, primary, actions, modifiers } of [
+  {
+    name: "macOS",
+    platform: "MacIntel",
+    primary: "CMD",
+    actions: "CMD+CTRL",
+    modifiers: { metaKey: true, ctrlKey: true },
+  },
+
+]) {
+  test(`button shortcut tooltips and settings keys match working actions on ${name}`, () => {
+    const { window, document, api } = createPage(
+      `
+    <header class="site-header"></header>
+    <nav class="nav-drawer"></nav>
+    <button class="btn--toggle-sidebar" title="Toggle Sidebar Visibility"></button>
+    <button class="btn--toggle-tabs-panel" title="Toggle Tabs Panel Visibility"></button>
+    <button class="toc-toggle-button" title="Toggle Table of Contents Visibility"></button>
+    <button class="btn--toggle-settings" title="Toggle Settings Visibility"></button>
+    <div class="settings-container"></div><div class="tabs-panel"></div>
+    <button class="btn-copy-code" title="Copy Editor Code"></button>
+    <div class="instructions-panel"><div class="gray-links"><form><button type="submit">Mark complete</button></form></div></div>
+    <a class="next-exercise">Go to the next exercise</a>
+    <button id="lsbot-send-review">Submit Review</button>
+    <div class="lsbot-input-area"><textarea class="lsbot-question-input"></textarea><button class="lsbot-submit-btn">Ask LSBot</button></div>
+  `,
+      platform,
+    );
+    const settingsButton = document.querySelector(".btn--toggle-settings");
+    api.elements.native.sidebar = document.querySelector(".nav-drawer");
+    api.elements.native.tabsPanel = document.querySelector(".tabs-panel");
+    api.elements.native.tocButton = document.querySelector(".toc-toggle-button");
+    api.elements.native.nextExerciseButton = document.querySelector(".next-exercise");
+    api.elements.injected.sidebarToggleButton = document.querySelector(".btn--toggle-sidebar");
+    api.elements.injected.tabsPanelToggleButton = document.querySelector(".btn--toggle-tabs-panel");
+    api.elements.injected.settingsToggleButton = settingsButton;
+    api.elements.injected.settingsMenu = document.querySelector(".settings-container");
+    api.elements.injected.header = document.querySelector(".site-header");
+    api.syncAvailableHotkeys();
+    api.syncAvailableHotkeys();
+
+    const expectedTitles = {
+      ".btn--toggle-sidebar": `Toggle Sidebar Visibility (${primary}+B)`,
+      ".btn--toggle-tabs-panel": `Toggle Tabs Panel Visibility (${primary}+SHIFT+2)`,
+      ".toc-toggle-button": `Toggle Table of Contents Visibility (${actions}+T)`,
+      ".btn--toggle-settings": `Toggle Settings Visibility (${actions}+,)`,
+      ".btn-copy-code": `Copy Editor Code (${actions}+C)`,
+      ".gray-links button": `Mark complete (${actions}+M)`,
+      ".next-exercise": `Go to the next exercise (${actions}+N)`,
+      "#lsbot-send-review": `Submit Review (${actions}+R)`,
+      ".lsbot-submit-btn": "Ask LSBot (Enter)",
+    };
+    Object.entries(expectedTitles).forEach(([selector, title]) => {
+      assert.equal(document.querySelector(selector).title, title);
+    });
+
+    const clone = settingsButton.cloneNode(true);
+    settingsButton.replaceWith(clone);
+    api.elements.injected.settingsToggleButton = clone;
+    api.syncAvailableHotkeys();
+    assert.equal(clone.title, expectedTitles[".btn--toggle-settings"]);
+    api.watchHotkeys();
+    document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "Comma", ...modifiers }));
+    assert.equal(api.elements.injected.settingsMenu.classList.contains("active"), true);
+
+    clone.title = "Open settings";
+    api.syncAvailableHotkeys();
+    assert.equal(clone.title, `Open settings (${actions}+,)`);
+
+    const panelModifiers = { [primary === "CMD" ? "metaKey" : "ctrlKey"]: true, shiftKey: true };
+    document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "Digit2", ...panelModifiers }));
+    assert.equal(api.elements.native.tabsPanel.classList.contains("panel-collapsed"), true);
+    document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "Digit2", ...panelModifiers }));
+    assert.equal(api.elements.native.tabsPanel.classList.contains("panel-collapsed"), false);
+
+    window.close();
+  });
+
+  test(`tab tooltips and keyboard targets follow tab visibility and order on ${name}`, async () => {
+    const { window, document, api } = createPage(
+      `
+    <nav class="tab-nav">
+      <button class="tab-button" data-tab="instructions">Instructions</button>
+      <button class="tab-button" data-tab="code-editor">Scratchpad</button>
+      <button class="tab-button" data-tab="feedback" style="display: none">Give Feedback</button>
+    </nav><div id="tab-code-editor"></div>
+  `,
+      platform,
+    );
+    const navigation = document.querySelector(".tab-nav");
+    const instructions = navigation.querySelector('[data-tab="instructions"]');
+    const scratchpad = navigation.querySelector('[data-tab="code-editor"]');
+    const feedback = navigation.querySelector('[data-tab="feedback"]');
+    api.elements.native.tabNav = navigation;
+    api.elements.native.scratchpad = document.querySelector("#tab-code-editor");
+    api.updateTabButtons();
+    api.syncAvailableHotkeys();
+    api.watchTabBtns();
+    api.watchHotkeys();
+    assert.equal(document.querySelector(".tab-tooltip-instructions").textContent, `Instructions (${actions}+1)`);
+    assert.equal(
+      document.querySelector(".tab-tooltip-code-editor").textContent,
+      `Scratchpad (${actions}+2 / ${actions}+E)`,
+    );
+
+    instructions.style.display = "none";
+    feedback.style.display = "flex";
+    await window.happyDOM.whenAsyncComplete();
+    assert.equal(
+      document.querySelector(".tab-tooltip-code-editor").textContent,
+      `Scratchpad (${actions}+1 / ${actions}+E)`,
+    );
+    assert.equal(document.querySelector(".tab-tooltip-feedback").textContent, `Give Feedback (${actions}+2)`);
+    assert.equal(document.querySelector(".tab-tooltip-instructions").textContent, "Instructions");
+
+    navigation.prepend(feedback);
+    await window.happyDOM.whenAsyncComplete();
+    assert.equal(document.querySelector(".tab-tooltip-feedback").textContent, `Give Feedback (${actions}+1)`);
+    assert.equal(
+      document.querySelector(".tab-tooltip-code-editor").textContent,
+      `Scratchpad (${actions}+2 / ${actions}+E)`,
+    );
+    assert.equal(scratchpad.getAttribute("aria-label"), "Scratchpad");
+    assert.equal(feedback.getAttribute("aria-label"), "Give Feedback");
+
+    let selectedTab = null;
+    feedback.addEventListener("click", () => {
+      selectedTab = feedback;
+    });
+    document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "Digit1", ...modifiers }));
+    assert.equal(selectedTab, feedback);
+    window.close();
+  });
 }
 
 test("cloned settings controls bind even when the clone retains old data flags", () => {

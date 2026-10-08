@@ -14,8 +14,9 @@ import { hotkeys } from "../hotkeys.js";
  * @param {string|number} symbol The key symbol to displayed in the settings menu.
  * @param {string} label The hotkey label to displayed in the settings menu.
  * @param {() => void|null} callbackFunc The function that will run when the hotkey is triggered.
+ * @param {Array<HTMLElement>} buttons Buttons whose tooltips should show this hotkey.
  */
-export function setAvailableHotkey(modifier, key, symbol, label, callbackFunc = null) {
+export function setAvailableHotkey(modifier, key, symbol, label, callbackFunc = null, buttons = []) {
   let callback;
   if (!callbackFunc) {
     callback = null;
@@ -23,5 +24,5 @@ export function setAvailableHotkey(modifier, key, symbol, label, callbackFunc = 
     callback = () => callbackFunc();
   }
 
-  hotkeys[modifier][key] = { callback: callback, label: label, symbol: symbol };
+  hotkeys[modifier][key] = { callback: callback, label: label, symbol: symbol, buttons: buttons };
 }

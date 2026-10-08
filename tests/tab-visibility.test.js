@@ -58,6 +58,8 @@ test("a revealed tab gets its tooltip and no longer has the hidden marker", () =
     getComputedStyle,
     handleFocus() {},
     updateTabButtons: tabContext.updateTabButtons,
+    syncAvailableHotkeys() {},
+    injectHotkeysSection() {},
     MutationObserver: class {
       constructor(callback) {
         this.callback = callback;
