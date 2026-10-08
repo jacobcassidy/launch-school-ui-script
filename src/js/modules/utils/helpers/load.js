@@ -37,6 +37,7 @@ import {
   watchForNewCopyMarkupBtns,
   watchForUrlChange,
   watchHotkeys,
+  watchHotkeyElements,
   watchNextExerciseBtn,
   watchPromptFocus,
   watchPromptSubmission,
@@ -80,6 +81,7 @@ export function loadUI() {
   watchForMissingHeader();
   watchForUrlChange();
   watchHotkeys();
+  watchHotkeyElements();
   watchPromptFocus();
   watchPromptSubmission();
   watchQuestionBoxes();

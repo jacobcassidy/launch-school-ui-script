@@ -10,6 +10,7 @@ import { watchForUrlChange } from "../src/js/modules/utils/watch/events/url-chan
 import { hotkeys } from "../src/js/modules/utils/state/hotkeys.js";
 import { injectHotkeysSection } from "../src/js/modules/components/hotkeys-menu.js";
 import { watchHotkeys } from "../src/js/modules/utils/watch/events/hotkeys.js";
+import { watchHotkeyElements } from "../src/js/modules/utils/watch/events/hotkey-elements.js";
 import { watchPromptFocus } from "../src/js/modules/utils/watch/events/prompt-focus.js";
 import { watchSettingsToggleBtn } from "../src/js/modules/utils/watch/buttons/settings-toggle.js";
 import { watchSidebarLinks } from "../src/js/modules/utils/watch/events/sidebar-links.js";
@@ -36,4 +37,5 @@ globalThis.integration = {
   watchTabBtns,
   watchUnreadCounts,
   watchHotkeys,
+  watchHotkeyElements,
 };

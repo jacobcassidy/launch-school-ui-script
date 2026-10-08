@@ -252,6 +252,34 @@ test("review shortcut submits without a review tab and uses the current enabled 
   window.close();
 });
 
+test("dynamically added chat controls receive Enter shortcut registration and labels", async () => {
+  const { window, document, api } = createPage(`
+    <nav class="tab-nav"><button class="tab-button" data-tab="lsbot-help">LSBot</button></nav>
+    <div class="settings-container"></div><div class="tab-content"></div>
+  `);
+  api.elements.native.tabNav = document.querySelector(".tab-nav");
+  api.updateTabButtons();
+  api.syncAvailableHotkeys();
+  api.watchHotkeyElements();
+  assert.equal(api.hotkeys.enterOnly.Enter, undefined);
+
+  document.querySelector(".tab-content").innerHTML = `
+    <div class="lsbot-input-area"><textarea class="lsbot-question-input"></textarea><button class="lsbot-submit-btn">Ask LSBot</button></div>
+  `;
+  await window.happyDOM.whenAsyncComplete();
+
+  const submit = document.querySelector(".lsbot-submit-btn");
+  assert.ok(api.hotkeys.enterOnly.Enter);
+  assert.equal(submit.title, "Ask LSBot (Enter)");
+  assert.ok(document.querySelector(".current-page-added-hotkeys-section"));
+
+  submit.remove();
+  await window.happyDOM.whenAsyncComplete();
+  assert.equal(api.hotkeys.enterOnly.Enter, undefined);
+  assert.equal(submit.hasAttribute("title"), false);
+  window.close();
+});
+
 test("cloned sidebar links retain working tooltips despite legacy binding flags", () => {
   const { window, document, api } = createPage(`
     <input id="navbar-collapsor" type="checkbox" checked>

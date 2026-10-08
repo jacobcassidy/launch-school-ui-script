@@ -11,6 +11,7 @@ for (const inputSelector of [".lsbot-question-input", ".lsbot-question-box-answe
       document: {
         querySelector: () => null,
         querySelectorAll(selector) {
+          if (inputSelector && selector === ".lsbot-submit-btn, .lsbot-question-box-send-answer-button") return [{}];
           return inputSelector &&
             selector
               .split(",")
@@ -22,6 +23,24 @@ for (const inputSelector of [".lsbot-question-input", ".lsbot-question-box-answe
       },
       setAvailableHotkey: (...args) => registered.push(args),
       syncHotkeyTooltips() {},
+    });
+
+    test("Enter shortcut is omitted until a chat submit control exists", () => {
+      const registered = [];
+      const context = sourceContext("../src/js/modules/utils/sync/available-hotkeys.js", {
+        hotkeys: {},
+        elements: { native: {}, injected: {} },
+        document: {
+          querySelector: () => null,
+          querySelectorAll(selector) {
+            return selector === ".lsbot-question-input, .lsbot-question-box-answer-input" ? [{}] : [];
+          },
+        },
+        setAvailableHotkey: (...args) => registered.push(args),
+        syncHotkeyTooltips() {},
+      });
+      context.syncAvailableHotkeys();
+      assert.equal(registered.length, 0);
     });
     context.syncAvailableHotkeys();
     assert.equal(registered.length, inputSelector ? 1 : 0);
