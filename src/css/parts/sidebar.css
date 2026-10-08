@@ -51,7 +51,7 @@
     border-block-end: 1px solid var(--border-color--300);
 
     .sidebar-header__logo {
-      color: var(--color--grayscale-400);
+      color: var(--color--grayscale-600);
       font-family: var(--font-family--secondary);
       font-size: 1rem;
       font-weight: 500;
@@ -91,7 +91,7 @@
 
   .sidebar-list-toggle-btn {
     justify-content: space-between;
-    color: var(--color--grayscale-300);
+    color: var(--color--grayscale-600);
     font-size: 0.6875rem;
     font-weight: 600;
     letter-spacing: 1px;
@@ -100,11 +100,11 @@
     &:active,
     &:focus {
       background: none;
-      color: var(--color--grayscale-500);
+      color: var(--color--grayscale-600);
     }
 
     &:hover {
-      color: var(--color--grayscale-400);
+      color: var(--color--grayscale-600);
     }
 
     svg {
@@ -214,11 +214,11 @@
 
           .item-link {
             gap: 8px;
-            color: var(--color--grayscale-500);
+            color: var(--color--grayscale-600);
             padding-inline-start: calc(var(--size--sidebar--padding-inline) + 30px);
 
             &:hover {
-              color: var(--color--brand-400);
+              color: var(--color--brand-600);
             }
           }
 

@@ -64,7 +64,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         border: none;
-        color: var(--color--grayscale-400);
+        color: var(--color--grayscale-600);
         block-size: var(--size--header--height);
         margin: 0;
         padding: 0;
@@ -82,7 +82,7 @@
           &,
           a,
           &::before {
-            color: var(--color--grayscale-400);
+            color: var(--color--grayscale-600);
             white-space: nowrap;
           }
         }
@@ -90,7 +90,7 @@
         li {
           a {
             &:hover {
-              color: var(--color--brand-400) !important;
+              color: var(--color--brand-600) !important;
             }
           }
 
@@ -101,7 +101,7 @@
           &.current {
             overflow: hidden;
             text-overflow: ellipsis;
-            color: var(--color--grayscale-500);
+            color: var(--color--grayscale-600);
           }
         }
       }
