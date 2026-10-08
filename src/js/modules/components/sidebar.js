@@ -35,6 +35,7 @@ export function updateSidebar() {
   // If sidebar already exists, sync active item and exit early.
   if (nativeSidebar.classList.contains("sidebar")) {
     sidebarTooltips = [...document.querySelectorAll(".sidebar-tooltip")];
+    sidebarTooltips.forEach((tooltip) => tooltip.classList.remove("active"));
     syncActiveSidebarItem();
     return;
   }

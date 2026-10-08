@@ -333,6 +333,29 @@ test("cloned sidebar links retain working tooltips despite legacy binding flags"
   window.close();
 });
 
+test("active sidebar tooltips reset in cached pages and work again after restore", () => {
+  const { window, document, api } = createPage(`
+    <input id="navbar-collapsor" type="checkbox" checked>
+    <nav class="sidebar nav-drawer"><ul class="sidebar-lists">
+      <li><a class="courses" data-tooltip="courses" aria-label="Courses" href="/courses">Courses</a></li>
+    </ul></nav>
+    <div class="sidebar-tooltip sidebar-tooltip-courses active"><span>Courses</span></div>
+  `);
+  api.injectHeader();
+  document.dispatchEvent(new window.Event("turbo:before-cache"));
+  assert.equal(document.querySelector(".sidebar-tooltip").classList.contains("active"), false);
+
+  const cachedBody = document.body.cloneNode(true);
+  document.body.replaceChildren(...cachedBody.childNodes);
+  api.updateSidebar();
+  api.watchSidebarLinks();
+  const restoredTooltip = document.querySelector(".sidebar-tooltip-courses");
+  assert.equal(restoredTooltip.classList.contains("active"), false);
+  document.querySelector(".sidebar-lists a").dispatchEvent(new window.MouseEvent("mouseenter"));
+  assert.equal(restoredTooltip.classList.contains("active"), true);
+  window.close();
+});
+
 test("initially focused prompts submit on Enter and refocus after re-enable", async () => {
   const { window, document, api } = createPage(`
     <div class="lsbot-input-area"><textarea class="lsbot-question-input"></textarea><button class="lsbot-submit-btn"></button></div>

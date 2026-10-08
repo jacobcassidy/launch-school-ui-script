@@ -57,6 +57,7 @@ function watchHeaderBeforeCache() {
     document
       .querySelectorAll("#ls-ui-script-styles, .toast-container, .tab-tooltip")
       .forEach((element) => element.remove());
+    document.querySelectorAll(".sidebar-tooltip.active").forEach((tooltip) => tooltip.classList.remove("active"));
   });
 }
 
