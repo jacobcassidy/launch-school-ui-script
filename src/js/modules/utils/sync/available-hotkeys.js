@@ -139,16 +139,22 @@ function syncCmdCtrlHotkeys() {
   };
 
   const handleSubmitReviewHotkey = () => {
-    const reviewSubmitBtn = document.querySelector("#lsbot-send-review, #btn-book-lsbot-review");
     const reviewTabBtn = document.querySelector(".tab-button[data-tab='submit-review']");
+    const pageUrl = `${location.origin}${location.pathname}${location.search}`;
 
-    activateTab(reviewTabBtn);
+    if (reviewTabBtn) activateTab(reviewTabBtn);
 
     setTimeout(() => {
+      const reviewSubmitBtn = document.querySelector("#lsbot-send-review, #btn-book-lsbot-review");
+      const currentPageUrl = `${location.origin}${location.pathname}${location.search}`;
+      if (currentPageUrl !== pageUrl || !reviewSubmitBtn?.isConnected) return;
+      if (reviewSubmitBtn.matches(":disabled") || reviewSubmitBtn.getAttribute("aria-disabled") === "true") {
+        showToast("Review is not available yet", "alert");
+        return;
+      }
+
       reviewSubmitBtn.click();
     }, 100);
-
-    showToast("Solution submitted for LSBot Review");
   };
 
   const handleTabsHotkeys = () => {

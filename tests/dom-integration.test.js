@@ -226,6 +226,32 @@ test("cloned settings controls bind even when the clone retains old data flags",
   window.close();
 });
 
+test("review shortcut submits without a review tab and uses the current enabled control", async () => {
+  const { window, document, api } = createPage(`
+    <button id="btn-book-lsbot-review">Review</button>
+  `);
+  api.syncAvailableHotkeys();
+  let originalClicks = 0;
+  document.querySelector("#btn-book-lsbot-review").addEventListener("click", () => originalClicks++);
+
+  assert.doesNotThrow(() => api.hotkeys.cmdCtrl.KeyR.callback());
+  const replacement = document.createElement("button");
+  replacement.id = "btn-book-lsbot-review";
+  let replacementClicks = 0;
+  replacement.addEventListener("click", () => replacementClicks++);
+  document.querySelector("#btn-book-lsbot-review").replaceWith(replacement);
+  await new Promise((resolve) => window.setTimeout(resolve, 120));
+
+  assert.equal(originalClicks, 0);
+  assert.equal(replacementClicks, 1);
+
+  api.hotkeys.cmdCtrl.KeyR.callback();
+  window.history.replaceState({}, "", "/course_catalog");
+  await new Promise((resolve) => window.setTimeout(resolve, 120));
+  assert.equal(replacementClicks, 1);
+  window.close();
+});
+
 test("cloned sidebar links retain working tooltips despite legacy binding flags", () => {
   const { window, document, api } = createPage(`
     <input id="navbar-collapsor" type="checkbox" checked>
