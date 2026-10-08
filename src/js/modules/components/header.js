@@ -144,7 +144,10 @@ function refreshNativeElement(selector, containerEl, { keepAcrossPages = false, 
     if (!nextElement && available && source?.marker.isConnected && (keepAcrossPages || source.pageUrl === pageUrl)) {
       return currentElement;
     }
-    currentElement.remove();
+    // History can change before the outgoing DOM is cached or replaced.
+    // Preserve its native controls so cached book pages can restore them.
+    if (available && !nextElement && source?.marker.isConnected) source.marker.before(currentElement);
+    else currentElement.remove();
     source?.marker.remove();
     headerElementSources.delete(currentElement);
   }

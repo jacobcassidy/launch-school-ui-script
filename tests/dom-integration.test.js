@@ -288,6 +288,75 @@ test("Turbo cache event restores native controls and removes injected header", a
   window.close();
 });
 
+test("Back before a book snapshot preserves its TOC button and restores its shortcut on Forward", async () => {
+  const { window, document, api } = createPage(`
+    <main class="book-page">
+      <div class="gretel-breadcrumbs">Python Introduction</div>
+      <div class="toc-dropdown-container"><button class="toc-toggle-button">Contents</button></div>
+    </main>
+  `);
+  const bookUrl = "/books/python/read/introduction";
+  window.history.replaceState({}, "", bookUrl);
+  const refresh = () => {
+    api.syncNativeElementsState();
+    api.injectHeader();
+    api.syncInjectedElementsState();
+    api.syncAvailableHotkeys();
+  };
+  api.setLoadUIHandler(refresh);
+  api.watchForUrlChange();
+  api.watchHotkeys();
+  refresh();
+  const originalButton = document.querySelector(".site-header .toc-toggle-button");
+  assert.ok(originalButton);
+  assert.ok(api.hotkeys.cmdCtrl.KeyT);
+
+  // History changes before the native renderer snapshots the outgoing book.
+  window.history.replaceState({}, "", "/course_catalog");
+  window.dispatchEvent(new window.PopStateEvent("popstate"));
+  await window.happyDOM.whenAsyncComplete();
+  assert.equal(document.querySelector(".site-header .toc-toggle-button"), null);
+  assert.equal(api.hotkeys.cmdCtrl.KeyT, undefined);
+  document.dispatchEvent(new window.Event("turbo:before-cache"));
+  const cachedBook = document.body.cloneNode(true);
+  assert.ok(cachedBook.querySelector(".toc-dropdown-container .toc-toggle-button"));
+  assert.ok(cachedBook.querySelector(".book-page .gretel-breadcrumbs"));
+  assert.ok(originalButton.isConnected);
+
+  document.body.innerHTML = "<main>Course catalog</main>";
+  document.dispatchEvent(new window.Event("turbo:render"));
+  await window.happyDOM.whenAsyncComplete();
+  assert.equal(document.querySelector(".toc-toggle-button"), null);
+  assert.equal(api.hotkeys.cmdCtrl.KeyT, undefined);
+
+  // Forward restores cloned native markup; its native click handler is rebound.
+  document.body.replaceWith(cachedBook);
+  const restoredButton = document.querySelector(".toc-toggle-button");
+  let tocClicks = 0;
+  restoredButton.addEventListener("click", () => {
+    tocClicks++;
+    restoredButton.classList.toggle("open");
+  });
+  window.history.replaceState({}, "", bookUrl);
+  window.dispatchEvent(new window.PopStateEvent("popstate"));
+  document.dispatchEvent(new window.Event("turbo:render"));
+  document.dispatchEvent(new window.Event("turbo:load"));
+  await window.happyDOM.whenAsyncComplete();
+
+  assert.equal(document.querySelector(".site-header .toc-toggle-button"), restoredButton);
+  assert.equal(api.elements.native.tocButton, restoredButton);
+  assert.equal(document.querySelectorAll(".toc-toggle-button").length, 1);
+  assert.equal(restoredButton.title, "Toggle Table of Contents Visibility (CMD+CTRL+T)");
+  assert.ok(api.hotkeys.cmdCtrl.KeyT);
+  document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "KeyT", metaKey: true, ctrlKey: true }));
+  assert.equal(tocClicks, 1);
+  assert.equal(restoredButton.classList.contains("open"), true);
+  restoredButton.click();
+  assert.equal(tocClicks, 2);
+  assert.equal(restoredButton.classList.contains("open"), false);
+  window.close();
+});
+
 test("Command+B and the sidebar button both toggle the native sidebar", () => {
   const { window, document, api } = createPage(`
     <input id="navbar-collapsor" type="checkbox" checked>

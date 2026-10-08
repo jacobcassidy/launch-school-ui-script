@@ -180,4 +180,7 @@ test("a URL change invalidates page-specific elements even when their source rem
   assert.equal(f.header.querySelector(".gretel-breadcrumbs"), null);
   assert.equal(f.header.querySelector(".toc-toggle-button"), null);
   assert.equal(f.elements.native.tocButton, null);
+  assert.ok(f.native.toc.isConnected);
+  assert.ok(f.native.breadcrumbs.isConnected);
+  assert.equal(f.native.toc.parentElement, f.native.breadcrumbs.parentElement);
 });
