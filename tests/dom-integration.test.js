@@ -280,6 +280,40 @@ test("dynamically added chat controls receive Enter shortcut registration and la
   window.close();
 });
 
+test("hidden headers leave the tab order and settings expose expanded state", () => {
+  const { window, document, api } = createPage('<nav class="nav-drawer"></nav>');
+  api.injectHeader();
+  api.syncInjectedElementsState();
+  api.watchSettingsToggleBtn();
+  const header = document.querySelector(".site-header");
+  const settingsButton = header.querySelector(".btn--toggle-settings");
+  const settingsMenu = header.querySelector(".settings-container");
+
+  assert.equal(settingsButton.getAttribute("aria-controls"), settingsMenu.id);
+  assert.equal(settingsButton.getAttribute("aria-expanded"), "false");
+  assert.equal(settingsMenu.inert, true);
+  settingsButton.click();
+  assert.equal(settingsButton.getAttribute("aria-expanded"), "true");
+  assert.equal(settingsMenu.inert, false);
+  assert.equal(settingsMenu.getAttribute("aria-hidden"), "false");
+  settingsButton.click();
+  assert.equal(settingsButton.getAttribute("aria-expanded"), "false");
+  assert.equal(settingsMenu.inert, true);
+
+  header.querySelector(".btn--toggle-sidebar").focus();
+  api.elements.injected.header = header;
+  api.syncAvailableHotkeys();
+  api.watchHotkeys();
+  document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "Digit1", metaKey: true, shiftKey: true }));
+  assert.equal(header.inert, true);
+  assert.equal(header.getAttribute("aria-hidden"), "true");
+  assert.notEqual(document.activeElement, header.querySelector(".btn--toggle-sidebar"));
+  document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "Digit1", metaKey: true, shiftKey: true }));
+  assert.equal(header.inert, false);
+  assert.equal(header.getAttribute("aria-hidden"), "false");
+  window.close();
+});
+
 test("cloned sidebar links retain working tooltips despite legacy binding flags", () => {
   const { window, document, api } = createPage(`
     <input id="navbar-collapsor" type="checkbox" checked>

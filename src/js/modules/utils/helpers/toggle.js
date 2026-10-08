@@ -52,6 +52,7 @@ export function toggleHeader() {
   if (ui.header.isHidden) {
     showHeader();
   } else {
+    if (elements.injected.settingsMenu?.classList.contains("active")) hideSettings();
     hideHeader();
   }
 }

@@ -13,10 +13,12 @@ const tabsPanelClosings = new WeakMap();
  * SET IS HEADER HIDDEN
  */
 export function setIsHeaderHidden(value) {
-  if (value === true) {
-    elements.injected.header.classList.add("is-hidden");
-  } else {
-    elements.injected.header.classList.remove("is-hidden");
+  const header = elements.injected.header;
+  if (value && header?.contains(document.activeElement)) document.activeElement.blur();
+  header?.classList.toggle("is-hidden", value);
+  if (header) {
+    header.inert = value;
+    header.setAttribute("aria-hidden", String(value));
   }
 
   ui.header.isHidden = value;

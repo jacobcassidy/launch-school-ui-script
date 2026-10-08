@@ -4,6 +4,7 @@ import { sourceContext } from "./source-context.js";
 function node(tagName) {
   let text = "";
   let classes = new Set();
+  const attributes = new Map();
   const listeners = new Map();
   return {
     tagName,
@@ -26,6 +27,9 @@ function node(tagName) {
     },
     set textContent(value) {
       text = value;
+    },
+    setAttribute(name, value) {
+      attributes.set(name, String(value));
     },
     get innerText() {
       return this.textContent;

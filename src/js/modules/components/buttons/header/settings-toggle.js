@@ -20,6 +20,9 @@ function createSettingsToggleButton() {
   const settingsToggleButtonEl = document.createElement("button");
   settingsToggleButtonEl.classList.add("site-header__button", "btn--toggle-settings", "has-dropdown");
   settingsToggleButtonEl.title = "Toggle Settings Visibility";
+  settingsToggleButtonEl.setAttribute("aria-label", "Toggle Settings Visibility");
+  settingsToggleButtonEl.setAttribute("aria-controls", "ls-ux-settings-menu");
+  settingsToggleButtonEl.setAttribute("aria-expanded", "false");
   settingsToggleButtonEl.appendChild(icons.headerIcons.settings());
 
   return settingsToggleButtonEl;
