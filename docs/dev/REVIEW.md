@@ -1,15 +1,15 @@
 # Project review — 2026-10-08
 
-Reviewed after the tabs-panel, shortcut-tooltip, book-history, Windows-shortcut, and modifier-symbol changes. Findings below are follow-up work; they have not been implemented.
+Reviewed after the tabs-panel, shortcut-tooltip, book-history, Windows-shortcut, and modifier-symbol changes. All six findings below have since been fixed in separate commits.
 
 ## Scope and checks
 
 Reviewed runtime initialization, navigation and cache restoration, components, shortcut registration and handling, DOM observers, CSS, accessibility, tests, build configuration, CI, documentation, and dependency status.
 
-- All 102 tests pass, including macOS/Windows shortcut integration, book Back/Forward restoration, and interrupted tabs-panel transitions.
+- All 117 tests pass, including shortcut updates for dynamic controls, book Back/Forward restoration, accessible header and settings state, contrast ratios, cached sidebar tooltips, and toast cleanup.
 - ESLint, Stylelint, Markdownlint, and Prettier pass.
 - The rebuilt installable bundle matches the committed bundle. CI already checks this, along with tests, formatting, and linting.
-- Additional temporary Happy DOM reproductions confirmed findings 1, 2, 3, and 5. Finding 4 is calculated from the declared color tokens. Finding 6 was reproduced with transitions absent.
+- Focused Happy DOM regression tests cover all six findings. The contrast test calculates ratios from the declared neutral OKLCH tokens.
 - The panel animation was checked in a rendered Chrome preview. Native Windows browsers, Safari shortcut interception, and screen-reader behavior were not exercised during this review.
 
 ## Findings
@@ -24,7 +24,7 @@ Registration requires a review submit button, but execution unconditionally pass
 
 The action also retains its submit button across a 100 ms delay and announces success before the click. Replacement, navigation, or a disabled button during that interval can produce a misleading success message.
 
-**Suggested fix:** Activate the tab only when present, resolve the current submit control after activation, verify it is connected and enabled, and cancel pending submission after navigation. Show a submission-in-progress message until a native success state is observed.
+**Resolution:** The action submits directly when the tab is absent, resolves the current connected and enabled control after the delay, and cancels after navigation. It no longer announces success before the native action completes.
 
 ### 2. P2 — Asynchronously added controls do not refresh shortcut labels
 
@@ -34,7 +34,7 @@ Shortcut listings and button tooltips are rebuilt during UI loading and selected
 
 **Reproduction:** Load a page with an LSBot tab and empty tab content. Insert a textarea and submit button into the existing tab. After mutations settle, Enter successfully submits, but `hotkeys.enterOnly.Enter` is absent, the button has no shortcut tooltip, and settings omit the shortcut.
 
-**Suggested fix:** Observe relevant controls within the current page containers and coalesce registration, tooltip, and settings updates. Detect actual control changes so the updater does not react repeatedly to its own DOM writes. Cover added, replaced, and removed controls in integration tests.
+**Resolution:** A filtered mutation observer coalesces registration and settings updates when relevant page controls are added, removed, or replaced. It ignores its own tooltip and settings updates. Integration tests cover asynchronous addition and removal.
 
 ### 3. P2 — Hidden header controls remain focusable
 
@@ -42,7 +42,7 @@ Shortcut listings and button tooltips are rebuilt during UI loading and selected
 
 Header hiding only changes a class and translates the header offscreen. Toolbar buttons remain in the focus order and accessibility tree. The reproduction could focus the settings button while its header was hidden; the header was not inert.
 
-**Suggested fix:** Manage toolbar focusability and accessibility state when hiding it. If settings are intentionally available while the toolbar is hidden, manage the popup separately so it remains usable. Give visibility controls accurate expanded/pressed state, move keyboard focus into an opened settings popup when appropriate, and restore focus on Escape.
+**Resolution:** A hidden header is inert and marked `aria-hidden`; focus leaves it before hiding. The settings control exposes its expanded state and controls relationship, the settings region becomes inert while closed, and Escape returns focus to its toggle. Hiding the header closes settings first.
 
 ### 4. P2 — Some small text has insufficient contrast
 
@@ -58,7 +58,7 @@ Calculated from the neutral OKLCH tokens:
 
 These labels use small text. WCAG's normal-text minimum is 4.5:1. [W3C contrast guidance](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html).
 
-**Suggested fix:** Darken functional labels while preserving the light surfaces. Check active/completed table text, timestamps, and focus indicators as part of the same palette review. Confirm final computed colors in the live site, where native styles can also contribute.
+**Resolution:** Sidebar section labels, sidebar logo and links, settings section headings, header breadcrumbs, and breadcrumb hover links now use darker tokens. Their text contrast is at least 4.5:1 against the named neutral surfaces; a test guards the key token combinations. Active/completed table text and timestamps still need a separate computed-style check against Launch School's live styles.
 
 ### 5. P3 — Active sidebar tooltips survive cached navigation
 
@@ -68,7 +68,7 @@ Cache cleanup removes tab tooltips but leaves sidebar tooltips, including their 
 
 **Reproduction:** Hover a collapsed sidebar link, dispatch `turbo:before-cache`, clone and restore the body, and update the sidebar. The cached tooltip remains active without a new hover.
 
-**Suggested fix:** Reset transient tooltip visibility before caching and when adopting a restored sidebar. Keep tooltip ownership and recreation consistent so cleanup does not leave restored links without tooltips.
+**Resolution:** Active sidebar tooltip state resets before caching and again when adopting a restored sidebar. Tooltip elements remain available, so restored links can show them on hover.
 
 ### 6. P3 — Toast cleanup depends entirely on a transition event
 
@@ -76,11 +76,11 @@ Cache cleanup removes tab tooltips but leaves sidebar tooltips, including their 
 
 After the display duration, removal is registered only on `transitionend`. With transitions disabled or canceled, no completion event may arrive and the toast remains in the DOM. A reproduction with no CSS transition retained the toast after its display duration.
 
-**Suggested fix:** Provide cleanup for zero-duration and canceled transitions, using animation completion with an immediate path or a bounded fallback. Add a polite live region for toast messages. Complete this before adding reduced-motion styles that disable toast transitions.
+**Resolution:** Toasts use a polite status region. They remove immediately when no transition runs, after the transition settles, or after a bounded fallback if transitions are canceled, unavailable, or never finish.
 
 ## Additional improvements
 
-- **Respect reduced motion.** No `prefers-reduced-motion` rule is present. Provide instant or minimal-motion alternatives for slides, flashes, switches, and toasts. The tabs setter already handles zero-duration transitions; toast cleanup needs the follow-up above.
+- **Respect reduced motion.** No `prefers-reduced-motion` rule is present. Provide instant or minimal-motion alternatives for slides, flashes, switches, and toasts.
 - **Add real-browser coverage.** Existing tests model DOM behavior and keyboard events; they cannot prove whether a browser or OS intercepts a shortcut. Prioritize Safari on macOS and Chrome/Edge/Firefox on Windows, including AltGr layouts, history navigation, and rapid panel reversal. Keep the current shortcut scheme until any remapping is explicitly selected.
 - **Review unsupported narrow layouts.** README explicitly limits support to desktop widths above 1024px. A responsive fallback or an option to retain the native layout at smaller widths would improve usability under browser zoom and narrow windows.
 
@@ -90,9 +90,6 @@ A fresh `npm audit` reports 20 affected development entries: 17 high and 3 low. 
 
 The live animated demo remains unfinished. The uncommitted README demo changes and screenshot-based GIF were excluded from the feature commits because they do not fulfill the requested live-site recording.
 
-## Suggested order
+## Remaining review suggestions
 
-1. Harden review submission and refresh shortcuts for dynamic controls.
-2. Correct hidden-toolbar focus behavior and functional-text contrast.
-3. Reset cached tooltips and make toast cleanup independent of transition events.
-4. Add reduced motion and real-browser coverage, then evaluate responsive support.
+Add reduced-motion behavior, verify platform shortcuts in native browsers, check computed contrast for native page text, and evaluate responsive behavior below the documented desktop width.
