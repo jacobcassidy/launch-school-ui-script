@@ -8,6 +8,7 @@ import { createNewSettingsSection } from "./settings-menu.js";
 
 // Import utils
 import { hotkeys } from "../utils/state/hotkeys.js";
+import { getHotkeyKeys } from "../utils/helpers/hotkeys.js";
 
 /**
  * INJECT HOTKEYS SECTION
@@ -31,12 +32,6 @@ function createHotkeysSection() {
   const hotkeysListEl = hotkeysSectionEl.querySelector(".settings-list");
 
   for (const [modifierListKey, modifierListObj] of Object.entries(hotkeys)) {
-    let modifierKey;
-    if (modifierListKey === "enterOnly") modifierKey = "Enter";
-    if (modifierListKey === "cmdOnly") modifierKey = null;
-    if (modifierListKey === "cmdShift") modifierKey = "Shift";
-    if (modifierListKey === "cmdCtrl") modifierKey = "Ctrl";
-
     for (const hotkeyObj of Object.values(modifierListObj)) {
       const hotkeyItemEl = document.createElement("li");
       hotkeyItemEl.className = "settings-list__item";
@@ -44,15 +39,7 @@ function createHotkeysSection() {
       const hotkeyItemKeyEl = document.createElement("div");
       hotkeyItemKeyEl.className = "setting-status hotkey-shortcut";
 
-      let keys;
-
-      if (modifierKey === "Enter") {
-        keys = [hotkeyObj.symbol];
-      } else if (modifierKey) {
-        keys = ["Cmd", modifierKey, hotkeyObj.symbol];
-      } else {
-        keys = ["Cmd", hotkeyObj.symbol];
-      }
+      const keys = getHotkeyKeys(modifierListKey, hotkeyObj.symbol);
 
       keys.forEach((key, index) => {
         const keySpan = document.createElement("span");

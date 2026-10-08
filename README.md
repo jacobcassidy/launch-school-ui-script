@@ -38,7 +38,7 @@ An unofficial UX kit that modifies the LaunchSchool.com UI with a minimal design
 1. Install the [Tampermonkey](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) browser extension (or an equivalent extension).
 2. Open the Tampermonkey extension's dashboard.
 3. Click on the dashboard's `+` tab to create a new script.
-4. Copy the code from [/dist/js/index.min.js](https://github.com/jacobcassidy/launch-school-ux-kit/blob/main/dist/js/index.min.js), then paste it into the Tampermonkey editor and save it (`CMD + S`).
+4. Copy the code from [/dist/js/index.min.js](https://github.com/jacobcassidy/launch-school-ux-kit/blob/main/dist/js/index.min.js), then paste it into the Tampermonkey editor and save it (`CMD + S` on macOS or `CTRL + S` on Windows).
 5. Go to [launchschool.com](https://launchschool.com) or refresh the page if you're already there and the script should now be active (if not, check your Tampermonkey extension settings to make sure it's active on launchschool.com).
 
 > [!TIP]
@@ -67,24 +67,24 @@ An unofficial UX kit that modifies the LaunchSchool.com UI with a minimal design
 
 - Added hotkeys:
 
-  | Hotkey            | Function                                                                   |
-  | ----------------- | -------------------------------------------------------------------------- |
-  | `Enter`           | Submit focused chat prompt                                                 |
-  | `CMD + B`         | Toggles Sidebar visibility                                                 |
-  | `CMD + Shift + 1` | Toggles Header visibility                                                  |
-  | `CMD + Shift + 2` | Toggle Tabs Panel visibility                                               |
-  | `CMD + CTRL + #`  | Select tab by number order (such as 1 for the "Ask LSBot" tab)             |
-  | `CMD + CTRL + C`  | Copy Editor/Scratchpad Code                                                |
-  | `CMD + CTRL + E`  | Focus Editor/Scratchpad                                                    |
-  | `CMD + CTRL + M`  | Toggle the "Mark exercise complete/incomplete" _(active on exercise page)_ |
-  | `CMD + CTRL + N`  | Go to next exercise _(active on exercise page)_                            |
-  | `CMD + CTRL + R`  | Submit review to LSBot _(active on exercise page)_                         |
-  | `CMD + CTRL + T`  | Toggle Table of Contents visibility _(active on book page)_                |
-  | `CMD + CTRL + ,`  | Toggle Settings visibility (include Current Page Hotkeys)                  |
+  | macOS             | Windows            | Function                                                                   |
+  | ----------------- | ------------------ | -------------------------------------------------------------------------- |
+  | `Enter`           | `Enter`            | Submit focused chat prompt                                                 |
+  | `CMD + B`         | `CTRL + B`         | Toggles Sidebar visibility                                                 |
+  | `CMD + Shift + 1` | `CTRL + Shift + 1` | Toggles Header visibility                                                  |
+  | `CMD + Shift + 2` | `CTRL + Shift + 2` | Toggle Tabs Panel visibility                                               |
+  | `CMD + CTRL + #`  | `CTRL + ALT + #`   | Select tab by number order (such as 1 for the "Ask LSBot" tab)             |
+  | `CMD + CTRL + C`  | `CTRL + ALT + C`   | Copy Editor/Scratchpad Code                                                |
+  | `CMD + CTRL + E`  | `CTRL + ALT + E`   | Focus Editor/Scratchpad                                                    |
+  | `CMD + CTRL + M`  | `CTRL + ALT + M`   | Toggle the "Mark exercise complete/incomplete" _(active on exercise page)_ |
+  | `CMD + CTRL + N`  | `CTRL + ALT + N`   | Go to next exercise _(active on exercise page)_                            |
+  | `CMD + CTRL + R`  | `CTRL + ALT + R`   | Submit review to LSBot _(active on exercise page)_                         |
+  | `CMD + CTRL + T`  | `CTRL + ALT + T`   | Toggle Table of Contents visibility _(active on book page)_                |
+  | `CMD + CTRL + ,`  | `CTRL + ALT + ,`   | Toggle Settings visibility (include Current Page Hotkeys)                  |
 
 ## Notes
 
-- This kit was developed for macOS. Windows/Linux have not been tested. You may fork and modify this kit however you'd like for your OS.
+- Shortcuts, the current-page shortcut list, and button tooltips automatically use macOS or Windows keys for your platform.
 - This kit only works for desktop views. The UI will break on screen sizes narrower than 1025px wide.
 - You can toggle the userscript off at anytime and reload the page to get the original UX back.
 - This kit modifies the existing DOM of launchschool.com. If the launchschool.com DOM changes in the future, this kit may cease to function. If that happens, please [report the issue](https://github.com/jacobcassidy/launch-school-ux-kit/issues).

@@ -28,7 +28,13 @@ for (const { name, platform, primary, actions, modifiers } of [
     actions: "CMD+CTRL",
     modifiers: { metaKey: true, ctrlKey: true },
   },
-
+  {
+    name: "Windows",
+    platform: "Win32",
+    primary: "CTRL",
+    actions: "CTRL+ALT",
+    modifiers: { ctrlKey: true, altKey: true },
+  },
 ]) {
   test(`button shortcut tooltips and settings keys match working actions on ${name}`, () => {
     const { window, document, api } = createPage(
@@ -76,6 +82,17 @@ for (const { name, platform, primary, actions, modifiers } of [
       assert.equal(document.querySelector(selector).title, title);
     });
 
+    api.injectHotkeysSection();
+    const menuRows = [...document.querySelectorAll(".current-page-added-hotkeys-section .settings-list__item")];
+    const menuKeys = (label) => {
+      const row = menuRows.find((item) => item.querySelector(".hotkey-label").textContent === label);
+      return [...row.querySelectorAll(".key")].map((key) => key.textContent).join("+");
+    };
+    assert.equal(menuKeys("Toggle Settings Visibility").toUpperCase(), `${actions}+,`);
+    assert.equal(menuKeys("Toggle Header Visibility").toUpperCase(), `${primary}+SHIFT+1`);
+    assert.equal(menuKeys("Toggle Sidebar Visibility").toUpperCase(), `${primary}+B`);
+    assert.equal(menuKeys("Submit focused chat prompt"), "Enter");
+
     const clone = settingsButton.cloneNode(true);
     settingsButton.replaceWith(clone);
     api.elements.injected.settingsToggleButton = clone;
@@ -95,6 +112,27 @@ for (const { name, platform, primary, actions, modifiers } of [
     document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "Digit2", ...panelModifiers }));
     assert.equal(api.elements.native.tabsPanel.classList.contains("panel-collapsed"), false);
 
+    const prompt = document.querySelector("textarea");
+    let nativeKeydowns = 0;
+    prompt.addEventListener("keydown", () => nativeKeydowns++);
+    const sidebarKey = new window.KeyboardEvent("keydown", {
+      code: "KeyB",
+      [primary === "CMD" ? "metaKey" : "ctrlKey"]: true,
+      bubbles: true,
+      cancelable: true,
+    });
+    prompt.dispatchEvent(sidebarKey);
+    assert.equal(sidebarKey.defaultPrevented, true);
+    assert.equal(nativeKeydowns, 0);
+    const copyKey = new window.KeyboardEvent("keydown", {
+      code: "KeyC",
+      [primary === "CMD" ? "metaKey" : "ctrlKey"]: true,
+      bubbles: true,
+      cancelable: true,
+    });
+    prompt.dispatchEvent(copyKey);
+    assert.equal(copyKey.defaultPrevented, false);
+    assert.equal(nativeKeydowns, 1);
     window.close();
   });
 

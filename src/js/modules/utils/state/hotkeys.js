@@ -3,7 +3,7 @@
  * @module utils/state/hotkeys
  */
 
-// Hotkeys State Object
+// Logical shortcut groups; platform helpers choose the actual modifier keys.
 export const hotkeys = {
   enterOnly: {},
   cmdOnly: {},

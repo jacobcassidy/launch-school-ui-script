@@ -4,7 +4,7 @@
  */
 
 import { hotkeys } from "../state/hotkeys.js";
-const modifierLabels = { enterOnly: "", cmdOnly: "CMD+", cmdShift: "CMD+SHIFT+", cmdCtrl: "CMD+CTRL+" };
+import { getHotkeyKeys } from "../helpers/hotkeys.js";
 
 const previousTooltips = new Map();
 
@@ -26,7 +26,8 @@ export function syncHotkeyTooltips() {
   const buttonShortcuts = new Map();
   for (const [modifier, shortcuts] of Object.entries(hotkeys)) {
     for (const { symbol, label, buttons = [] } of Object.values(shortcuts)) {
-      const shortcut = `${modifierLabels[modifier]}${symbol}`;
+      const keys = getHotkeyKeys(modifier, symbol);
+      const shortcut = modifier === "enterOnly" ? keys.join("+") : keys.join("+").toUpperCase();
       buttons.forEach((button) => {
         if (!button) return;
         if (!buttonShortcuts.has(button)) buttonShortcuts.set(button, { label, shortcuts: new Set() });
