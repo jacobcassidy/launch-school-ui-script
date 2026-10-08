@@ -24,15 +24,15 @@ for (const { name, platform, primary, actions, modifiers } of [
   {
     name: "macOS",
     platform: "MacIntel",
-    primary: "CMD",
-    actions: "CMD+CTRL",
+    primary: "⌘",
+    actions: "⌘+⌃",
     modifiers: { metaKey: true, ctrlKey: true },
   },
   {
     name: "Windows",
     platform: "Win32",
-    primary: "CTRL",
-    actions: "CTRL+ALT",
+    primary: "⌃",
+    actions: "⌃+⎇",
     modifiers: { ctrlKey: true, altKey: true },
   },
 ]) {
@@ -69,7 +69,7 @@ for (const { name, platform, primary, actions, modifiers } of [
 
     const expectedTitles = {
       ".btn--toggle-sidebar": `Toggle Sidebar Visibility (${primary}+B)`,
-      ".btn--toggle-tabs-panel": `Toggle Tabs Panel Visibility (${primary}+SHIFT+2)`,
+      ".btn--toggle-tabs-panel": `Toggle Tabs Panel Visibility (${primary}+⇧+2)`,
       ".toc-toggle-button": `Toggle Table of Contents Visibility (${actions}+T)`,
       ".btn--toggle-settings": `Toggle Settings Visibility (${actions}+,)`,
       ".btn-copy-code": `Copy Editor Code (${actions}+C)`,
@@ -89,13 +89,25 @@ for (const { name, platform, primary, actions, modifiers } of [
       return [...row.querySelectorAll(".key")].map((key) => key.textContent).join("+");
     };
     assert.equal(menuKeys("Toggle Settings Visibility").toUpperCase(), `${actions}+,`);
-    assert.equal(menuKeys("Toggle Header Visibility").toUpperCase(), `${primary}+SHIFT+1`);
+    assert.equal(menuKeys("Toggle Header Visibility").toUpperCase(), `${primary}+⇧+1`);
     assert.equal(menuKeys("Toggle Sidebar Visibility").toUpperCase(), `${primary}+B`);
     assert.equal(menuKeys("Submit focused chat prompt"), "Enter");
+
+    const settingsRow = menuRows.find(
+      (item) => item.querySelector(".hotkey-label").textContent === "Toggle Settings Visibility",
+    );
+    assert.equal(settingsRow.querySelector(".hotkey-shortcut").getAttribute("role"), "img");
+    assert.equal(
+      settingsRow.querySelector(".hotkey-shortcut").getAttribute("aria-label"),
+      platform === "MacIntel" ? "Cmd + Ctrl + ," : "Ctrl + Alt + ,",
+    );
 
     const clone = settingsButton.cloneNode(true);
     settingsButton.replaceWith(clone);
     api.elements.injected.settingsToggleButton = clone;
+    api.syncAvailableHotkeys();
+    assert.equal(clone.title, expectedTitles[".btn--toggle-settings"]);
+    clone.title = `Toggle Settings Visibility (${platform === "MacIntel" ? "CMD+CTRL" : "CTRL+ALT"}+,)`;
     api.syncAvailableHotkeys();
     assert.equal(clone.title, expectedTitles[".btn--toggle-settings"]);
     api.watchHotkeys();
@@ -106,7 +118,7 @@ for (const { name, platform, primary, actions, modifiers } of [
     api.syncAvailableHotkeys();
     assert.equal(clone.title, `Open settings (${actions}+,)`);
 
-    const panelModifiers = { [primary === "CMD" ? "metaKey" : "ctrlKey"]: true, shiftKey: true };
+    const panelModifiers = { [platform === "MacIntel" ? "metaKey" : "ctrlKey"]: true, shiftKey: true };
     document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "Digit2", ...panelModifiers }));
     assert.equal(api.elements.native.tabsPanel.classList.contains("panel-collapsed"), true);
     document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "Digit2", ...panelModifiers }));
@@ -117,7 +129,7 @@ for (const { name, platform, primary, actions, modifiers } of [
     prompt.addEventListener("keydown", () => nativeKeydowns++);
     const sidebarKey = new window.KeyboardEvent("keydown", {
       code: "KeyB",
-      [primary === "CMD" ? "metaKey" : "ctrlKey"]: true,
+      [platform === "MacIntel" ? "metaKey" : "ctrlKey"]: true,
       bubbles: true,
       cancelable: true,
     });
@@ -126,7 +138,7 @@ for (const { name, platform, primary, actions, modifiers } of [
     assert.equal(nativeKeydowns, 0);
     const copyKey = new window.KeyboardEvent("keydown", {
       code: "KeyC",
-      [primary === "CMD" ? "metaKey" : "ctrlKey"]: true,
+      [platform === "MacIntel" ? "metaKey" : "ctrlKey"]: true,
       bubbles: true,
       cancelable: true,
     });
@@ -384,7 +396,7 @@ test("Back before a book snapshot preserves its TOC button and restores its shor
   assert.equal(document.querySelector(".site-header .toc-toggle-button"), restoredButton);
   assert.equal(api.elements.native.tocButton, restoredButton);
   assert.equal(document.querySelectorAll(".toc-toggle-button").length, 1);
-  assert.equal(restoredButton.title, "Toggle Table of Contents Visibility (CMD+CTRL+T)");
+  assert.equal(restoredButton.title, "Toggle Table of Contents Visibility (⌘+⌃+T)");
   assert.ok(api.hotkeys.cmdCtrl.KeyT);
   document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "KeyT", metaKey: true, ctrlKey: true }));
   assert.equal(tocClicks, 1);

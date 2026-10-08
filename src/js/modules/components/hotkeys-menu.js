@@ -40,6 +40,9 @@ function createHotkeysSection() {
       hotkeyItemKeyEl.className = "setting-status hotkey-shortcut";
 
       const keys = getHotkeyKeys(modifierListKey, hotkeyObj.symbol);
+      const keyNames = getHotkeyKeys(modifierListKey, hotkeyObj.symbol, { symbols: false });
+      hotkeyItemKeyEl.setAttribute("role", "img");
+      hotkeyItemKeyEl.setAttribute("aria-label", keyNames.join(" + "));
 
       keys.forEach((key, index) => {
         const keySpan = document.createElement("span");

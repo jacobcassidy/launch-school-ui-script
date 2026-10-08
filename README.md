@@ -82,6 +82,8 @@ An unofficial UX kit that modifies the LaunchSchool.com UI with a minimal design
   | `CMD + CTRL + T`  | `CTRL + ALT + T`   | Toggle Table of Contents visibility _(active on book page)_                |
   | `CMD + CTRL + ,`  | `CTRL + ALT + ,`   | Toggle Settings visibility (include Current Page Hotkeys)                  |
 
+Shortcut modifiers in tooltips and settings use `⌘` (Command), `⌃` (Control), `⇧` (Shift), and `⎇` (Alt).
+
 ## Notes
 
 - Shortcuts, the current-page shortcut list, and button tooltips automatically use macOS or Windows keys for your platform.

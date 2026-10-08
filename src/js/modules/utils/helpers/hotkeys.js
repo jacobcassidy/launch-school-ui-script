@@ -4,6 +4,7 @@
  */
 
 const modifierLabels = { meta: "Cmd", ctrl: "Ctrl", alt: "Alt", shift: "Shift" };
+const modifierSymbols = { meta: "⌘", ctrl: "⌃", alt: "⎇", shift: "⇧" };
 const macModifiers = { cmdOnly: ["meta"], cmdShift: ["meta", "shift"], cmdCtrl: ["meta", "ctrl"] };
 const controlModifiers = { cmdOnly: ["ctrl"], cmdShift: ["ctrl", "shift"], cmdCtrl: ["ctrl", "alt"] };
 
@@ -17,11 +18,14 @@ function getPlatformModifiers() {
  * Returns the keys shown for a logical shortcut on the current platform.
  * @param {string} modifier Logical shortcut group.
  * @param {string|number} symbol Non-modifier key.
+ * @param {object} options Display options.
+ * @param {boolean} options.symbols Use modifier symbols instead of names.
  * @returns {Array<string>} Key labels.
  */
-export function getHotkeyKeys(modifier, symbol) {
+export function getHotkeyKeys(modifier, symbol, { symbols = true } = {}) {
   const modifiers = getPlatformModifiers()[modifier] || [];
-  return [...modifiers.map((key) => modifierLabels[key]), String(symbol)];
+  const labels = symbols ? modifierSymbols : modifierLabels;
+  return [...modifiers.map((key) => labels[key]), String(symbol)];
 }
 
 /**

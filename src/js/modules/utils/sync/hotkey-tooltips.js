@@ -41,7 +41,8 @@ export function syncHotkeyTooltips() {
     const tooltip = isTab ? document.querySelector(`.tab-tooltip-${button.getAttribute("data-tab")}`) : null;
     if (isTab && !tooltip) return;
 
-    const originalTitle = button.getAttribute("title")?.replace(/ \((?:(?:CMD|CTRL)\+[^)]*|Enter)\)$/, "") ?? null;
+    const originalTitle =
+      button.getAttribute("title")?.replace(/ \((?:(?:CMD|CTRL|[⌘⌃⇧⎇])\+[^)]*|Enter)\)$/, "") ?? null;
     const label = originalTitle || button.getAttribute("aria-label") || button.textContent.trim() || fallbackLabel;
     const text = `${label} (${[...shortcuts].join(" / ")})`;
     if (tooltip) tooltip.textContent = text;
