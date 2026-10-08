@@ -22,6 +22,7 @@ export function hideSettings() {
   const settingsMenu = elements.injected.settingsMenu;
   const settingsToggleBtn = elements.injected.settingsToggleButton;
   if (!settingsMenu || !settingsToggleBtn) return;
+  if (settingsMenu.contains(document.activeElement)) settingsToggleBtn.focus();
   settingsMenu.classList.remove("active");
   settingsMenu.inert = true;
   settingsMenu.setAttribute("aria-hidden", "true");

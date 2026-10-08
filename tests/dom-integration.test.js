@@ -296,9 +296,11 @@ test("hidden headers leave the tab order and settings expose expanded state", ()
   assert.equal(settingsButton.getAttribute("aria-expanded"), "true");
   assert.equal(settingsMenu.inert, false);
   assert.equal(settingsMenu.getAttribute("aria-hidden"), "false");
-  settingsButton.click();
+  settingsMenu.querySelector("input[type=checkbox]").focus();
+  document.dispatchEvent(new window.KeyboardEvent("keydown", { key: "Escape" }));
   assert.equal(settingsButton.getAttribute("aria-expanded"), "false");
   assert.equal(settingsMenu.inert, true);
+  assert.equal(document.activeElement, settingsButton);
 
   header.querySelector(".btn--toggle-sidebar").focus();
   api.elements.injected.header = header;
