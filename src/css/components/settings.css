@@ -100,6 +100,10 @@
         block-size: 1.5rem;
         inline-size: 1.5rem;
 
+        &.key--text {
+          inline-size: initial;
+        }
+
         &:last-child {
           background: var(--color--brand-alpha);
           color: var(--color--brand-400);

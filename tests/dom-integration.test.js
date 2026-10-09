@@ -103,13 +103,15 @@ for (const { name, platform, primary, actions, modifiers } of [
     settingsStyle.textContent = settingsStyles.outputFiles[0].text;
     document.head.appendChild(settingsStyle);
     const menuRows = [...document.querySelectorAll(".current-page-added-shortcuts-section .settings-list__item")];
+    const singleCharacterKey = document.querySelector(".shortcut-keys .key:not(.key--text)");
+    const singleCharacterWidth = window.getComputedStyle(singleCharacterKey).inlineSize;
     for (const row of menuRows) {
       const keys = [...row.querySelectorAll(".key")];
       assert.equal(row.querySelector(".shortcut-keys").textContent, keys.map((key) => key.textContent).join(""));
       keys.forEach((key) => {
-        const fontSize = window.getComputedStyle(key).fontSize;
-        const sizeInPixels = Number.parseFloat(fontSize) * (fontSize.endsWith("rem") ? 16 : 1);
-        assert.equal(sizeInPixels, 12);
+        const multipleCharacters = Array.from(key.textContent).length > 1;
+        assert.equal(key.classList.contains("key--text"), multipleCharacters);
+        assert.equal(window.getComputedStyle(key).inlineSize, multipleCharacters ? "initial" : singleCharacterWidth);
       });
     }
     const menuKeys = (label) => {

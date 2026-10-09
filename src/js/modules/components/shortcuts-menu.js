@@ -47,6 +47,7 @@ function createShortcutsSection() {
       keys.forEach((key) => {
         const keySpan = document.createElement("span");
         keySpan.className = "key";
+        if (Array.from(key).length > 1) keySpan.classList.add("key--text");
         keySpan.innerText = key;
         shortcutItemKeyEl.appendChild(keySpan);
       });
