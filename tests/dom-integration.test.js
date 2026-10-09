@@ -25,14 +25,14 @@ for (const { name, platform, primary, actions, modifiers } of [
     name: "macOS",
     platform: "MacIntel",
     primary: "⌘",
-    actions: "⌘+⌃",
+    actions: "⌘⌃",
     modifiers: { metaKey: true, ctrlKey: true },
   },
   {
     name: "Windows",
     platform: "Win32",
     primary: "⌃",
-    actions: "⌃+⎇",
+    actions: "⌃⎇",
     modifiers: { ctrlKey: true, altKey: true },
   },
 ]) {
@@ -68,14 +68,14 @@ for (const { name, platform, primary, actions, modifiers } of [
     api.syncAvailableHotkeys();
 
     const expectedTitles = {
-      ".btn--toggle-sidebar": `Toggle Sidebar Visibility (${primary}+B)`,
-      ".btn--toggle-tabs-panel": `Toggle Tabs Panel Visibility (${primary}+⇧+2)`,
-      ".toc-toggle-button": `Toggle Table of Contents Visibility (${actions}+T)`,
-      ".btn--toggle-settings": `Toggle Settings Visibility (${actions}+,)`,
-      ".btn-copy-code": `Copy Editor Code (${actions}+C)`,
-      ".gray-links button": `Mark complete (${actions}+M)`,
-      ".next-exercise": `Go to the next exercise (${actions}+N)`,
-      "#lsbot-send-review": `Submit Review (${actions}+R)`,
+      ".btn--toggle-sidebar": `Toggle Sidebar Visibility (${primary}B)`,
+      ".btn--toggle-tabs-panel": `Toggle Tabs Panel Visibility (${primary}⇧2)`,
+      ".toc-toggle-button": `Toggle Table of Contents Visibility (${actions}T)`,
+      ".btn--toggle-settings": `Toggle Settings Visibility (${actions},)`,
+      ".btn-copy-code": `Copy Editor Code (${actions}C)`,
+      ".gray-links button": `Mark complete (${actions}M)`,
+      ".next-exercise": `Go to the next exercise (${actions}N)`,
+      "#lsbot-send-review": `Submit Review (${actions}R)`,
       ".lsbot-submit-btn": "Ask LSBot (Enter)",
     };
     Object.entries(expectedTitles).forEach(([selector, title]) => {
@@ -86,11 +86,11 @@ for (const { name, platform, primary, actions, modifiers } of [
     const menuRows = [...document.querySelectorAll(".current-page-added-hotkeys-section .settings-list__item")];
     const menuKeys = (label) => {
       const row = menuRows.find((item) => item.querySelector(".hotkey-label").textContent === label);
-      return [...row.querySelectorAll(".key")].map((key) => key.textContent).join("+");
+      return [...row.querySelectorAll(".key")].map((key) => key.textContent).join("");
     };
-    assert.equal(menuKeys("Toggle Settings Visibility").toUpperCase(), `${actions}+,`);
-    assert.equal(menuKeys("Toggle Header Visibility").toUpperCase(), `${primary}+⇧+1`);
-    assert.equal(menuKeys("Toggle Sidebar Visibility").toUpperCase(), `${primary}+B`);
+    assert.equal(menuKeys("Toggle Settings Visibility").toUpperCase(), `${actions},`);
+    assert.equal(menuKeys("Toggle Header Visibility").toUpperCase(), `${primary}⇧1`);
+    assert.equal(menuKeys("Toggle Sidebar Visibility").toUpperCase(), `${primary}B`);
     assert.equal(menuKeys("Submit focused chat prompt"), "Enter");
 
     const settingsRow = menuRows.find(
@@ -116,7 +116,7 @@ for (const { name, platform, primary, actions, modifiers } of [
 
     clone.title = "Open settings";
     api.syncAvailableHotkeys();
-    assert.equal(clone.title, `Open settings (${actions}+,)`);
+    assert.equal(clone.title, `Open settings (${actions},)`);
 
     const panelModifiers = { [platform === "MacIntel" ? "metaKey" : "ctrlKey"]: true, shiftKey: true };
     document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "Digit2", ...panelModifiers }));
@@ -169,10 +169,10 @@ for (const { name, platform, primary, actions, modifiers } of [
     api.syncAvailableHotkeys();
     api.watchTabBtns();
     api.watchHotkeys();
-    assert.equal(document.querySelector(".tab-tooltip-instructions").textContent, `Instructions (${actions}+1)`);
+    assert.equal(document.querySelector(".tab-tooltip-instructions").textContent, `Instructions (${actions}1)`);
     assert.equal(
       document.querySelector(".tab-tooltip-code-editor").textContent,
-      `Scratchpad (${actions}+2 / ${actions}+E)`,
+      `Scratchpad (${actions}2 / ${actions}E)`,
     );
 
     instructions.style.display = "none";
@@ -180,17 +180,17 @@ for (const { name, platform, primary, actions, modifiers } of [
     await window.happyDOM.whenAsyncComplete();
     assert.equal(
       document.querySelector(".tab-tooltip-code-editor").textContent,
-      `Scratchpad (${actions}+1 / ${actions}+E)`,
+      `Scratchpad (${actions}1 / ${actions}E)`,
     );
-    assert.equal(document.querySelector(".tab-tooltip-feedback").textContent, `Give Feedback (${actions}+2)`);
+    assert.equal(document.querySelector(".tab-tooltip-feedback").textContent, `Give Feedback (${actions}2)`);
     assert.equal(document.querySelector(".tab-tooltip-instructions").textContent, "Instructions");
 
     navigation.prepend(feedback);
     await window.happyDOM.whenAsyncComplete();
-    assert.equal(document.querySelector(".tab-tooltip-feedback").textContent, `Give Feedback (${actions}+1)`);
+    assert.equal(document.querySelector(".tab-tooltip-feedback").textContent, `Give Feedback (${actions}1)`);
     assert.equal(
       document.querySelector(".tab-tooltip-code-editor").textContent,
-      `Scratchpad (${actions}+2 / ${actions}+E)`,
+      `Scratchpad (${actions}2 / ${actions}E)`,
     );
     assert.equal(scratchpad.getAttribute("aria-label"), "Scratchpad");
     assert.equal(feedback.getAttribute("aria-label"), "Give Feedback");
@@ -509,7 +509,7 @@ test("Back before a book snapshot preserves its TOC button and restores its shor
   assert.equal(document.querySelector(".site-header .toc-toggle-button"), restoredButton);
   assert.equal(api.elements.native.tocButton, restoredButton);
   assert.equal(document.querySelectorAll(".toc-toggle-button").length, 1);
-  assert.equal(restoredButton.title, "Toggle Table of Contents Visibility (⌘+⌃+T)");
+  assert.equal(restoredButton.title, "Toggle Table of Contents Visibility (⌘⌃T)");
   assert.ok(api.hotkeys.cmdCtrl.KeyT);
   document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "KeyT", metaKey: true, ctrlKey: true }));
   assert.equal(tocClicks, 1);

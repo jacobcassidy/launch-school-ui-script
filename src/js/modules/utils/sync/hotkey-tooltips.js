@@ -27,7 +27,7 @@ export function syncHotkeyTooltips() {
   for (const [modifier, shortcuts] of Object.entries(hotkeys)) {
     for (const { symbol, label, buttons = [] } of Object.values(shortcuts)) {
       const keys = getHotkeyKeys(modifier, symbol);
-      const shortcut = modifier === "enterOnly" ? keys.join("+") : keys.join("+").toUpperCase();
+      const shortcut = modifier === "enterOnly" ? keys.join("") : keys.join("").toUpperCase();
       buttons.forEach((button) => {
         if (!button) return;
         if (!buttonShortcuts.has(button)) buttonShortcuts.set(button, { label, shortcuts: new Set() });
@@ -42,7 +42,7 @@ export function syncHotkeyTooltips() {
     if (isTab && !tooltip) return;
 
     const originalTitle =
-      button.getAttribute("title")?.replace(/ \((?:(?:CMD|CTRL|[⌘⌃⇧⎇])\+[^)]*|Enter)\)$/, "") ?? null;
+      button.getAttribute("title")?.replace(/ \((?:(?:CMD|CTRL)\+[^)]*|[⌘⌃⇧⎇][^)]*|Enter)\)$/, "") ?? null;
     const label = originalTitle || button.getAttribute("aria-label") || button.textContent.trim() || fallbackLabel;
     const text = `${label} (${[...shortcuts].join(" / ")})`;
     if (tooltip) tooltip.textContent = text;
