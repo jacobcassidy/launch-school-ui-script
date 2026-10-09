@@ -1,10 +1,10 @@
 /**
- * HOTKEYS STATE
- * @module utils/state/hotkeys
+ * SHORTCUTS STATE
+ * @module utils/state/shortcuts
  */
 
 // Logical shortcut groups; platform helpers choose the actual modifier keys.
-export const hotkeys = {
+export const shortcuts = {
   enterOnly: {},
   cmdOnly: {},
   cmdShift: {},

@@ -1,22 +1,22 @@
 /**
- * WATCH HOTKEYS
- * @module utils/watch/events/hotkeys
+ * WATCH SHORTCUTS
+ * @module utils/watch/events/shortcuts
  */
 
 // Import utils
-import { activateHotkey } from "../../helpers/activate.js";
+import { activateShortcut } from "../../helpers/activate.js";
 import { showToast } from "../../helpers/show.js";
-import { hotkeys } from "../../state/hotkeys.js";
-import { getHotkeyModifier } from "../../helpers/hotkeys.js";
+import { shortcuts } from "../../state/shortcuts.js";
+import { getShortcutModifier } from "../../helpers/shortcuts.js";
 
 /**
- * Activates the triggered hotkey.
+ * Activates the triggered shortcut.
  */
-export function watchHotkeys() {
-  if (document.documentElement.dataset.hotkeysBound) {
+export function watchShortcuts() {
+  if (document.documentElement.dataset.shortcutsBound) {
     return;
   }
-  document.documentElement.dataset.hotkeysBound = "true";
+  document.documentElement.dataset.shortcutsBound = "true";
 
   // AltGr may report Ctrl+Alt; track the right Alt key so text entry stays intact.
   let altGraphPressed = false;
@@ -36,20 +36,20 @@ export function watchHotkeys() {
     (event) => {
       if (event.code === "AltRight" && event.getModifierState?.("AltGraph")) altGraphPressed = true;
       if (event.repeat || event.isComposing || event.keyCode === 229 || altGraphPressed) return;
-      const modifier = getHotkeyModifier(event);
+      const modifier = getShortcutModifier(event);
       if (!modifier) return;
 
       if (modifier === "cmdOnly") {
-        if (event.code !== "KeyB" || !hotkeys.cmdOnly.KeyB) return;
+        if (event.code !== "KeyB" || !shortcuts.cmdOnly.KeyB) return;
       } else if (modifier === "cmdShift") {
         if (event.code !== "Digit1" && event.code !== "Digit2") return;
 
-        if (event.code === "Digit2" && !hotkeys.cmdShift.Digit2) {
+        if (event.code === "Digit2" && !shortcuts.cmdShift.Digit2) {
           showToast("No tabs panel available to toggle on this page");
         }
       } else if (modifier === "cmdCtrl") {
         if (
-          !hotkeys.cmdCtrl[event.code] &&
+          !shortcuts.cmdCtrl[event.code] &&
           event.code !== "KeyC" &&
           event.code !== "KeyE" &&
           event.code !== "KeyM" &&
@@ -60,32 +60,32 @@ export function watchHotkeys() {
         )
           return;
 
-        if (event.code === "KeyC" && !hotkeys.cmdCtrl.KeyC) {
+        if (event.code === "KeyC" && !shortcuts.cmdCtrl.KeyC) {
           showToast("No editor code available to copy on this page");
         }
-        if (event.code === "KeyE" && !hotkeys.cmdCtrl.KeyE) {
+        if (event.code === "KeyE" && !shortcuts.cmdCtrl.KeyE) {
           showToast("No editor available to focus on this page");
         }
-        if (event.code === "KeyM" && !hotkeys.cmdCtrl.KeyM) {
+        if (event.code === "KeyM" && !shortcuts.cmdCtrl.KeyM) {
           showToast("No exercise to mark status of on this page");
         }
-        if (event.code === "KeyN" && !hotkeys.cmdCtrl.KeyN) {
+        if (event.code === "KeyN" && !shortcuts.cmdCtrl.KeyN) {
           showToast("No next exercise available to go to from this page");
         }
-        if (event.code === "KeyR" && !hotkeys.cmdCtrl.KeyR) {
+        if (event.code === "KeyR" && !shortcuts.cmdCtrl.KeyR) {
           showToast("No reviewer available to focus on this page");
         }
-        if (event.code === "KeyT" && !hotkeys.cmdCtrl.KeyT) {
+        if (event.code === "KeyT" && !shortcuts.cmdCtrl.KeyT) {
           showToast("No table of contents available to toggle on this page");
         }
       }
 
-      if (hotkeys[modifier][event.code]) {
+      if (shortcuts[modifier][event.code]) {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
       }
-      activateHotkey(modifier, event.code);
+      activateShortcut(modifier, event.code);
     },
     true,
   );

@@ -1,6 +1,6 @@
 # Launch School UX Kit
 
-An unofficial UX kit that modifies the LaunchSchool.com UI with a minimal design and added hotkeys for productivity (hotkeys that toggle the header, menus, sidebar, tabs, and more).
+An unofficial UX kit that modifies the LaunchSchool.com UI with a minimal design and added shortcuts for productivity (shortcuts that toggle the header, menus, sidebar, tabs, and more).
 
 | Index                                 |
 | ------------------------------------- |
@@ -48,7 +48,7 @@ An unofficial UX kit that modifies the LaunchSchool.com UI with a minimal design
 > 2. Select `File > Add to Dock...`
 > 3. Make the title "Launch School" and click "Add".
 > 4. Open the new Launch School Safari app you just created.
-> 5. Open settings (in the menubar, click `Launch School > Settings` or use the `CMD + ,` hotkey).
+> 5. Open settings (in the menubar, click `Launch School > Settings` or use the `CMD + ,` shortcut).
 > 6. In the Setting's "General" tab, deselect "Show navigation controls".
 > 7. In the Setting's "Extensions" tab, click "Browse Extensions" and install "Tampermonkey" (or an equivalent extension).
 > 8. Then follow the rest of the [Quickstart Guide](#quickstart-guide) above to complete the setup.
@@ -57,15 +57,15 @@ An unofficial UX kit that modifies the LaunchSchool.com UI with a minimal design
 
 - Refines the UI for a more minimal style, especially when closing panels such as the sidebar or tabs panel.
 - Adds a toggleable page header panel with the page's breadcrumbs/title and buttons to control the visibility of other panels (settings, sidebar, tabs, and table of contents).
-- Adds hotkeys to toggle the visibility of all toggleable panels (header, menus, sidebar, and tabs), so you can display only want you need for minimizing distractions.
+- Adds shortcuts to toggle the visibility of all toggleable panels (header, menus, sidebar, and tabs), so you can display only want you need for minimizing distractions.
 - Refines the sidebar UX with muted colors and reorganized link groups (with heading labels) and a more minimal sidebar when shrunken.
-- Adds a Settings menu panel the includes the ability to completely hide the sidebar, show/hide the sidebar group titles, and see the current page's hotkeys.
-- Adds a toaster component which displays messages for different actions, such as activating the Copy Editor Code hotkey.
+- Adds a Settings menu panel the includes the ability to completely hide the sidebar, show/hide the sidebar group titles, and see the current page's shortcuts.
+- Adds a toaster component which displays messages for different actions, such as activating the Copy Editor Code shortcut.
 - Focuses/refocuses the LSBot prompt textarea when a prompt submission completes (including from a question box in the content panel).
 - Automatically focuses the textarea of a selected panel (such as the LSBot tab).
-- Adds a blue background flash to an already active tab/textarea that is activated again via a hotkey so you can quickly see where the active focus is.
+- Adds a blue background flash to an already active tab/textarea that is activated again via a shortcut so you can quickly see where the active focus is.
 
-- Added hotkeys:
+- Added shortcuts:
 
   | macOS             | Windows            | Function                                                                   |
   | ----------------- | ------------------ | -------------------------------------------------------------------------- |
@@ -80,7 +80,7 @@ An unofficial UX kit that modifies the LaunchSchool.com UI with a minimal design
   | `CMD + CTRL + N`  | `CTRL + ALT + N`   | Go to next exercise _(active on exercise page)_                            |
   | `CMD + CTRL + R`  | `CTRL + ALT + R`   | Submit review to LSBot _(active on exercise page)_                         |
   | `CMD + CTRL + T`  | `CTRL + ALT + T`   | Toggle Table of Contents visibility _(active on book page)_                |
-  | `CMD + CTRL + ,`  | `CTRL + ALT + ,`   | Toggle Settings visibility (include Current Page Hotkeys)                  |
+  | `CMD + CTRL + ,`  | `CTRL + ALT + ,`   | Toggle Settings visibility (include Current Page Shortcuts)                |
 
 Shortcut modifiers in tooltips and settings use `⌘` (Command), `⌃` (Control), `⇧` (Shift), and `⎇` (Alt).
 

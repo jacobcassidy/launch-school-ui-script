@@ -13,17 +13,17 @@ test("shortcut display and event matching agree across current and fallback brow
     [undefined, false],
   ];
   browsers.forEach(([navigator, isMac]) => {
-    const helpers = sourceContext("../src/js/modules/utils/helpers/hotkeys.js", { navigator });
+    const helpers = sourceContext("../src/js/modules/utils/helpers/shortcuts.js", { navigator });
     const modifiers = isMac ? { metaKey: true, ctrlKey: true } : { ctrlKey: true, altKey: true };
-    const keys = Array.from(helpers.getHotkeyKeys("cmdCtrl", ","));
+    const keys = Array.from(helpers.getShortcutKeys("cmdCtrl", ","));
     assert.deepEqual(keys, isMac ? ["⌘", "⌃", ","] : ["⌃", "⎇", ","]);
     assert.deepEqual(
-      Array.from(helpers.getHotkeyKeys("cmdCtrl", ",", { symbols: false })),
+      Array.from(helpers.getShortcutKeys("cmdCtrl", ",", { symbols: false })),
       isMac ? ["Cmd", "Ctrl", ","] : ["Ctrl", "Alt", ","],
     );
-    assert.deepEqual(Array.from(helpers.getHotkeyKeys("cmdShift", 2)), isMac ? ["⌘", "⇧", "2"] : ["⌃", "⇧", "2"]);
-    assert.equal(helpers.getHotkeyModifier(modifiers), "cmdCtrl");
-    assert.equal(helpers.getHotkeyModifier({ ...modifiers, shiftKey: true }), null);
-    assert.deepEqual(Array.from(helpers.getHotkeyKeys("enterOnly", "Enter")), ["Enter"]);
+    assert.deepEqual(Array.from(helpers.getShortcutKeys("cmdShift", 2)), isMac ? ["⌘", "⇧", "2"] : ["⌃", "⇧", "2"]);
+    assert.equal(helpers.getShortcutModifier(modifiers), "cmdCtrl");
+    assert.equal(helpers.getShortcutModifier({ ...modifiers, shiftKey: true }), null);
+    assert.deepEqual(Array.from(helpers.getShortcutKeys("enterOnly", "Enter")), ["Enter"]);
   });
 });

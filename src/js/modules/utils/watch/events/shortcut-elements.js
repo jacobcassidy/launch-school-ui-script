@@ -1,12 +1,12 @@
 /**
- * WATCH DYNAMIC HOTKEY ELEMENTS
- * @module utils/watch/events/hotkey-elements
+ * WATCH DYNAMIC SHORTCUT ELEMENTS
+ * @module utils/watch/events/shortcut-elements
  */
 
-import { injectHotkeysSection } from "../../../components/hotkeys-menu.js";
-import { syncAvailableHotkeys } from "../../sync/available-hotkeys.js";
+import { injectShortcutsSection } from "../../../components/shortcuts-menu.js";
+import { syncAvailableShortcuts } from "../../sync/available-shortcuts.js";
 
-const hotkeyElementSelector = [
+const shortcutElementSelector = [
   ".tab-button",
   ".lsbot-question-input",
   ".lsbot-question-box-answer-input",
@@ -23,16 +23,17 @@ const hotkeyElementSelector = [
 /**
  * Refreshes shortcut registration when native controls are added, removed, or replaced.
  */
-export function watchHotkeyElements() {
-  if (document.documentElement.dataset.hotkeyElementsBound) return;
-  document.documentElement.dataset.hotkeyElementsBound = "true";
+export function watchShortcutElements() {
+  if (document.documentElement.dataset.shortcutElementsBound) return;
+  document.documentElement.dataset.shortcutElementsBound = "true";
 
   let refreshScheduled = false;
   const observer = new MutationObserver((mutations) => {
     const hasRelevantChange = mutations.some((mutation) =>
       [...mutation.addedNodes, ...mutation.removedNodes].some(
         (node) =>
-          node instanceof Element && (node.matches(hotkeyElementSelector) || node.querySelector(hotkeyElementSelector)),
+          node instanceof Element &&
+          (node.matches(shortcutElementSelector) || node.querySelector(shortcutElementSelector)),
       ),
     );
     if (!hasRelevantChange || refreshScheduled) return;
@@ -40,8 +41,8 @@ export function watchHotkeyElements() {
     refreshScheduled = true;
     queueMicrotask(() => {
       refreshScheduled = false;
-      syncAvailableHotkeys();
-      injectHotkeysSection();
+      syncAvailableShortcuts();
+      injectShortcutsSection();
     });
   });
 

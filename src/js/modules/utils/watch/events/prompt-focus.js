@@ -4,7 +4,7 @@
  */
 
 /**
- * Adds the "Enter" hotkey to focused chat prompts
+ * Adds the "Enter" shortcut to focused chat prompts
  */
 export function watchPromptFocus() {
   if (document.documentElement.dataset.promptFocusBound) return;

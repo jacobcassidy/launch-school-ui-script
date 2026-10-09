@@ -7,7 +7,7 @@ function setup() {
   let observeCount = 0;
   let currentButton = null;
   let links = [];
-  let hotkeySyncCount = 0;
+  let shortcutSyncCount = 0;
   let settingsRefreshCount = 0;
   const instructionsTab = {};
   const elements = { native: { nextExerciseButton: null } };
@@ -33,10 +33,10 @@ function setup() {
       currentButton = links.find((link) => link.textContent.includes("Go to the next exercise")) || null;
       elements.native.nextExerciseButton = currentButton;
     },
-    syncAvailableHotkeys() {
-      hotkeySyncCount++;
+    syncAvailableShortcuts() {
+      shortcutSyncCount++;
     },
-    injectHotkeysSection() {
+    injectShortcutsSection() {
       settingsRefreshCount++;
     },
   });
@@ -51,7 +51,7 @@ function setup() {
       observerCallback();
     },
     get counts() {
-      return { observeCount, hotkeySyncCount, settingsRefreshCount };
+      return { observeCount, shortcutSyncCount, settingsRefreshCount };
     },
   };
 }
@@ -66,13 +66,13 @@ test("watcher observes before a next-exercise link exists and updates shortcut s
   fixture.setLinks([firstLink]);
   fixture.triggerMutation();
   assert.equal(fixture.elements.native.nextExerciseButton, firstLink);
-  assert.equal(fixture.counts.hotkeySyncCount, 1);
+  assert.equal(fixture.counts.shortcutSyncCount, 1);
   assert.equal(fixture.counts.settingsRefreshCount, 1);
 
   fixture.setLinks([]);
   fixture.triggerMutation();
   assert.equal(fixture.elements.native.nextExerciseButton, null);
-  assert.equal(fixture.counts.hotkeySyncCount, 2);
+  assert.equal(fixture.counts.shortcutSyncCount, 2);
   assert.equal(fixture.counts.settingsRefreshCount, 2);
 });
 
@@ -89,9 +89,9 @@ test("watcher refreshes replacements once and repeated setup does not add observ
   fixture.setLinks([replacementLink]);
   fixture.triggerMutation();
   assert.equal(fixture.elements.native.nextExerciseButton, replacementLink);
-  assert.equal(fixture.counts.hotkeySyncCount, 2);
+  assert.equal(fixture.counts.shortcutSyncCount, 2);
   assert.equal(fixture.counts.settingsRefreshCount, 2);
 
   fixture.triggerMutation();
-  assert.equal(fixture.counts.hotkeySyncCount, 2);
+  assert.equal(fixture.counts.shortcutSyncCount, 2);
 });

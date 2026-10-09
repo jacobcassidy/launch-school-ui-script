@@ -7,7 +7,7 @@
 import {
   injectContentSolutionButtons,
   injectHeader,
-  injectHotkeysSection,
+  injectShortcutsSection,
   injectToaster,
   updateConversationHistoryButton,
   updateConversationNewButton,
@@ -27,7 +27,7 @@ import {
 import { setLoadUIHandler } from "./reload.js";
 import { injectStyles } from "./style.js";
 import {
-  syncAvailableHotkeys,
+  syncAvailableShortcuts,
   syncInjectedElementsState,
   syncLoadedElementsState,
   syncNativeElementsState,
@@ -36,8 +36,8 @@ import {
   watchForMissingHeader,
   watchForNewCopyMarkupBtns,
   watchForUrlChange,
-  watchHotkeys,
-  watchHotkeyElements,
+  watchShortcuts,
+  watchShortcutElements,
   watchNextExerciseBtn,
   watchPromptFocus,
   watchPromptSubmission,
@@ -74,14 +74,14 @@ export function loadUI() {
   updateSolutionButton();
   updateTabButtons();
   updateWorkInEditorButton();
-  syncAvailableHotkeys();
-  injectHotkeysSection();
+  syncAvailableShortcuts();
+  injectShortcutsSection();
   syncLoadedElementsState();
 
   watchForMissingHeader();
   watchForUrlChange();
-  watchHotkeys();
-  watchHotkeyElements();
+  watchShortcuts();
+  watchShortcutElements();
   watchPromptFocus();
   watchPromptSubmission();
   watchQuestionBoxes();

@@ -5,7 +5,7 @@ import { sourceContext } from "./source-context.js";
 test("missing completion form does not abort initialization and can appear later", () => {
   let callback;
   let styled = 0;
-  let hotkeysSynced = 0;
+  let shortcutsSynced = 0;
   let settingsRefreshed = 0;
   const context = sourceContext("../src/js/modules/components/buttons/panels/exercise-completion.js", {
     document: { querySelector: () => ({ querySelector: () => null }) },
@@ -15,10 +15,10 @@ test("missing completion form does not abort initialization and can appear later
     setButtonProperties() {
       styled++;
     },
-    syncAvailableHotkeys() {
-      hotkeysSynced++;
+    syncAvailableShortcuts() {
+      shortcutsSynced++;
     },
-    injectHotkeysSection() {
+    injectShortcutsSection() {
       settingsRefreshed++;
     },
   });
@@ -26,7 +26,7 @@ test("missing completion form does not abort initialization and can appear later
   assert.equal(styled, 0);
   callback({ querySelectorAll: () => [{}], querySelector: () => null });
   assert.equal(styled, 1);
-  assert.equal(hotkeysSynced, 1);
+  assert.equal(shortcutsSynced, 1);
   assert.equal(settingsRefreshed, 1);
 });
 

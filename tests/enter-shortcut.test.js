@@ -5,8 +5,8 @@ import { sourceContext } from "./source-context.js";
 for (const inputSelector of [".lsbot-question-input", ".lsbot-question-box-answer-input", null]) {
   test(`Enter shortcut listing with input: ${inputSelector}`, () => {
     const registered = [];
-    const context = sourceContext("../src/js/modules/utils/sync/available-hotkeys.js", {
-      hotkeys: {},
+    const context = sourceContext("../src/js/modules/utils/sync/available-shortcuts.js", {
+      shortcuts: {},
       elements: { native: {}, injected: {} },
       document: {
         querySelector: () => null,
@@ -21,14 +21,14 @@ for (const inputSelector of [".lsbot-question-input", ".lsbot-question-box-answe
             : [];
         },
       },
-      setAvailableHotkey: (...args) => registered.push(args),
-      syncHotkeyTooltips() {},
+      setAvailableShortcut: (...args) => registered.push(args),
+      syncShortcutTooltips() {},
     });
 
     test("Enter shortcut is omitted until a chat submit control exists", () => {
       const registered = [];
-      const context = sourceContext("../src/js/modules/utils/sync/available-hotkeys.js", {
-        hotkeys: {},
+      const context = sourceContext("../src/js/modules/utils/sync/available-shortcuts.js", {
+        shortcuts: {},
         elements: { native: {}, injected: {} },
         document: {
           querySelector: () => null,
@@ -36,13 +36,13 @@ for (const inputSelector of [".lsbot-question-input", ".lsbot-question-box-answe
             return selector === ".lsbot-question-input, .lsbot-question-box-answer-input" ? [{}] : [];
           },
         },
-        setAvailableHotkey: (...args) => registered.push(args),
-        syncHotkeyTooltips() {},
+        setAvailableShortcut: (...args) => registered.push(args),
+        syncShortcutTooltips() {},
       });
-      context.syncAvailableHotkeys();
+      context.syncAvailableShortcuts();
       assert.equal(registered.length, 0);
     });
-    context.syncAvailableHotkeys();
+    context.syncAvailableShortcuts();
     assert.equal(registered.length, inputSelector ? 1 : 0);
     if (inputSelector) assert.deepEqual(registered[0].slice(0, 3), ["enterOnly", "Enter", "Enter"]);
   });

@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed initialization when the userscript runs after the document has already loaded.
 - Fixed page navigation waiting for the body element to be replaced before reloading the UI.
 - Fixed missing exercise completion forms aborting UI initialization.
-- Fixed duplicate completion observers, hotkey sections, and tab tooltips during repeated UI loads.
+- Fixed duplicate completion observers, shortcut sections, and tab tooltips during repeated UI loads.
 - Fixed sidebar settings throwing errors when no sidebar exists.
 - Fixed stale next-exercise state after navigating away from an exercise.
 - Fixed sidebar toggling using stale collapsed state after navigation.
@@ -55,7 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added back function to move logged-out nav to `.site-header`.
-- Added `Enter` hotkey note to README.md.
+- Added `Enter` shortcut note to README.md.
 
 ### Fixed
 
@@ -74,8 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added `#btn-book-lsbot-review` to "Submit Review" hotkey selectors.
-- Added `enterOnly` hotkey for chat prompt submissions.
+- Added `#btn-book-lsbot-review` to "Submit Review" shortcut selectors.
+- Added `enterOnly` shortcut for chat prompt submissions.
 - Added a Lucide SVG icon to replace the search icon on the forum page.
 - Added an SVG loader to the esbuild script so it can be inline CSS SVG assets.
 - Added pagination button styles to match the LS UX Kit theme.
@@ -193,8 +193,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed an issue with the header.txt causing a watch build loop
 - Reorganized all files
 - Updated the colorLog styles with oklch colors
-- Replaced the Hotkeys menu and toggle button with a Settings menu and toggle button. The hotkeys menu remains inside the settings menu.
-- Updated the hotkeys with new bindings
+- Replaced the Shortcuts menu and toggle button with a Settings menu and toggle button. The shortcuts menu remains inside the settings menu.
+- Updated the shortcuts with new bindings
 - Refactored icons element creation functions
 
 ## [1.0.0] - 2026-07-23
@@ -227,20 +227,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Button to show the Sidebar.
     - Button to toggle a book's Table of Contents menu visibility.
     - Button to toggle the Tabs Panel visibility,
-    - Button to toggle the Current Page Hotkeys/Settings menu visibility.
+    - Button to toggle the Current Page Shortcuts/Settings menu visibility.
     - Breadcrumbs placed center in the header.
     - If the page has no breadcrumbs, the page title is place center in the header instead.
     - Moved the logged-out nav to the header for logged-out users.
-  - Added a blue background flash to an already active tab/textarea that is activated again via a hotkey so you can quickly see where the active focus is.
-  - Added an automatic textbox focus when a tab or editor is selected via button click or hotkey.
+  - Added a blue background flash to an already active tab/textarea that is activated again via a shortcut so you can quickly see where the active focus is.
+  - Added an automatic textbox focus when a tab or editor is selected via button click or shortcut.
   - Added the ability to completely hide the sidebar from view.
-  - Added a toaster that will display messages for different actions, such as activating the Copy Editor Code via hotkey.
+  - Added a toaster that will display messages for different actions, such as activating the Copy Editor Code via shortcut.
   - Added automatic LSBot tab focus when a question box answer is submitted in the content panel.
   - Added automatic refocus of the LSBot prompt textarea after a prompt submission completes.
-  - Added a container that displays the current page's hotkeys in the Settings Menu.
-  - Added hotkeys:
+  - Added a container that displays the current page's shortcuts in the Settings Menu.
+  - Added shortcuts:
 
-    | Hotkey            | Function                                                                   |
+    | Shortcut          | Function                                                                   |
     | ----------------- | -------------------------------------------------------------------------- |
     | `CMD + SHIFT + 1` | Toggle Header visibility                                                   |
     | `CMD + SHIFT + 2` | Toggle Tabs Panel visibility _(only active on pages with a Tabs Panel)_    |
@@ -253,4 +253,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     | `CMD + CTRL + N`  | Go to next exercise _(active on exercise page)_                            |
     | `CMD + CTRL + R`  | Submit review to LSBot _(active on exercise page)_                         |
     | `CMD + CTRL + T`  | Toggle Table of Contents Menu visibility _(active on book page)_           |
-    | `CMD + CTRL + ,`  | Toggle Current Page Hotkeys/Settings Menu visibility                       |
+    | `CMD + CTRL + ,`  | Toggle Current Page Shortcuts/Settings Menu visibility                     |

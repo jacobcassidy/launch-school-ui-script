@@ -1,6 +1,6 @@
 /**
  * PLATFORM SHORTCUTS
- * @module utils/helpers/hotkeys
+ * @module utils/helpers/shortcuts
  */
 
 const modifierLabels = { meta: "Cmd", ctrl: "Ctrl", alt: "Alt", shift: "Shift" };
@@ -22,7 +22,7 @@ function getPlatformModifiers() {
  * @param {boolean} options.symbols Use modifier symbols instead of names.
  * @returns {Array<string>} Key labels.
  */
-export function getHotkeyKeys(modifier, symbol, { symbols = true } = {}) {
+export function getShortcutKeys(modifier, symbol, { symbols = true } = {}) {
   const modifiers = getPlatformModifiers()[modifier] || [];
   const labels = symbols ? modifierSymbols : modifierLabels;
   return [...modifiers.map((key) => labels[key]), String(symbol)];
@@ -33,7 +33,7 @@ export function getHotkeyKeys(modifier, symbol, { symbols = true } = {}) {
  * @param {KeyboardEvent} event Keyboard event.
  * @returns {string|null} Matching shortcut group, or null.
  */
-export function getHotkeyModifier(event) {
+export function getShortcutModifier(event) {
   for (const [modifier, keys] of Object.entries(getPlatformModifiers())) {
     if (Object.keys(modifierLabels).every((key) => Boolean(event[`${key}Key`]) === keys.includes(key))) {
       return modifier;

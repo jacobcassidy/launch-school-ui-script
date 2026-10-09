@@ -4,9 +4,9 @@
  */
 
 // Import components
-import { injectHotkeysSection } from "../../../components/hotkeys-menu.js";
+import { injectShortcutsSection } from "../../../components/shortcuts-menu.js";
 import { updateNextExerciseButton } from "../../../components/buttons/panels/next-exercise.js";
-import { syncAvailableHotkeys } from "../../sync/available-hotkeys.js";
+import { syncAvailableShortcuts } from "../../sync/available-shortcuts.js";
 
 // Import utils
 import { elements } from "../../state/dom.js";
@@ -27,8 +27,8 @@ export function watchNextExerciseBtn() {
     const nextButton = elements.native.nextExerciseButton;
     if (previousButton === nextButton) return;
 
-    syncAvailableHotkeys();
-    injectHotkeysSection();
+    syncAvailableShortcuts();
+    injectShortcutsSection();
   });
 
   observer.observe(instructionsTab, {

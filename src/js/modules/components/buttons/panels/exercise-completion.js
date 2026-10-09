@@ -5,12 +5,12 @@
 
 // Import components
 import { icons } from "../../icons.js";
-import { injectHotkeysSection } from "../../hotkeys-menu.js";
+import { injectShortcutsSection } from "../../shortcuts-menu.js";
 
 // Import utils
 import { setButtonProperties } from "../../../utils/dom/buttons.js";
 import { watchExerciseCompletionToggleBtn } from "../../../utils/watch/buttons/exercise-completion-toggle.js";
-import { syncAvailableHotkeys } from "../../../utils/sync/available-hotkeys.js";
+import { syncAvailableShortcuts } from "../../../utils/sync/available-shortcuts.js";
 
 /**
  * Updates the exercise completion button styles and icons.
@@ -24,8 +24,8 @@ export function updateExerciseCompletionButton() {
 
   watchExerciseCompletionToggleBtn((form) => {
     handleNewExerciseCompletionForm(form);
-    syncAvailableHotkeys();
-    injectHotkeysSection();
+    syncAvailableShortcuts();
+    injectShortcutsSection();
   });
 }
 

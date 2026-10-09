@@ -1,6 +1,6 @@
 /**
- * SYNC AVAILABLE HOTKEYS
- * @module utils/sync/available-hotkeys
+ * SYNC AVAILABLE SHORTCUTS
+ * @module utils/sync/available-shortcuts
  */
 
 // Import utils
@@ -16,63 +16,63 @@ import {
   toggleTocMenu,
 } from "../helpers/toggle.js";
 import { elements } from "../state/dom.js";
-import { hotkeys } from "../state/hotkeys.js";
-import { setAvailableHotkey } from "../state/setters/hotkeys.js";
-import { syncHotkeyTooltips } from "./hotkey-tooltips.js";
+import { shortcuts } from "../state/shortcuts.js";
+import { setAvailableShortcut } from "../state/setters/shortcuts.js";
+import { syncShortcutTooltips } from "./shortcut-tooltips.js";
 
 /**
- * Syncs the hotkeys available on the current page.
+ * Syncs the shortcuts available on the current page.
  */
-export function syncAvailableHotkeys() {
-  // Clear any previous hotkeys when syncing.
-  hotkeys.enterOnly = {};
-  hotkeys.cmdOnly = {};
-  hotkeys.cmdShift = {};
-  hotkeys.cmdCtrl = {};
+export function syncAvailableShortcuts() {
+  // Clear any previous shortcuts when syncing.
+  shortcuts.enterOnly = {};
+  shortcuts.cmdOnly = {};
+  shortcuts.cmdShift = {};
+  shortcuts.cmdCtrl = {};
 
-  // Sync current hotkeys.
-  syncEnterOnlyHotkey();
-  syncCmdOnlyHotkeys();
-  syncCmdShiftHotkeys();
-  syncCmdCtrlHotkeys();
-  syncHotkeyTooltips();
+  // Sync current shortcuts.
+  syncEnterOnlyShortcut();
+  syncCmdOnlyShortcuts();
+  syncCmdShiftShortcuts();
+  syncCmdCtrlShortcuts();
+  syncShortcutTooltips();
 }
 
 /**
- * SYNC ENTER ONLY HOTKEY
+ * SYNC ENTER ONLY SHORTCUT
  */
-function syncEnterOnlyHotkey() {
+function syncEnterOnlyShortcut() {
   const chatInputs = document.querySelectorAll(".lsbot-question-input, .lsbot-question-box-answer-input");
   const submitButtons = [...document.querySelectorAll(".lsbot-submit-btn, .lsbot-question-box-send-answer-button")];
   if (chatInputs.length < 1 || submitButtons.length < 1) return;
-  setAvailableHotkey("enterOnly", "Enter", "Enter", "Submit focused chat prompt", null, submitButtons);
+  setAvailableShortcut("enterOnly", "Enter", "Enter", "Submit focused chat prompt", null, submitButtons);
 }
 
 /**
- * SYNC CMD ONLY HOTKEYS
+ * SYNC CMD ONLY SHORTCUTS
  */
-function syncCmdOnlyHotkeys() {
+function syncCmdOnlyShortcuts() {
   if (elements.native.sidebar)
-    setAvailableHotkey("cmdOnly", "KeyB", "B", "Toggle Sidebar Visibility", toggleSidebar, [
+    setAvailableShortcut("cmdOnly", "KeyB", "B", "Toggle Sidebar Visibility", toggleSidebar, [
       elements.injected.sidebarToggleButton,
     ]);
 }
 
 /**
- * SYNC CMD + SHIFT HOTKEYS
+ * SYNC CMD + SHIFT SHORTCUTS
  */
-function syncCmdShiftHotkeys() {
-  if (elements.injected.header) setAvailableHotkey("cmdShift", "Digit1", 1, "Toggle Header Visibility", toggleHeader);
+function syncCmdShiftShortcuts() {
+  if (elements.injected.header) setAvailableShortcut("cmdShift", "Digit1", 1, "Toggle Header Visibility", toggleHeader);
   if (elements.native.tabsPanel)
-    setAvailableHotkey("cmdShift", "Digit2", 2, "Toggle Tabs Panel Visibility", toggleTabsPanel, [
+    setAvailableShortcut("cmdShift", "Digit2", 2, "Toggle Tabs Panel Visibility", toggleTabsPanel, [
       elements.injected.tabsPanelToggleButton,
     ]);
 }
 
 /**
- * SYNC CMD + CTRL HOTKEYS
+ * SYNC CMD + CTRL SHORTCUTS
  */
-function syncCmdCtrlHotkeys() {
+function syncCmdCtrlShortcuts() {
   const editorExists = elements.native.editorPanel;
   const copyCodeBtnExists = document.querySelector(".btn-copy-code");
   const exerciseCompletionBtnExists = document.querySelector(
@@ -80,7 +80,7 @@ function syncCmdCtrlHotkeys() {
   );
   const submitReviewBtnExists = document.querySelector("#lsbot-send-review, #btn-book-lsbot-review");
 
-  const handleCopyCodeHotkey = () => {
+  const handleCopyCodeShortcut = () => {
     const triggerCopyBtn = () => {
       const copyBtn = document.querySelector(".btn-copy-code");
 
@@ -103,10 +103,10 @@ function syncCmdCtrlHotkeys() {
     if (elements.native.scratchpad) label = "Copy Scratchpad Code";
     else label = "Copy Editor Code";
 
-    setAvailableHotkey("cmdCtrl", "KeyC", "C", label, triggerCopyBtn, [copyCodeBtnExists]);
+    setAvailableShortcut("cmdCtrl", "KeyC", "C", label, triggerCopyBtn, [copyCodeBtnExists]);
   };
 
-  const handleEditorHotkey = (modifier) => {
+  const handleEditorShortcut = (modifier) => {
     const editorPanel = elements.native.editorPanel;
     let focusEl;
     let label;
@@ -130,15 +130,15 @@ function syncCmdCtrlHotkeys() {
     }
 
     const scratchpadButton = editorExists ? null : document.querySelector(".tab-button[data-tab='code-editor']");
-    setAvailableHotkey(modifier, "KeyE", "E", label, focusEl, [scratchpadButton]);
+    setAvailableShortcut(modifier, "KeyE", "E", label, focusEl, [scratchpadButton]);
   };
 
-  const handleNextExerciseHotkey = () => {
+  const handleNextExerciseShortcut = () => {
     showToast("Going to next exercise");
     elements.native.nextExerciseButton.click();
   };
 
-  const handleSubmitReviewHotkey = () => {
+  const handleSubmitReviewShortcut = () => {
     const reviewTabBtn = document.querySelector(".tab-button[data-tab='submit-review']");
     const pageUrl = `${location.origin}${location.pathname}${location.search}`;
 
@@ -157,8 +157,8 @@ function syncCmdCtrlHotkeys() {
     }, 100);
   };
 
-  const handleTabsHotkeys = () => {
-    // Set hotkeys for each tab #
+  const handleTabsShortcuts = () => {
+    // Set shortcuts for each tab #
     const allTabBtns = document.querySelectorAll(".tab-button");
     const tabs = [];
 
@@ -178,29 +178,29 @@ function syncCmdCtrlHotkeys() {
       const eventCode = `Digit${key}`;
       const triggerTab = () => activateTab(btnEl);
 
-      setAvailableHotkey("cmdCtrl", eventCode, key, btnLabel, triggerTab, [btnEl]);
+      setAvailableShortcut("cmdCtrl", eventCode, key, btnLabel, triggerTab, [btnEl]);
     });
   };
 
-  if (elements.native.tabNav) handleTabsHotkeys();
-  if (copyCodeBtnExists) handleCopyCodeHotkey();
-  if (editorExists || elements.native.scratchpad) handleEditorHotkey("cmdCtrl");
+  if (elements.native.tabNav) handleTabsShortcuts();
+  if (copyCodeBtnExists) handleCopyCodeShortcut();
+  if (editorExists || elements.native.scratchpad) handleEditorShortcut("cmdCtrl");
   if (exerciseCompletionBtnExists)
-    setAvailableHotkey("cmdCtrl", "KeyM", "M", "Toggle Exercise Completion Status", toggleExerciseCompletionStatus, [
+    setAvailableShortcut("cmdCtrl", "KeyM", "M", "Toggle Exercise Completion Status", toggleExerciseCompletionStatus, [
       exerciseCompletionBtnExists,
     ]);
   if (elements.native.nextExerciseButton)
-    setAvailableHotkey("cmdCtrl", "KeyN", "N", "Go to next exercise", handleNextExerciseHotkey, [
+    setAvailableShortcut("cmdCtrl", "KeyN", "N", "Go to next exercise", handleNextExerciseShortcut, [
       elements.native.nextExerciseButton,
     ]);
   if (submitReviewBtnExists)
-    setAvailableHotkey("cmdCtrl", "KeyR", "R", "Submit Review", handleSubmitReviewHotkey, [submitReviewBtnExists]);
+    setAvailableShortcut("cmdCtrl", "KeyR", "R", "Submit Review", handleSubmitReviewShortcut, [submitReviewBtnExists]);
   if (elements.native.tocButton)
-    setAvailableHotkey("cmdCtrl", "KeyT", "T", "Toggle Table of Content Visibility", toggleTocMenu, [
+    setAvailableShortcut("cmdCtrl", "KeyT", "T", "Toggle Table of Content Visibility", toggleTocMenu, [
       elements.native.tocButton,
     ]);
   if (elements.injected.settingsMenu)
-    setAvailableHotkey("cmdCtrl", "Comma", ",", "Toggle Settings Visibility", toggleSettings, [
+    setAvailableShortcut("cmdCtrl", "Comma", ",", "Toggle Settings Visibility", toggleSettings, [
       elements.injected.settingsToggleButton,
     ]);
 }

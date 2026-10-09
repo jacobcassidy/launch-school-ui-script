@@ -16,11 +16,11 @@ Reviewed runtime initialization, navigation and cache restoration, components, s
 
 ### 1. P2 — Review shortcut assumes a review tab always exists
 
-**Location:** [available-hotkeys.js](../../src/js/modules/utils/sync/available-hotkeys.js), `handleSubmitReviewHotkey`, and [activate.js](../../src/js/modules/utils/helpers/activate.js), `activateTab`.
+**Location:** [available-shortcuts.js](../../src/js/modules/utils/sync/available-shortcuts.js), `handleSubmitReviewShortcut`, and [activate.js](../../src/js/modules/utils/helpers/activate.js), `activateTab`.
 
 Registration requires a review submit button, but execution unconditionally passes `.tab-button[data-tab='submit-review']` to `activateTab`. If that tab is missing, the action throws before submitting. Both `#lsbot-send-review` and `#btn-book-lsbot-review` are registered through this path.
 
-**Reproduction:** Supply a `#btn-book-lsbot-review` button without a `submit-review` tab, sync the hotkeys, and call the registered review action. It throws `Cannot read properties of null (reading 'dispatchEvent')`.
+**Reproduction:** Supply a `#btn-book-lsbot-review` button without a `submit-review` tab, sync the shortcuts, and call the registered review action. It throws `Cannot read properties of null (reading 'dispatchEvent')`.
 
 The action also retains its submit button across a 100 ms delay and announces success before the click. Replacement, navigation, or a disabled button during that interval can produce a misleading success message.
 
@@ -28,11 +28,11 @@ The action also retains its submit button across a 100 ms delay and announces su
 
 ### 2. P2 — Asynchronously added controls do not refresh shortcut labels
 
-**Location:** [available-hotkeys.js](../../src/js/modules/utils/sync/available-hotkeys.js), [prompt-focus.js](../../src/js/modules/utils/watch/events/prompt-focus.js), and [tab.js](../../src/js/modules/utils/watch/buttons/tab.js).
+**Location:** [available-shortcuts.js](../../src/js/modules/utils/sync/available-shortcuts.js), [prompt-focus.js](../../src/js/modules/utils/watch/events/prompt-focus.js), and [tab.js](../../src/js/modules/utils/watch/buttons/tab.js).
 
 Shortcut listings and button tooltips are rebuilt during UI loading and selected mutations. The tab observer refreshes only when visible tab identities or their order change. Adding chat controls inside existing tab content does not refresh the registry. Delegated prompt focus still enables Enter submission, so the working shortcut and its displayed documentation diverge.
 
-**Reproduction:** Load a page with an LSBot tab and empty tab content. Insert a textarea and submit button into the existing tab. After mutations settle, Enter successfully submits, but `hotkeys.enterOnly.Enter` is absent, the button has no shortcut tooltip, and settings omit the shortcut.
+**Reproduction:** Load a page with an LSBot tab and empty tab content. Insert a textarea and submit button into the existing tab. After mutations settle, Enter successfully submits, but `shortcuts.enterOnly.Enter` is absent, the button has no shortcut tooltip, and settings omit the shortcut.
 
 **Resolution:** A filtered mutation observer coalesces registration and settings updates when relevant page controls are added, removed, or replaced. It ignores its own tooltip and settings updates. Integration tests cover asynchronous addition and removal.
 

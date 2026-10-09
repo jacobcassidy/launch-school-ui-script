@@ -23,7 +23,7 @@ export function watchQuestionBoxes() {
     if (lsbotTabBtn) handleFocus(lsbotTabBtn);
   };
 
-  const handleSubmitHotkey = (event) => {
+  const handleSubmitShortcut = (event) => {
     const boxTextarea = event.target;
     if (!boxTextarea.matches?.(".lsbot-question-box-answer-input") || document.activeElement !== boxTextarea) return;
     if (event.isComposing || event.keyCode === 229) return;
@@ -50,6 +50,6 @@ export function watchQuestionBoxes() {
       handleSubmitClick();
     });
 
-    box.addEventListener("keydown", handleSubmitHotkey);
+    box.addEventListener("keydown", handleSubmitShortcut);
   });
 }

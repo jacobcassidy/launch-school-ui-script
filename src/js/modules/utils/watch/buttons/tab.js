@@ -6,8 +6,8 @@
 // Import utils
 import { handleFocus } from "../../helpers/focus.js";
 import { updateTabButtons } from "../../../components/buttons/panels/tab.js";
-import { injectHotkeysSection } from "../../../components/hotkeys-menu.js";
-import { syncAvailableHotkeys } from "../../sync/available-hotkeys.js";
+import { injectShortcutsSection } from "../../../components/shortcuts-menu.js";
+import { syncAvailableShortcuts } from "../../sync/available-shortcuts.js";
 
 const watchedTabButtons = new WeakSet();
 const watchedTabNavigations = new WeakSet();
@@ -69,8 +69,8 @@ export function watchTabBtns() {
     if (!tabsChanged) return;
     visibleTabs = nextVisibleTabs;
     updateTabButtons();
-    syncAvailableHotkeys();
-    injectHotkeysSection();
+    syncAvailableShortcuts();
+    injectShortcutsSection();
     watchTabBtns();
   });
 

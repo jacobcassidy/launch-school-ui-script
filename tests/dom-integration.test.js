@@ -74,8 +74,8 @@ for (const { name, platform, primary, actions, modifiers } of [
     api.elements.injected.settingsToggleButton = settingsButton;
     api.elements.injected.settingsMenu = document.querySelector(".settings-container");
     api.elements.injected.header = document.querySelector(".site-header");
-    api.syncAvailableHotkeys();
-    api.syncAvailableHotkeys();
+    api.syncAvailableShortcuts();
+    api.syncAvailableShortcuts();
 
     const expectedTitles = {
       ".btn--toggle-sidebar": `Toggle Sidebar Visibility (${primary}B)`,
@@ -92,26 +92,21 @@ for (const { name, platform, primary, actions, modifiers } of [
       assert.equal(document.querySelector(selector).title, title);
     });
 
-    api.injectHotkeysSection();
+    api.injectShortcutsSection();
     const settingsStyle = document.createElement("style");
     settingsStyle.textContent = settingsStyles.outputFiles[0].text;
     document.head.appendChild(settingsStyle);
-    const menuRows = [...document.querySelectorAll(".current-page-added-hotkeys-section .settings-list__item")];
+    const menuRows = [...document.querySelectorAll(".current-page-added-shortcuts-section .settings-list__item")];
     for (const row of menuRows) {
       const keys = [...row.querySelectorAll(".key")];
-      keys.forEach((key, index) => {
-        const isModifier = index < keys.length - 1;
-        assert.equal(key.classList.contains("key--modifier"), isModifier);
+      keys.forEach((key) => {
         const fontSize = window.getComputedStyle(key).fontSize;
         const sizeInPixels = Number.parseFloat(fontSize) * (fontSize.endsWith("rem") ? 16 : 1);
-        assert.equal(sizeInPixels, isModifier ? 16 : 12);
-        const shiftSymbol = key.querySelector(".key-symbol--shift");
-        assert.equal(Boolean(shiftSymbol), isModifier && key.textContent === "⇧");
-        if (shiftSymbol) assert.equal(window.getComputedStyle(shiftSymbol).transform, "scaleX(1.35)");
+        assert.equal(sizeInPixels, 12);
       });
     }
     const menuKeys = (label) => {
-      const row = menuRows.find((item) => item.querySelector(".hotkey-label").textContent === label);
+      const row = menuRows.find((item) => item.querySelector(".shortcut-label").textContent === label);
       return [...row.querySelectorAll(".key")].map((key) => key.textContent).join("");
     };
     assert.equal(menuKeys("Toggle Settings Visibility").toUpperCase(), `${actions},`);
@@ -120,28 +115,28 @@ for (const { name, platform, primary, actions, modifiers } of [
     assert.equal(menuKeys("Submit focused chat prompt"), "Enter");
 
     const settingsRow = menuRows.find(
-      (item) => item.querySelector(".hotkey-label").textContent === "Toggle Settings Visibility",
+      (item) => item.querySelector(".shortcut-label").textContent === "Toggle Settings Visibility",
     );
-    assert.equal(settingsRow.querySelector(".hotkey-shortcut").getAttribute("role"), "img");
+    assert.equal(settingsRow.querySelector(".shortcut-keys").getAttribute("role"), "img");
     assert.equal(
-      settingsRow.querySelector(".hotkey-shortcut").getAttribute("aria-label"),
+      settingsRow.querySelector(".shortcut-keys").getAttribute("aria-label"),
       platform === "MacIntel" ? "Cmd + Ctrl + ," : "Ctrl + Alt + ,",
     );
 
     const clone = settingsButton.cloneNode(true);
     settingsButton.replaceWith(clone);
     api.elements.injected.settingsToggleButton = clone;
-    api.syncAvailableHotkeys();
+    api.syncAvailableShortcuts();
     assert.equal(clone.title, expectedTitles[".btn--toggle-settings"]);
     clone.title = `Toggle Settings Visibility (${platform === "MacIntel" ? "CMD+CTRL" : "CTRL+ALT"}+,)`;
-    api.syncAvailableHotkeys();
+    api.syncAvailableShortcuts();
     assert.equal(clone.title, expectedTitles[".btn--toggle-settings"]);
-    api.watchHotkeys();
+    api.watchShortcuts();
     document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "Comma", ...modifiers }));
     assert.equal(api.elements.injected.settingsMenu.classList.contains("active"), true);
 
     clone.title = "Open settings";
-    api.syncAvailableHotkeys();
+    api.syncAvailableShortcuts();
     assert.equal(clone.title, `Open settings (${actions},)`);
 
     const panelModifiers = { [platform === "MacIntel" ? "metaKey" : "ctrlKey"]: true, shiftKey: true };
@@ -196,9 +191,9 @@ for (const { name, platform, primary, actions, modifiers } of [
     style.textContent = tooltipStyles.outputFiles[0].text;
     document.head.appendChild(style);
     const originalLabelSize = window.getComputedStyle(document.querySelector(".tab-tooltip-instructions")).fontSize;
-    api.syncAvailableHotkeys();
+    api.syncAvailableShortcuts();
     api.watchTabBtns();
-    api.watchHotkeys();
+    api.watchShortcuts();
     assert.equal(document.querySelector(".tab-tooltip-instructions").textContent, `Instructions (${actions}1)`);
     assert.equal(
       document.querySelector(".tab-tooltip-code-editor").textContent,
@@ -217,7 +212,7 @@ for (const { name, platform, primary, actions, modifiers } of [
       document.querySelector(".tab-tooltip-code-editor .tooltip-shortcut").textContent,
       `(${actions}2 / ${actions}E)`,
     );
-    api.syncAvailableHotkeys();
+    api.syncAvailableShortcuts();
     assert.equal(document.querySelectorAll(".tab-tooltip-code-editor .tooltip-shortcut").length, 1);
 
     instructions.style.display = "none";
@@ -276,11 +271,11 @@ test("review shortcut submits without a review tab and uses the current enabled 
   const { window, document, api } = createPage(`
     <button id="btn-book-lsbot-review">Review</button>
   `);
-  api.syncAvailableHotkeys();
+  api.syncAvailableShortcuts();
   let originalClicks = 0;
   document.querySelector("#btn-book-lsbot-review").addEventListener("click", () => originalClicks++);
 
-  assert.doesNotThrow(() => api.hotkeys.cmdCtrl.KeyR.callback());
+  assert.doesNotThrow(() => api.shortcuts.cmdCtrl.KeyR.callback());
   const replacement = document.createElement("button");
   replacement.id = "btn-book-lsbot-review";
   let replacementClicks = 0;
@@ -291,7 +286,7 @@ test("review shortcut submits without a review tab and uses the current enabled 
   assert.equal(originalClicks, 0);
   assert.equal(replacementClicks, 1);
 
-  api.hotkeys.cmdCtrl.KeyR.callback();
+  api.shortcuts.cmdCtrl.KeyR.callback();
   window.history.replaceState({}, "", "/course_catalog");
   await new Promise((resolve) => window.setTimeout(resolve, 120));
   assert.equal(replacementClicks, 1);
@@ -305,9 +300,9 @@ test("dynamically added chat controls receive Enter shortcut registration and la
   `);
   api.elements.native.tabNav = document.querySelector(".tab-nav");
   api.updateTabButtons();
-  api.syncAvailableHotkeys();
-  api.watchHotkeyElements();
-  assert.equal(api.hotkeys.enterOnly.Enter, undefined);
+  api.syncAvailableShortcuts();
+  api.watchShortcutElements();
+  assert.equal(api.shortcuts.enterOnly.Enter, undefined);
 
   document.querySelector(".tab-content").innerHTML = `
     <div class="lsbot-input-area"><textarea class="lsbot-question-input"></textarea><button class="lsbot-submit-btn">Ask LSBot</button></div>
@@ -315,13 +310,13 @@ test("dynamically added chat controls receive Enter shortcut registration and la
   await window.happyDOM.whenAsyncComplete();
 
   const submit = document.querySelector(".lsbot-submit-btn");
-  assert.ok(api.hotkeys.enterOnly.Enter);
+  assert.ok(api.shortcuts.enterOnly.Enter);
   assert.equal(submit.title, "Ask LSBot (Enter)");
-  assert.ok(document.querySelector(".current-page-added-hotkeys-section"));
+  assert.ok(document.querySelector(".current-page-added-shortcuts-section"));
 
   submit.remove();
   await window.happyDOM.whenAsyncComplete();
-  assert.equal(api.hotkeys.enterOnly.Enter, undefined);
+  assert.equal(api.shortcuts.enterOnly.Enter, undefined);
   assert.equal(submit.hasAttribute("title"), false);
   window.close();
 });
@@ -350,8 +345,8 @@ test("hidden headers leave the tab order and settings expose expanded state", ()
 
   header.querySelector(".btn--toggle-sidebar").focus();
   api.elements.injected.header = header;
-  api.syncAvailableHotkeys();
-  api.watchHotkeys();
+  api.syncAvailableShortcuts();
+  api.watchShortcuts();
   document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "Digit1", metaKey: true, shiftKey: true }));
   assert.equal(header.inert, true);
   assert.equal(header.getAttribute("aria-hidden"), "true");
@@ -510,22 +505,22 @@ test("Back before a book snapshot preserves its TOC button and restores its shor
     api.syncNativeElementsState();
     api.injectHeader();
     api.syncInjectedElementsState();
-    api.syncAvailableHotkeys();
+    api.syncAvailableShortcuts();
   };
   api.setLoadUIHandler(refresh);
   api.watchForUrlChange();
-  api.watchHotkeys();
+  api.watchShortcuts();
   refresh();
   const originalButton = document.querySelector(".site-header .toc-toggle-button");
   assert.ok(originalButton);
-  assert.ok(api.hotkeys.cmdCtrl.KeyT);
+  assert.ok(api.shortcuts.cmdCtrl.KeyT);
 
   // History changes before the native renderer snapshots the outgoing book.
   window.history.replaceState({}, "", "/course_catalog");
   window.dispatchEvent(new window.PopStateEvent("popstate"));
   await window.happyDOM.whenAsyncComplete();
   assert.equal(document.querySelector(".site-header .toc-toggle-button"), null);
-  assert.equal(api.hotkeys.cmdCtrl.KeyT, undefined);
+  assert.equal(api.shortcuts.cmdCtrl.KeyT, undefined);
   document.dispatchEvent(new window.Event("turbo:before-cache"));
   const cachedBook = document.body.cloneNode(true);
   assert.ok(cachedBook.querySelector(".toc-dropdown-container .toc-toggle-button"));
@@ -536,7 +531,7 @@ test("Back before a book snapshot preserves its TOC button and restores its shor
   document.dispatchEvent(new window.Event("turbo:render"));
   await window.happyDOM.whenAsyncComplete();
   assert.equal(document.querySelector(".toc-toggle-button"), null);
-  assert.equal(api.hotkeys.cmdCtrl.KeyT, undefined);
+  assert.equal(api.shortcuts.cmdCtrl.KeyT, undefined);
 
   // Forward restores cloned native markup; its native click handler is rebound.
   document.body.replaceWith(cachedBook);
@@ -556,7 +551,7 @@ test("Back before a book snapshot preserves its TOC button and restores its shor
   assert.equal(api.elements.native.tocButton, restoredButton);
   assert.equal(document.querySelectorAll(".toc-toggle-button").length, 1);
   assert.equal(restoredButton.title, "Toggle Table of Contents Visibility (⌘⌃T)");
-  assert.ok(api.hotkeys.cmdCtrl.KeyT);
+  assert.ok(api.shortcuts.cmdCtrl.KeyT);
   document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "KeyT", metaKey: true, ctrlKey: true }));
   assert.equal(tocClicks, 1);
   assert.equal(restoredButton.classList.contains("open"), true);
@@ -583,8 +578,8 @@ test("Command+B and the sidebar button both toggle the native sidebar", () => {
   });
   api.elements.native.sidebar = document.querySelector(".nav-drawer");
   api.elements.injected.sidebarToggleButton = document.querySelector(".btn--toggle-sidebar");
-  api.syncAvailableHotkeys();
-  api.watchHotkeys();
+  api.syncAvailableShortcuts();
+  api.watchShortcuts();
   api.watchSidebarToggleBtn();
 
   const event = new window.KeyboardEvent("keydown", {

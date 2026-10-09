@@ -1,17 +1,17 @@
 /**
- * HOTKEY TOOLTIPS
- * @module utils/sync/hotkey-tooltips
+ * SHORTCUT TOOLTIPS
+ * @module utils/sync/shortcut-tooltips
  */
 
-import { hotkeys } from "../state/hotkeys.js";
-import { getHotkeyKeys } from "../helpers/hotkeys.js";
+import { shortcuts } from "../state/shortcuts.js";
+import { getShortcutKeys } from "../helpers/shortcuts.js";
 
 const previousTooltips = new Map();
 
 /**
  * Shows currently registered shortcuts while preserving buttons' aria-labels.
  */
-export function syncHotkeyTooltips() {
+export function syncShortcutTooltips() {
   // Restore only text we added, preserving any native label changes.
   previousTooltips.forEach(({ tooltip, originalTitle, label, text }, button) => {
     if (tooltip) {
@@ -24,9 +24,9 @@ export function syncHotkeyTooltips() {
   previousTooltips.clear();
 
   const buttonShortcuts = new Map();
-  for (const [modifier, shortcuts] of Object.entries(hotkeys)) {
-    for (const { symbol, label, buttons = [] } of Object.values(shortcuts)) {
-      const keys = getHotkeyKeys(modifier, symbol);
+  for (const [modifier, modifierShortcuts] of Object.entries(shortcuts)) {
+    for (const { symbol, label, buttons = [] } of Object.values(modifierShortcuts)) {
+      const keys = getShortcutKeys(modifier, symbol);
       const shortcut = modifier === "enterOnly" ? keys.join("") : keys.join("").toUpperCase();
       buttons.forEach((button) => {
         if (!button) return;

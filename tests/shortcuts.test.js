@@ -2,17 +2,17 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { sourceContext } from "./source-context.js";
 
-function fixture(hotkeys = { cmdOnly: {}, cmdShift: {}, cmdCtrl: {} }, platform = "MacIntel") {
+function fixture(shortcuts = { cmdOnly: {}, cmdShift: {}, cmdCtrl: {} }, platform = "MacIntel") {
   const listeners = {};
   const windowListeners = {};
   const activated = [];
   const toasts = [];
-  const platformHelpers = sourceContext("../src/js/modules/utils/helpers/hotkeys.js", {
+  const platformHelpers = sourceContext("../src/js/modules/utils/helpers/shortcuts.js", {
     navigator: { platform },
   });
-  const context = sourceContext("../src/js/modules/utils/watch/events/hotkeys.js", {
-    hotkeys,
-    getHotkeyModifier: platformHelpers.getHotkeyModifier,
+  const context = sourceContext("../src/js/modules/utils/watch/events/shortcuts.js", {
+    shortcuts,
+    getShortcutModifier: platformHelpers.getShortcutModifier,
     window: {
       addEventListener: (event, callback) => {
         windowListeners[event] = callback;
@@ -24,10 +24,10 @@ function fixture(hotkeys = { cmdOnly: {}, cmdShift: {}, cmdCtrl: {} }, platform 
         listeners[event] = callback;
       },
     },
-    activateHotkey: (modifier, code) => activated.push([modifier, code]),
+    activateShortcut: (modifier, code) => activated.push([modifier, code]),
     showToast: (text) => toasts.push(text),
   });
-  context.watchHotkeys();
+  context.watchShortcuts();
   return {
     send: (event) =>
       listeners.keydown({ preventDefault() {}, stopPropagation() {}, stopImmediatePropagation() {}, ...event }),

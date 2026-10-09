@@ -4,7 +4,7 @@
     "davidanson.vscode-markdownlint", // Markdown linting
     "dbaeumer.vscode-eslint", // ESLint for JS/TS linting
     "esbenp.prettier-vscode", // Prettier for code formatting
-    "fabiospampinato.vscode-browser-refresh", // Browser refresh in VSCode with hotkey
+    "fabiospampinato.vscode-browser-refresh", // Browser refresh in VSCode with shortcut
     "jacobcassidy.cassidy-dark", // VSCode theme
     "naumovs.color-highlight", // Highlight colors in code
     "pflannery.vscode-versionlens", // Version Lens for package.json

@@ -23,7 +23,7 @@ export * from "./buttons/panels/work-in-editor.js";
 
 // Parts
 export * from "./header.js";
-export * from "./hotkeys-menu.js";
+export * from "./shortcuts-menu.js";
 export * from "./icons.js";
 export * from "./settings-menu.js";
 export * from "./sidebar.js";

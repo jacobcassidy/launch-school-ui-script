@@ -15,7 +15,7 @@ function createTooltip() {
   };
 }
 
-test("reloading hotkeys replaces the section with current entries", () => {
+test("reloading shortcuts replaces the section with current entries", () => {
   const sections = [];
   const menu = {
     querySelectorAll: () => [...sections],
@@ -23,10 +23,10 @@ test("reloading hotkeys replaces the section with current entries", () => {
       sections.push(section);
     },
   };
-  const hotkeys = {};
-  const context = sourceContext("../src/js/modules/components/hotkeys-menu.js", {
+  const shortcuts = {};
+  const context = sourceContext("../src/js/modules/components/shortcuts-menu.js", {
     document: { querySelector: () => menu },
-    hotkeys,
+    shortcuts,
     createNewSettingsSection() {
       const section = {
         querySelector: () => ({}),
@@ -37,9 +37,9 @@ test("reloading hotkeys replaces the section with current entries", () => {
       return section;
     },
   });
-  context.injectHotkeysSection();
+  context.injectShortcutsSection();
   const first = sections[0];
-  context.injectHotkeysSection();
+  context.injectShortcutsSection();
   assert.equal(sections.length, 1);
   assert.notEqual(sections[0], first);
 });
