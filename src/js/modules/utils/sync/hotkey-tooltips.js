@@ -47,11 +47,13 @@ export function syncHotkeyTooltips() {
     const shortcutText = `(${[...shortcuts].join(" / ")})`;
     const text = `${label} ${shortcutText}`;
     if (tooltip) {
+      const labelEl = document.createElement("span");
+      labelEl.className = "tooltip-label";
+      labelEl.textContent = `${label} `;
       const shortcutEl = document.createElement("span");
       shortcutEl.className = "tooltip-shortcut";
       shortcutEl.textContent = shortcutText;
-      tooltip.textContent = `${label} `;
-      tooltip.appendChild(shortcutEl);
+      tooltip.replaceChildren(labelEl, shortcutEl);
     } else button.setAttribute("title", text);
     previousTooltips.set(button, { tooltip, originalTitle, label, text });
   });

@@ -11,6 +11,11 @@ const bundle = await esbuild.build({
   loader: { ".svg": "text" },
 });
 const integrationScript = bundle.outputFiles[0].text;
+const tooltipStyles = await esbuild.build({
+  entryPoints: ["src/css/components/tooltips.css"],
+  write: false,
+  target: "chrome100",
+});
 
 function createPage(markup = "", platform = "MacIntel") {
   const window = new Window({ url: "https://launchschool.com/courses/test" });
@@ -166,6 +171,10 @@ for (const { name, platform, primary, actions, modifiers } of [
     api.elements.native.tabNav = navigation;
     api.elements.native.scratchpad = document.querySelector("#tab-code-editor");
     api.updateTabButtons();
+    const style = document.createElement("style");
+    style.textContent = tooltipStyles.outputFiles[0].text;
+    document.head.appendChild(style);
+    const originalLabelSize = window.getComputedStyle(document.querySelector(".tab-tooltip-instructions")).fontSize;
     api.syncAvailableHotkeys();
     api.watchTabBtns();
     api.watchHotkeys();
@@ -175,6 +184,14 @@ for (const { name, platform, primary, actions, modifiers } of [
       `Scratchpad (${actions}2 / ${actions}E)`,
     );
     assert.equal(document.querySelector(".tab-tooltip-instructions .tooltip-shortcut").textContent, `(${actions}1)`);
+    const label = document.querySelector(".tab-tooltip-instructions .tooltip-label");
+    const shortcut = document.querySelector(".tab-tooltip-instructions .tooltip-shortcut");
+    assert.equal(label.textContent.trim(), "Instructions");
+    assert.equal(window.getComputedStyle(label).fontSize, originalLabelSize);
+    assert.equal(window.getComputedStyle(label).fontSize, "16px");
+    assert.equal(window.getComputedStyle(shortcut).fontSize, "12px");
+    assert.equal(window.getComputedStyle(shortcut).opacity, "0.8");
+    assert.notEqual(window.getComputedStyle(label).opacity, "0.8");
     assert.equal(
       document.querySelector(".tab-tooltip-code-editor .tooltip-shortcut").textContent,
       `(${actions}2 / ${actions}E)`,
