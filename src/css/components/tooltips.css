@@ -33,7 +33,12 @@
 }
 
 .tab-tooltip {
+  column-gap: 4px;
   padding: 6px 8px;
+
+  .tooltip-shortcut {
+    font-size: 0.75rem;
+  }
 }
 
 .sidebar-tooltip {

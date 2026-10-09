@@ -44,9 +44,15 @@ export function syncHotkeyTooltips() {
     const originalTitle =
       button.getAttribute("title")?.replace(/ \((?:(?:CMD|CTRL)\+[^)]*|[⌘⌃⇧⎇][^)]*|Enter)\)$/, "") ?? null;
     const label = originalTitle || button.getAttribute("aria-label") || button.textContent.trim() || fallbackLabel;
-    const text = `${label} (${[...shortcuts].join(" / ")})`;
-    if (tooltip) tooltip.textContent = text;
-    else button.setAttribute("title", text);
+    const shortcutText = `(${[...shortcuts].join(" / ")})`;
+    const text = `${label} ${shortcutText}`;
+    if (tooltip) {
+      const shortcutEl = document.createElement("span");
+      shortcutEl.className = "tooltip-shortcut";
+      shortcutEl.textContent = shortcutText;
+      tooltip.textContent = `${label} `;
+      tooltip.appendChild(shortcutEl);
+    } else button.setAttribute("title", text);
     previousTooltips.set(button, { tooltip, originalTitle, label, text });
   });
 }

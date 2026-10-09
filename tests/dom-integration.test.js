@@ -174,6 +174,13 @@ for (const { name, platform, primary, actions, modifiers } of [
       document.querySelector(".tab-tooltip-code-editor").textContent,
       `Scratchpad (${actions}2 / ${actions}E)`,
     );
+    assert.equal(document.querySelector(".tab-tooltip-instructions .tooltip-shortcut").textContent, `(${actions}1)`);
+    assert.equal(
+      document.querySelector(".tab-tooltip-code-editor .tooltip-shortcut").textContent,
+      `(${actions}2 / ${actions}E)`,
+    );
+    api.syncAvailableHotkeys();
+    assert.equal(document.querySelectorAll(".tab-tooltip-code-editor .tooltip-shortcut").length, 1);
 
     instructions.style.display = "none";
     feedback.style.display = "flex";
@@ -184,6 +191,7 @@ for (const { name, platform, primary, actions, modifiers } of [
     );
     assert.equal(document.querySelector(".tab-tooltip-feedback").textContent, `Give Feedback (${actions}2)`);
     assert.equal(document.querySelector(".tab-tooltip-instructions").textContent, "Instructions");
+    assert.equal(document.querySelector(".tab-tooltip-instructions .tooltip-shortcut"), null);
 
     navigation.prepend(feedback);
     await window.happyDOM.whenAsyncComplete();
