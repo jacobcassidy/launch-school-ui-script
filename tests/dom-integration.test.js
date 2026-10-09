@@ -207,7 +207,7 @@ for (const { name, platform, primary, actions, modifiers } of [
     assert.equal(document.querySelector(".tab-tooltip-instructions").textContent, `Instructions (${actions}1)`);
     assert.equal(
       document.querySelector(".tab-tooltip-code-editor").textContent,
-      `Scratchpad (${actions}2 / ${actions}E)`,
+      `Scratchpad (${actions}2 or ${actions}E)`,
     );
     assert.equal(document.querySelector(".tab-tooltip-instructions .tooltip-shortcut").textContent, `(${actions}1)`);
     const label = document.querySelector(".tab-tooltip-instructions .tooltip-label");
@@ -220,7 +220,7 @@ for (const { name, platform, primary, actions, modifiers } of [
     assert.notEqual(window.getComputedStyle(label).opacity, "0.8");
     assert.equal(
       document.querySelector(".tab-tooltip-code-editor .tooltip-shortcut").textContent,
-      `(${actions}2 / ${actions}E)`,
+      `(${actions}2 or ${actions}E)`,
     );
     api.syncAvailableShortcuts();
     assert.equal(document.querySelectorAll(".tab-tooltip-code-editor .tooltip-shortcut").length, 1);
@@ -230,7 +230,7 @@ for (const { name, platform, primary, actions, modifiers } of [
     await window.happyDOM.whenAsyncComplete();
     assert.equal(
       document.querySelector(".tab-tooltip-code-editor").textContent,
-      `Scratchpad (${actions}1 / ${actions}E)`,
+      `Scratchpad (${actions}1 or ${actions}E)`,
     );
     assert.equal(document.querySelector(".tab-tooltip-feedback").textContent, `Give Feedback (${actions}2)`);
     assert.equal(document.querySelector(".tab-tooltip-instructions").textContent, "Instructions");
@@ -241,7 +241,7 @@ for (const { name, platform, primary, actions, modifiers } of [
     assert.equal(document.querySelector(".tab-tooltip-feedback").textContent, `Give Feedback (${actions}1)`);
     assert.equal(
       document.querySelector(".tab-tooltip-code-editor").textContent,
-      `Scratchpad (${actions}2 / ${actions}E)`,
+      `Scratchpad (${actions}2 or ${actions}E)`,
     );
     assert.equal(scratchpad.getAttribute("aria-label"), "Scratchpad");
     assert.equal(feedback.getAttribute("aria-label"), "Give Feedback");

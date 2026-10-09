@@ -44,7 +44,7 @@ export function syncShortcutTooltips() {
     const originalTitle =
       button.getAttribute("title")?.replace(/ \((?:(?:CMD|CTRL)\+[^)]*|[⌘⌃⇧⎇][^)]*|Enter)\)$/, "") ?? null;
     const label = originalTitle || button.getAttribute("aria-label") || button.textContent.trim() || fallbackLabel;
-    const shortcutText = `(${[...shortcuts].join(" / ")})`;
+    const shortcutText = `(${[...shortcuts].join(" or ")})`;
     const text = `${label} ${shortcutText}`;
     if (tooltip) {
       const labelEl = document.createElement("span");
