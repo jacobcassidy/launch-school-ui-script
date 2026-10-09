@@ -16,6 +16,11 @@ const tooltipStyles = await esbuild.build({
   write: false,
   target: "chrome100",
 });
+const settingsStyles = await esbuild.build({
+  entryPoints: ["src/css/components/settings.css"],
+  write: false,
+  target: "chrome100",
+});
 
 function createPage(markup = "", platform = "MacIntel") {
   const window = new Window({ url: "https://launchschool.com/courses/test" });
@@ -88,7 +93,23 @@ for (const { name, platform, primary, actions, modifiers } of [
     });
 
     api.injectHotkeysSection();
+    const settingsStyle = document.createElement("style");
+    settingsStyle.textContent = settingsStyles.outputFiles[0].text;
+    document.head.appendChild(settingsStyle);
     const menuRows = [...document.querySelectorAll(".current-page-added-hotkeys-section .settings-list__item")];
+    for (const row of menuRows) {
+      const keys = [...row.querySelectorAll(".key")];
+      keys.forEach((key, index) => {
+        const isModifier = index < keys.length - 1;
+        assert.equal(key.classList.contains("key--modifier"), isModifier);
+        const fontSize = window.getComputedStyle(key).fontSize;
+        const sizeInPixels = Number.parseFloat(fontSize) * (fontSize.endsWith("rem") ? 16 : 1);
+        assert.equal(sizeInPixels, isModifier ? 16 : 12);
+        const shiftSymbol = key.querySelector(".key-symbol--shift");
+        assert.equal(Boolean(shiftSymbol), isModifier && key.textContent === "⇧");
+        if (shiftSymbol) assert.equal(window.getComputedStyle(shiftSymbol).transform, "scaleX(1.35)");
+      });
+    }
     const menuKeys = (label) => {
       const row = menuRows.find((item) => item.querySelector(".hotkey-label").textContent === label);
       return [...row.querySelectorAll(".key")].map((key) => key.textContent).join("");
