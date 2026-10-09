@@ -42,21 +42,13 @@ function createShortcutsSection() {
       const keys = getShortcutKeys(modifierListKey, shortcutObj.symbol);
       const keyNames = getShortcutKeys(modifierListKey, shortcutObj.symbol, { symbols: false });
       shortcutItemKeyEl.setAttribute("role", "img");
-      shortcutItemKeyEl.setAttribute("aria-label", keyNames.join(" + "));
+      shortcutItemKeyEl.setAttribute("aria-label", keyNames.join(" "));
 
-      keys.forEach((key, index) => {
+      keys.forEach((key) => {
         const keySpan = document.createElement("span");
         keySpan.className = "key";
         keySpan.innerText = key;
         shortcutItemKeyEl.appendChild(keySpan);
-
-        // Add a `+` symbol after each key, except the last key.
-        const isLast = index === keys.length - 1;
-        if (isLast) return;
-        const plusSpan = document.createElement("span");
-        plusSpan.className = "plus";
-        plusSpan.innerText = "+";
-        shortcutItemKeyEl.appendChild(plusSpan);
       });
 
       shortcutItemEl.appendChild(shortcutItemKeyEl);

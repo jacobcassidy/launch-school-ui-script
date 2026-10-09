@@ -34,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed sidebar settings throwing errors when no sidebar exists.
 - Fixed stale next-exercise state after navigating away from an exercise.
 - Fixed sidebar toggling using stale collapsed state after navigation.
-- Fixed tab shortcuts beyond the fifth tab and prevented Cmd+B from being intercepted without a sidebar.
+- Fixed tab shortcuts beyond the fifth tab and prevented Cmd B from being intercepted without a sidebar.
 - Fixed the Enter shortcut listing for question-box answer inputs.
 - Fixed unread sidebar badges becoming stale or disappearing when counts load later.
 - Fixed LSBot response handling stealing focus from another control.
@@ -240,17 +240,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added a container that displays the current page's shortcuts in the Settings Menu.
   - Added shortcuts:
 
-    | Shortcut          | Function                                                                   |
-    | ----------------- | -------------------------------------------------------------------------- |
-    | `CMD + SHIFT + 1` | Toggle Header visibility                                                   |
-    | `CMD + SHIFT + 2` | Toggle Tabs Panel visibility _(only active on pages with a Tabs Panel)_    |
-    | `CMD + SHIFT + E` | Focus Editor/Scratchpad                                                    |
-    | `CMD + CTRL + #`  | Select tab by number order (such as 1 for the "Ask LSBot" tab)             |
-    | `CMD + CTRL + B`  | Toggle Sidebar visibility                                                  |
-    | `CMD + CTRL + C`  | Copy Editor/Scratchpad Code                                                |
-    | `CMD + CTRL + E`  | Focus Editor/Scratchpad                                                    |
-    | `CMD + CTRL + M`  | Toggle the "Mark exercise complete/incomplete" _(active on exercise page)_ |
-    | `CMD + CTRL + N`  | Go to next exercise _(active on exercise page)_                            |
-    | `CMD + CTRL + R`  | Submit review to LSBot _(active on exercise page)_                         |
-    | `CMD + CTRL + T`  | Toggle Table of Contents Menu visibility _(active on book page)_           |
-    | `CMD + CTRL + ,`  | Toggle Current Page Shortcuts/Settings Menu visibility                     |
+    | Shortcut      | Function                                                                   |
+    | ------------- | -------------------------------------------------------------------------- |
+    | `CMD SHIFT 1` | Toggle Header visibility                                                   |
+    | `CMD SHIFT 2` | Toggle Tabs Panel visibility _(only active on pages with a Tabs Panel)_    |
+    | `CMD SHIFT E` | Focus Editor/Scratchpad                                                    |
+    | `CMD CTRL #`  | Select tab by number order (such as 1 for the "Ask LSBot" tab)             |
+    | `CMD CTRL B`  | Toggle Sidebar visibility                                                  |
+    | `CMD CTRL C`  | Copy Editor/Scratchpad Code                                                |
+    | `CMD CTRL E`  | Focus Editor/Scratchpad                                                    |
+    | `CMD CTRL M`  | Toggle the "Mark exercise complete/incomplete" _(active on exercise page)_ |
+    | `CMD CTRL N`  | Go to next exercise _(active on exercise page)_                            |
+    | `CMD CTRL R`  | Submit review to LSBot _(active on exercise page)_                         |
+    | `CMD CTRL T`  | Toggle Table of Contents Menu visibility _(active on book page)_           |
+    | `CMD CTRL ,`  | Toggle Current Page Shortcuts/Settings Menu visibility                     |

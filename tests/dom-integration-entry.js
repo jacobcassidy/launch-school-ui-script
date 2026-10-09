@@ -3,6 +3,7 @@ import { updateSidebar } from "../src/js/modules/components/sidebar.js";
 import { updateTabButtons } from "../src/js/modules/components/buttons/panels/tab.js";
 import { elements } from "../src/js/modules/utils/state/dom.js";
 import { syncAvailableShortcuts } from "../src/js/modules/utils/sync/available-shortcuts.js";
+import { syncShortcutTooltips } from "../src/js/modules/utils/sync/shortcut-tooltips.js";
 import { syncNativeElementsState } from "../src/js/modules/utils/sync/native-elements-state.js";
 import { syncInjectedElementsState } from "../src/js/modules/utils/sync/injected-elements-state.js";
 import { setLoadUIHandler } from "../src/js/modules/utils/helpers/reload.js";
@@ -24,6 +25,7 @@ globalThis.integration = {
   updateSidebar,
   updateTabButtons,
   syncAvailableShortcuts,
+  syncShortcutTooltips,
   syncNativeElementsState,
   syncInjectedElementsState,
   setLoadUIHandler,

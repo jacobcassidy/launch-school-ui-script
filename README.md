@@ -38,7 +38,7 @@ An unofficial UX kit that modifies the LaunchSchool.com UI with a minimal design
 1. Install the [Tampermonkey](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) browser extension (or an equivalent extension).
 2. Open the Tampermonkey extension's dashboard.
 3. Click on the dashboard's `+` tab to create a new script.
-4. Copy the code from [/dist/js/index.min.js](https://github.com/jacobcassidy/launch-school-ux-kit/blob/main/dist/js/index.min.js), then paste it into the Tampermonkey editor and save it (`CMD + S` on macOS or `CTRL + S` on Windows).
+4. Copy the code from [/dist/js/index.min.js](https://github.com/jacobcassidy/launch-school-ux-kit/blob/main/dist/js/index.min.js), then paste it into the Tampermonkey editor and save it (`CMD S` on macOS or `CTRL S` on Windows).
 5. Go to [launchschool.com](https://launchschool.com) or refresh the page if you're already there and the script should now be active (if not, check your Tampermonkey extension settings to make sure it's active on launchschool.com).
 
 > [!TIP]
@@ -48,7 +48,7 @@ An unofficial UX kit that modifies the LaunchSchool.com UI with a minimal design
 > 2. Select `File > Add to Dock...`
 > 3. Make the title "Launch School" and click "Add".
 > 4. Open the new Launch School Safari app you just created.
-> 5. Open settings (in the menubar, click `Launch School > Settings` or use the `CMD + ,` shortcut).
+> 5. Open settings (in the menubar, click `Launch School > Settings` or use the `CMD ,` shortcut).
 > 6. In the Setting's "General" tab, deselect "Show navigation controls".
 > 7. In the Setting's "Extensions" tab, click "Browse Extensions" and install "Tampermonkey" (or an equivalent extension).
 > 8. Then follow the rest of the [Quickstart Guide](#quickstart-guide) above to complete the setup.
@@ -67,20 +67,20 @@ An unofficial UX kit that modifies the LaunchSchool.com UI with a minimal design
 
 - Added shortcuts:
 
-  | macOS             | Windows            | Function                                                                   |
-  | ----------------- | ------------------ | -------------------------------------------------------------------------- |
-  | `Enter`           | `Enter`            | Submit focused chat prompt                                                 |
-  | `CMD + B`         | `CTRL + B`         | Toggles Sidebar visibility                                                 |
-  | `CMD + Shift + 1` | `CTRL + Shift + 1` | Toggles Header visibility                                                  |
-  | `CMD + Shift + 2` | `CTRL + Shift + 2` | Toggle Tabs Panel visibility                                               |
-  | `CMD + CTRL + #`  | `CTRL + ALT + #`   | Select tab by number order (such as 1 for the "Ask LSBot" tab)             |
-  | `CMD + CTRL + C`  | `CTRL + ALT + C`   | Copy Editor/Scratchpad Code                                                |
-  | `CMD + CTRL + E`  | `CTRL + ALT + E`   | Focus Editor/Scratchpad                                                    |
-  | `CMD + CTRL + M`  | `CTRL + ALT + M`   | Toggle the "Mark exercise complete/incomplete" _(active on exercise page)_ |
-  | `CMD + CTRL + N`  | `CTRL + ALT + N`   | Go to next exercise _(active on exercise page)_                            |
-  | `CMD + CTRL + R`  | `CTRL + ALT + R`   | Submit review to LSBot _(active on exercise page)_                         |
-  | `CMD + CTRL + T`  | `CTRL + ALT + T`   | Toggle Table of Contents visibility _(active on book page)_                |
-  | `CMD + CTRL + ,`  | `CTRL + ALT + ,`   | Toggle Settings visibility (include Current Page Shortcuts)                |
+  | macOS         | Windows        | Function                                                                   |
+  | ------------- | -------------- | -------------------------------------------------------------------------- |
+  | `Enter`       | `Enter`        | Submit focused chat prompt                                                 |
+  | `CMD B`       | `CTRL B`       | Toggles Sidebar visibility                                                 |
+  | `CMD Shift 1` | `CTRL Shift 1` | Toggles Header visibility                                                  |
+  | `CMD Shift 2` | `CTRL Shift 2` | Toggle Tabs Panel visibility                                               |
+  | `CMD CTRL #`  | `CTRL ALT #`   | Select tab by number order (such as 1 for the "Ask LSBot" tab)             |
+  | `CMD CTRL C`  | `CTRL ALT C`   | Copy Editor/Scratchpad Code                                                |
+  | `CMD CTRL E`  | `CTRL ALT E`   | Focus Editor/Scratchpad                                                    |
+  | `CMD CTRL M`  | `CTRL ALT M`   | Toggle the "Mark exercise complete/incomplete" _(active on exercise page)_ |
+  | `CMD CTRL N`  | `CTRL ALT N`   | Go to next exercise _(active on exercise page)_                            |
+  | `CMD CTRL R`  | `CTRL ALT R`   | Submit review to LSBot _(active on exercise page)_                         |
+  | `CMD CTRL T`  | `CTRL ALT T`   | Toggle Table of Contents visibility _(active on book page)_                |
+  | `CMD CTRL ,`  | `CTRL ALT ,`   | Toggle Settings visibility (include Current Page Shortcuts)                |
 
 Shortcut modifiers in tooltips and settings use `⌘` (Command), `⌃` (Control), `⇧` (Shift), and `⎇` (Alt).
 

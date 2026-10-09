@@ -92,6 +92,12 @@ for (const { name, platform, primary, actions, modifiers } of [
       assert.equal(document.querySelector(selector).title, title);
     });
 
+    const plusButton = document.createElement("button");
+    plusButton.textContent = "Zoom in";
+    document.body.appendChild(plusButton);
+    api.shortcuts.cmdCtrl.Equal = { symbol: "+", label: "Zoom in", buttons: [plusButton] };
+    api.syncShortcutTooltips();
+    assert.equal(plusButton.title, `Zoom in (${actions}+)`);
     api.injectShortcutsSection();
     const settingsStyle = document.createElement("style");
     settingsStyle.textContent = settingsStyles.outputFiles[0].text;
@@ -99,6 +105,7 @@ for (const { name, platform, primary, actions, modifiers } of [
     const menuRows = [...document.querySelectorAll(".current-page-added-shortcuts-section .settings-list__item")];
     for (const row of menuRows) {
       const keys = [...row.querySelectorAll(".key")];
+      assert.equal(row.querySelector(".shortcut-keys").textContent, keys.map((key) => key.textContent).join(""));
       keys.forEach((key) => {
         const fontSize = window.getComputedStyle(key).fontSize;
         const sizeInPixels = Number.parseFloat(fontSize) * (fontSize.endsWith("rem") ? 16 : 1);
@@ -113,6 +120,7 @@ for (const { name, platform, primary, actions, modifiers } of [
     assert.equal(menuKeys("Toggle Header Visibility").toUpperCase(), `${primary}⇧1`);
     assert.equal(menuKeys("Toggle Sidebar Visibility").toUpperCase(), `${primary}B`);
     assert.equal(menuKeys("Submit focused chat prompt"), "Enter");
+    assert.equal(menuKeys("Zoom in"), `${actions}+`);
 
     const settingsRow = menuRows.find(
       (item) => item.querySelector(".shortcut-label").textContent === "Toggle Settings Visibility",
@@ -120,7 +128,7 @@ for (const { name, platform, primary, actions, modifiers } of [
     assert.equal(settingsRow.querySelector(".shortcut-keys").getAttribute("role"), "img");
     assert.equal(
       settingsRow.querySelector(".shortcut-keys").getAttribute("aria-label"),
-      platform === "MacIntel" ? "Cmd + Ctrl + ," : "Ctrl + Alt + ,",
+      platform === "MacIntel" ? "Cmd Ctrl ," : "Ctrl Alt ,",
     );
 
     const clone = settingsButton.cloneNode(true);
