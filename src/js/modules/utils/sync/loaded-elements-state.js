@@ -25,7 +25,7 @@ export function syncLoadedElementsState() {
   if (header && isHeaderHidden) hideHeader();
 
   // Set tabs panel load state.
-  if (tabsPanel) setIsTabsPanelHidden(isTabsPanelHidden, { animate: false });
+  if (tabsPanel) setIsTabsPanelHidden(isTabsPanelHidden);
 
   // Set Sidebar Hidden Headers setting load state
   if (sidebar && isSettingSidebarHiddenHeadersOn) {

@@ -6,25 +6,9 @@
 .resize-handle {
   pointer-events: none;
   display: block;
-  flex-shrink: 0;
   background: var(--border-color--300) !important;
   inline-size: 3px !important;
-  transition: none;
-
-  /* Stay in the flex row and travel with the tabs panel. */
-  :has(> .tabs-panel) > & {
-    position: relative !important;
-    z-index: 2;
-    inset-block: auto !important;
-    inset-inline: auto !important;
-    flex: 0 0 3px !important;
-    transform: translateX(0);
-    transition: transform var(--timing--long) ease;
-  }
-
-  :has(> .tabs-panel:is(.is-closing, .is-opening)) > & {
-    transform: translateX(var(--tabs-panel-slide-offset, 0));
-  }
+  transition: none !important;
 
   :has(> .tabs-panel.panel-collapsed) > & {
     display: none !important;
@@ -38,7 +22,7 @@
 }
 
 /* Toggleable Panels */
-:is(.assignment-content-panel, .book-content-panel) {
+:is(.assignment-content-panel, .book-content-panel, .tabs-panel) {
   &.half-width {
     flex-basis: calc(50% - 2px) !important;
 
@@ -56,9 +40,8 @@
 
 /* Content Panels */
 :is(.assignment-content-panel, .book-content-panel) {
-  flex: 0 0 100% !important;
+  flex-basis: 100% !important;
   border: none !important;
-  min-inline-size: 0;
   padding: 0 !important;
   transition: none !important;
 
@@ -83,29 +66,12 @@
 
 /* Tabs Panel */
 .tabs-panel {
-  position: relative !important;
-  z-index: 1;
-  inset-block: auto !important;
-  inset-inline: auto !important;
   display: none !important;
-  flex: 0 0 calc(50% - 2px) !important;
-  transform: translateX(0);
   border: none !important;
-  inline-size: calc(50% - 2px) !important;
-  min-inline-size: 0;
-  transition: transform var(--timing--long) ease;
+  transition: none !important;
 
   &.is-active {
     display: flex !important;
-  }
-
-  &.is-closing {
-    pointer-events: none;
-  }
-
-  &.is-closing,
-  &.is-opening {
-    transform: translateX(100%);
   }
 
   &.panel-collapsed {
