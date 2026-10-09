@@ -88,8 +88,6 @@
       grid-column: 1;
       gap: 2px;
       border-inline-end: 1px solid var(--border-color--100);
-      color: var(--color--grayscale-500);
-      font-size: 0.75rem;
 
       span {
         display: flex;
@@ -97,17 +95,19 @@
         justify-content: center;
         background: var(--color--grayscale-150);
         border-radius: 4px;
+        color: var(--color--grayscale-500);
         block-size: 1.5rem;
         inline-size: 1.5rem;
+        font-size: 0.875rem;
 
         &.key--text {
           inline-size: initial;
+          padding-inline: 8px;
         }
 
         &:last-child {
           background: var(--color--brand-alpha);
           color: var(--color--brand-400);
-          padding-inline: 6px;
           font-weight: 700;
         }
       }
