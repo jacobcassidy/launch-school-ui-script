@@ -89,13 +89,16 @@
       gap: 2px;
       border-inline-end: 1px solid var(--border-color--100);
       color: var(--color--grayscale-500);
-      font-family: Monaco, Menlo, Consolas, monospace;
       font-size: 0.75rem;
 
-      .key {
+      span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background: var(--color--grayscale-150);
         border-radius: 4px;
-        padding: 1px 4px;
+        block-size: 1.5rem;
+        inline-size: 1.5rem;
 
         &:last-child {
           background: var(--color--brand-alpha);
@@ -103,10 +106,6 @@
           padding-inline: 6px;
           font-weight: 700;
         }
-      }
-
-      .plus {
-        color: var(--color--grayscale-300);
       }
     }
 
