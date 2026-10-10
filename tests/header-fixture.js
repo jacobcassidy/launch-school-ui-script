@@ -151,6 +151,8 @@ export function headerFixture(options = {}) {
     document,
     window,
     elements,
+    watchHeaderLayout() {},
+    disconnectHeaderLayout() {},
     setElementTocButton: setters.setElementTocButton,
     ...component("sidebar-toggle"),
     ...component("tabs-panel-toggle"),

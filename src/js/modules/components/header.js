@@ -9,6 +9,7 @@ import { injectSettingsToggleButton } from "./buttons/header/settings-toggle.js"
 import { injectSidebarToggleButton } from "./buttons/header/sidebar-toggle.js";
 import { injectTabsPanelToggleButton } from "./buttons/header/tabs-panel-toggle.js";
 import { moveTocBtnToHeader } from "./buttons/header/toc-toggle.js";
+import { watchHeaderLayout, disconnectHeaderLayout } from "./header-layout.js";
 
 import { elements } from "../utils/state/dom.js";
 import { setElementTocButton } from "../utils/state/setters/dom.js";
@@ -30,6 +31,7 @@ export function injectHeader() {
   }
 
   refreshHeader(header);
+  watchHeaderLayout(header);
 }
 
 function watchHeaderBeforeCache() {
@@ -38,6 +40,7 @@ function watchHeaderBeforeCache() {
 
   const restoreHeaderSources = () => {
     document.querySelectorAll(".site-header").forEach((header) => {
+      disconnectHeaderLayout(header);
       const movedElements = [
         ...header.querySelectorAll(".gretel-breadcrumbs"),
         ...header.querySelectorAll(".toc-toggle-button"),

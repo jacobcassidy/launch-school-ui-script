@@ -7,10 +7,9 @@
   z-index: 200;
   inset-block-start: 0;
   inset-inline: var(--size--sidebar--width) 0;
-  display: flex;
-  flex-grow: 1;
+  display: grid;
+  grid-template-columns: minmax(var(--header-side-width, 0), 1fr) minmax(0, max-content) minmax(var(--header-side-width, 0), 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: var(--size--spacing-inline);
   background: var(--background-color--300);
   border-block-end: 1px solid var(--border-color--300);
@@ -47,11 +46,22 @@
 
     &.container-1,
     &.container-3 {
-      min-inline-size: fit-content;
+      inline-size: max-content;
+      max-inline-size: none;
+    }
+
+    &.container-1 {
+      justify-self: start;
+    }
+
+    &.container-3 {
+      justify-self: end;
     }
 
     &.container-2 {
+      justify-content: center;
       overflow: hidden;
+      min-inline-size: 0;
 
       body:has(#assignment-repl-layout) & .gretel-breadcrumbs,
       body:has(#book-exercise-repl-layout) & .gretel-breadcrumbs,
@@ -73,6 +83,11 @@
         font-weight: 700;
         line-height: 1;
         white-space: nowrap;
+      }
+
+      .title-text {
+        display: block;
+        block-size: auto;
       }
 
       body:has(#book-exercise-repl-layout) & .gretel-breadcrumbs,
@@ -117,6 +132,15 @@
       .icon--sidebar-open {
         display: none;
       }
+    }
+  }
+
+  &.is-crowded {
+    grid-template-columns: max-content max-content;
+    justify-content: space-between;
+
+    .container-2 {
+      display: none;
     }
   }
 
