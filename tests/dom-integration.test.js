@@ -485,91 +485,109 @@ test("tab visibility updates rebind clones and remove tooltips for deleted tabs"
   window.close();
 });
 
-test("Turbo cache event restores native controls and removes injected header", async () => {
-  const { window, document, api } = createPage(`
+for (const [framework, eventPrefix] of [
+  ["Turbo", "turbo"],
+  ["Turbolinks", "turbolinks"],
+]) {
+  test(`${framework} cache event restores native controls and removes injected header`, (t) => {
+    const { window, document, api } = createPage(`
     <nav class="nav-drawer"></nav>
     <div class="gretel-breadcrumbs">Native breadcrumbs</div>
     <button class="toc-toggle-button">Contents</button>
   `);
-  api.injectHeader();
-  assert.ok(document.querySelector(".site-header .gretel-breadcrumbs"));
-  document.dispatchEvent(new window.Event("turbo:before-cache"));
-  await window.happyDOM.whenAsyncComplete();
+    t.after(() => {
+      window.close();
+    });
+    api.injectHeader();
+    assert.ok(document.querySelector(".site-header .gretel-breadcrumbs"));
+    document.dispatchEvent(new window.Event(`${eventPrefix}:before-cache`));
 
-  assert.equal(document.querySelector(".site-header"), null);
-  assert.equal(document.querySelector("body > .gretel-breadcrumbs")?.textContent, "Native breadcrumbs");
-  assert.equal(document.querySelector("body > .toc-toggle-button")?.textContent.trim(), "Contents");
-  window.close();
-});
+    assert.equal(Boolean(document.querySelector(".site-header")), false);
+    assert.equal(document.querySelector("body > .gretel-breadcrumbs")?.textContent, "Native breadcrumbs");
+    assert.equal(document.querySelector("body > .toc-toggle-button")?.textContent.trim(), "Contents");
+  });
 
-test("Back before a book snapshot preserves its TOC button and restores its shortcut on Forward", async () => {
-  const { window, document, api } = createPage(`
+  for (const cacheBeforeHistory of [true, false]) {
+    test(`${framework} restores the TOC button and shortcut after Back/Forward with cache ${cacheBeforeHistory ? "before" : "after"} history`, async (t) => {
+      const { window, document, api } = createPage(`
     <main class="book-page">
       <div class="gretel-breadcrumbs">Python Introduction</div>
       <div class="toc-dropdown-container"><button class="toc-toggle-button">Contents</button></div>
     </main>
   `);
-  const bookUrl = "/books/python/read/introduction";
-  window.history.replaceState({}, "", bookUrl);
-  const refresh = () => {
-    api.syncNativeElementsState();
-    api.injectHeader();
-    api.syncInjectedElementsState();
-    api.syncAvailableShortcuts();
-  };
-  api.setLoadUIHandler(refresh);
-  api.watchForUrlChange();
-  api.watchShortcuts();
-  refresh();
-  const originalButton = document.querySelector(".site-header .toc-toggle-button");
-  assert.ok(originalButton);
-  assert.ok(api.shortcuts.cmdCtrl.KeyT);
+      t.after(() => {
+        window.close();
+      });
+      const bookUrl = "/books/python/read/introduction";
+      window.history.replaceState({}, "", bookUrl);
+      const refresh = () => {
+        api.syncNativeElementsState();
+        api.injectHeader();
+        api.syncInjectedElementsState();
+        api.syncAvailableShortcuts();
+      };
+      api.setLoadUIHandler(refresh);
+      api.watchForUrlChange();
+      api.watchShortcuts();
+      refresh();
+      const originalButton = document.querySelector(".site-header .toc-toggle-button");
+      assert.ok(originalButton);
+      assert.ok(api.shortcuts.cmdCtrl.KeyT);
 
-  // History changes before the native renderer snapshots the outgoing book.
-  window.history.replaceState({}, "", "/course_catalog");
-  window.dispatchEvent(new window.PopStateEvent("popstate"));
-  await window.happyDOM.whenAsyncComplete();
-  assert.equal(document.querySelector(".site-header .toc-toggle-button"), null);
-  assert.equal(api.shortcuts.cmdCtrl.KeyT, undefined);
-  document.dispatchEvent(new window.Event("turbo:before-cache"));
-  const cachedBook = document.body.cloneNode(true);
-  assert.ok(cachedBook.querySelector(".toc-dropdown-container .toc-toggle-button"));
-  assert.ok(cachedBook.querySelector(".book-page .gretel-breadcrumbs"));
-  assert.ok(originalButton.isConnected);
+      if (cacheBeforeHistory) document.dispatchEvent(new window.Event(`${eventPrefix}:before-cache`));
+      const earlySnapshot = cacheBeforeHistory ? document.body.cloneNode(true) : null;
+      window.history.replaceState({}, "", "/course_catalog");
+      window.dispatchEvent(new window.PopStateEvent("popstate"));
+      if (!cacheBeforeHistory) {
+        // History changes before the native renderer snapshots the outgoing book.
+        await window.happyDOM.whenAsyncComplete();
+        assert.equal(document.querySelector(".site-header .toc-toggle-button"), null);
+        assert.equal(api.shortcuts.cmdCtrl.KeyT, undefined);
+        document.dispatchEvent(new window.Event(`${eventPrefix}:before-cache`));
+      }
+      const cachedBook = earlySnapshot || document.body.cloneNode(true);
+      assert.ok(cachedBook.querySelector(".toc-dropdown-container .toc-toggle-button"));
+      assert.ok(cachedBook.querySelector(".book-page .gretel-breadcrumbs"));
+      assert.ok(originalButton.isConnected);
 
-  document.body.innerHTML = "<main>Course catalog</main>";
-  document.dispatchEvent(new window.Event("turbo:render"));
-  await window.happyDOM.whenAsyncComplete();
-  assert.equal(document.querySelector(".toc-toggle-button"), null);
-  assert.equal(api.shortcuts.cmdCtrl.KeyT, undefined);
+      document.body.innerHTML = "<main>Course catalog</main>";
+      document.dispatchEvent(new window.Event(`${eventPrefix}:render`));
+      await window.happyDOM.whenAsyncComplete();
+      assert.equal(document.querySelector(".toc-toggle-button"), null);
+      assert.equal(api.shortcuts.cmdCtrl.KeyT, undefined);
 
-  // Forward restores cloned native markup; its native click handler is rebound.
-  document.body.replaceWith(cachedBook);
-  const restoredButton = document.querySelector(".toc-toggle-button");
-  let tocClicks = 0;
-  restoredButton.addEventListener("click", () => {
-    tocClicks++;
-    restoredButton.classList.toggle("open");
-  });
-  window.history.replaceState({}, "", bookUrl);
-  window.dispatchEvent(new window.PopStateEvent("popstate"));
-  document.dispatchEvent(new window.Event("turbo:render"));
-  document.dispatchEvent(new window.Event("turbo:load"));
-  await window.happyDOM.whenAsyncComplete();
+      // Forward changes history before the cached book DOM is rendered.
+      window.history.replaceState({}, "", bookUrl);
+      window.dispatchEvent(new window.PopStateEvent("popstate"));
+      await window.happyDOM.whenAsyncComplete();
+      assert.equal(api.elements.native.tocButton, null);
 
-  assert.equal(document.querySelector(".site-header .toc-toggle-button"), restoredButton);
-  assert.equal(api.elements.native.tocButton, restoredButton);
-  assert.equal(document.querySelectorAll(".toc-toggle-button").length, 1);
-  assert.equal(restoredButton.title, "Toggle Table of Contents Visibility (⌘⌃T)");
-  assert.ok(api.shortcuts.cmdCtrl.KeyT);
-  document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "KeyT", metaKey: true, ctrlKey: true }));
-  assert.equal(tocClicks, 1);
-  assert.equal(restoredButton.classList.contains("open"), true);
-  restoredButton.click();
-  assert.equal(tocClicks, 2);
-  assert.equal(restoredButton.classList.contains("open"), false);
-  window.close();
-});
+      // The native renderer restores cloned markup and rebinds its click handler.
+      document.body.replaceWith(cachedBook);
+      const restoredButton = document.querySelector(".toc-toggle-button");
+      let tocClicks = 0;
+      restoredButton.addEventListener("click", () => {
+        tocClicks++;
+        restoredButton.classList.toggle("open");
+      });
+      document.dispatchEvent(new window.Event(`${eventPrefix}:render`));
+      document.dispatchEvent(new window.Event(`${eventPrefix}:load`));
+      await window.happyDOM.whenAsyncComplete();
+
+      assert.equal(document.querySelector(".site-header .toc-toggle-button"), restoredButton);
+      assert.equal(api.elements.native.tocButton, restoredButton);
+      assert.equal(document.querySelectorAll(".toc-toggle-button").length, 1);
+      assert.equal(restoredButton.title, "Toggle Table of Contents Visibility (⌘⌃T)");
+      assert.ok(api.shortcuts.cmdCtrl.KeyT);
+      document.dispatchEvent(new window.KeyboardEvent("keydown", { code: "KeyT", metaKey: true, ctrlKey: true }));
+      assert.equal(tocClicks, 1);
+      assert.equal(restoredButton.classList.contains("open"), true);
+      restoredButton.click();
+      assert.equal(tocClicks, 2);
+      assert.equal(restoredButton.classList.contains("open"), false);
+    });
+  }
+}
 
 test("Command+B and the sidebar button both toggle the native sidebar", () => {
   const { window, document, api } = createPage(`

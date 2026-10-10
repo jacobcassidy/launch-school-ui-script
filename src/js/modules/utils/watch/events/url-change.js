@@ -41,8 +41,9 @@ export function watchForUrlChange() {
   window.addEventListener("popstate", checkForUrlChange);
   window.addEventListener("hashchange", checkForUrlChange);
   // A render can complete after the history change, including at the same URL.
-  document.addEventListener("turbo:load", scheduleReload);
-  document.addEventListener("turbo:render", scheduleReload);
+  for (const eventType of ["turbo:load", "turbo:render", "turbolinks:load", "turbolinks:render"]) {
+    document.addEventListener(eventType, scheduleReload);
+  }
 
   history.pushState = function (...args) {
     originalPushState.apply(this, args);

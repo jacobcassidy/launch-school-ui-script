@@ -36,7 +36,7 @@ function watchHeaderBeforeCache() {
   if (document.documentElement.dataset.headerBeforeCacheBound) return;
   document.documentElement.dataset.headerBeforeCacheBound = "true";
 
-  document.addEventListener("turbo:before-cache", () => {
+  const restoreHeaderSources = () => {
     document.querySelectorAll(".site-header").forEach((header) => {
       const movedElements = [
         ...header.querySelectorAll(".gretel-breadcrumbs"),
@@ -58,7 +58,11 @@ function watchHeaderBeforeCache() {
       .querySelectorAll("#ls-ui-script-styles, .toast-container, .tab-tooltip")
       .forEach((element) => element.remove());
     document.querySelectorAll(".sidebar-tooltip.active").forEach((tooltip) => tooltip.classList.remove("active"));
-  });
+  };
+
+  for (const eventType of ["turbo:before-cache", "turbolinks:before-cache"]) {
+    document.addEventListener(eventType, restoreHeaderSources);
+  }
 }
 
 /**

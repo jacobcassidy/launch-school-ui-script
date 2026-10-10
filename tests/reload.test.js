@@ -49,34 +49,36 @@ test("a failed reload does not block future navigation", () => {
   assert.equal(frames.length, 1);
 });
 
-test("Turbo rendering after a history reload schedules a fresh pass at the same URL", () => {
-  const { context, frames, ui, loads } = fixture();
-  const listeners = {};
-  const watcher = sourceContext("../src/js/modules/utils/watch/events/url-change.js", {
-    ui,
-    location: context.location,
-    scheduleReload: context.scheduleReload,
-    history: { pushState() {}, replaceState() {} },
-    window: { addEventListener() {} },
-    document: {
-      documentElement: { dataset: {} },
-      addEventListener(event, callback) {
-        listeners[event] = callback;
+for (const eventPrefix of ["turbo", "turbolinks"]) {
+  test(`${eventPrefix} rendering after a history reload schedules a fresh pass at the same URL`, () => {
+    const { context, frames, ui, loads } = fixture();
+    const listeners = {};
+    const watcher = sourceContext("../src/js/modules/utils/watch/events/url-change.js", {
+      ui,
+      location: context.location,
+      scheduleReload: context.scheduleReload,
+      history: { pushState() {}, replaceState() {} },
+      window: { addEventListener() {} },
+      document: {
+        documentElement: { dataset: {} },
+        addEventListener(event, callback) {
+          listeners[event] = callback;
+        },
       },
-    },
+    });
+    watcher.watchForUrlChange();
+    watcher.history.pushState();
+    frames.shift()();
+    assert.equal(loads(), 1);
+    watcher.history.replaceState();
+    assert.equal(frames.length, 0);
+    listeners[`${eventPrefix}:render`]();
+    listeners[`${eventPrefix}:load`]();
+    assert.equal(frames.length, 1);
+    frames.shift()();
+    assert.equal(loads(), 2);
   });
-  watcher.watchForUrlChange();
-  watcher.history.pushState();
-  frames.shift()();
-  assert.equal(loads(), 1);
-  watcher.history.replaceState();
-  assert.equal(frames.length, 0);
-  listeners["turbo:render"]();
-  listeners["turbo:load"]();
-  assert.equal(frames.length, 1);
-  frames.shift()();
-  assert.equal(loads(), 2);
-});
+}
 
 test("query-only history navigation reloads page-specific UI state", () => {
   const { context, frames, ui, loads } = fixture();
