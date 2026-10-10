@@ -91,7 +91,7 @@
 
   .sidebar-list-toggle-btn {
     justify-content: space-between;
-    color: var(--color--grayscale-600);
+    color: var(--color--grayscale-400);
     font-size: 0.6875rem;
     font-weight: 600;
     letter-spacing: 1px;
@@ -104,7 +104,7 @@
     }
 
     &:hover {
-      color: var(--color--grayscale-600);
+      color: var(--color--grayscale-500);
     }
 
     svg {
@@ -214,12 +214,7 @@
 
           .item-link {
             gap: 8px;
-            color: var(--color--grayscale-600);
             padding-inline-start: calc(var(--size--sidebar--padding-inline) + 30px);
-
-            &:hover {
-              color: var(--color--brand-600);
-            }
           }
 
           svg {
